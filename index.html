@@ -1,0 +1,2121 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f6f8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1218" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Monitor Just">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Monitor Portal Just</title>
+<script>try{var t=localStorage.getItem('mpj_tema')||'dark';document.documentElement.dataset.theme=t;document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.content=t==='dark'?'#0a0e15':'#f3f6fb';m.removeAttribute('media')})}catch(e){document.documentElement.dataset.theme='dark'}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+:root{
+  --bg:#f5f6f8; --panel:#fff; --text:#1b2230; --muted:#667085; --line:#e4e7ec; --soft:#f0f2f5;
+  --accent:#1f4fd1; --accent-soft:#e8eefc;
+  --s4:#b42318; --s4-bg:#fdecea; --s3:#c4540c; --s3-bg:#fdf0e6; --s2:#9a6a00; --s2-bg:#fdf6dd; --s1:#667085; --s1-bg:#eef0f3;
+  --ok:#137a3d;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1218; --panel:#171b23; --text:#e6e9ef; --muted:#98a2b3; --line:#2a303b; --soft:#1e232d;
+    --accent:#7aa2ff; --accent-soft:#1d2a4a;
+    --s4:#ff7a6e; --s4-bg:#3a1714; --s3:#ffa45c; --s3-bg:#3a2313; --s2:#f1c94b; --s2-bg:#352c10; --s1:#98a2b3; --s1-bg:#232833;
+    --ok:#4ade80;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1218; --panel:#171b23; --text:#e6e9ef; --muted:#98a2b3; --line:#2a303b; --soft:#1e232d;
+  --accent:#7aa2ff; --accent-soft:#1d2a4a;
+  --s4:#ff7a6e; --s4-bg:#3a1714; --s3:#ffa45c; --s3-bg:#3a2313; --s2:#f1c94b; --s2-bg:#352c10; --s1:#98a2b3; --s1-bg:#232833;
+  --ok:#4ade80;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+header{background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.bar{max-width:1320px;margin:auto;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand b{font-size:17px;display:block} .brand span{color:var(--muted);font-size:12px}
+.spacer{flex:1}
+.upd{color:var(--muted);font-size:12px;text-align:right}
+nav{max-width:1320px;margin:auto;padding:0 20px;display:flex;gap:2px;overflow-x:auto}
+nav button{background:none;border:0;border-bottom:2px solid transparent;padding:10px 12px;color:var(--muted);font:inherit;cursor:pointer;white-space:nowrap}
+nav button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+nav .badge{background:var(--s4);color:#fff;border-radius:9px;padding:0 6px;font-size:11px;margin-left:4px}
+main{max-width:1320px;margin:auto;padding:20px}
+section{display:none} section.on{display:block}
+h2{font-size:18px;margin:0 0 4px} .sub{color:var(--muted);margin:0 0 16px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi b{display:block;font-size:24px;font-variant-numeric:tabular-nums} .kpi span{color:var(--muted);font-size:12px}
+.kpi.red b{color:var(--s4)} .kpi.blue b{color:var(--accent)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+input,select,textarea,button{font:inherit;color:var(--text)}
+input[type=text],input[type=date],select,textarea{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:7px 9px}
+input[type=text]{min-width:220px}
+textarea{width:100%;min-height:110px;resize:vertical}
+label.chk{display:inline-flex;gap:6px;align-items:center;color:var(--muted);cursor:pointer}
+.btn{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:7px 12px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.mic{padding:3px 8px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:default}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{background:var(--soft);text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:8px 10px;white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+tr.click{cursor:pointer} tr.click:hover td{background:var(--soft)}
+.sev{display:inline-block;border-radius:5px;padding:2px 7px;font-size:11px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.s4{color:var(--s4);background:var(--s4-bg)} .s3{color:var(--s3);background:var(--s3-bg)}
+.s2{color:var(--s2);background:var(--s2-bg)} .s1,.s0{color:var(--s1);background:var(--s1-bg)}
+.cl{display:inline-block;background:var(--accent);color:#fff;border-radius:4px;padding:0 5px;font-size:10px;font-weight:700;margin-left:6px;vertical-align:1px}
+.grp{display:inline-block;background:var(--soft);color:var(--muted);border-radius:4px;padding:0 6px;font-size:11px;margin-top:3px}
+small,.muted{color:var(--muted)}
+.mono{font-variant-numeric:tabular-nums;white-space:nowrap}
+.more{padding:12px;text-align:center;border-top:1px solid var(--line)}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr} input[type=text]{min-width:0;flex:1}}
+.pad{padding:16px}
+.rules label{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line);cursor:pointer}
+.rules label:first-of-type{border-top:0}
+.rules small{display:block}
+.note{background:var(--accent-soft);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:13px}
+/* Roluri: pe site, doar dispozitivul conectat la GitHub (administratorul) vede butoanele care modifică ceva. */
+.doar-citire{display:none}
+body.citire .doar-admin{display:none!important}
+body.citire .doar-citire{display:block}
+.citire-info{display:flex;gap:10px;align-items:flex-start}
+.acces-adm{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.acc-rand{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.acc-rand input{flex:1;min-width:200px}
+.citire-info svg{flex:none;margin-top:2px;color:var(--accent)}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);background:var(--panel);border-left:1px solid var(--line);
+  box-shadow:-10px 0 30px rgba(0,0,0,.15);transform:translateX(105%);transition:transform .18s;z-index:20;display:flex;flex-direction:column}
+#drawer.on{transform:none}
+#drawer .dh{display:flex;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
+#drawer .db{overflow:auto;padding:16px;flex:1}
+#drawer .card{overflow-x:auto}
+#veil{position:fixed;inset:0;background:rgba(0,0,0,.25);display:none;z-index:15} #veil.on{display:block}
+.dl{display:grid;grid-template-columns:140px 1fr;gap:4px 12px;margin:10px 0 16px} .dl dt{color:var(--muted)} .dl dd{margin:0}
+h3{font-size:14px;margin:18px 0 8px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:8px;z-index:30;display:none}
+.prog{color:var(--s3);font-weight:600}
+ul.mot{margin:6px 0 0 18px;padding:0}
+#login{position:fixed;inset:0;background:var(--bg);z-index:40;display:flex;align-items:center;justify-content:center;padding:16px}
+#login form{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;width:min(380px,100%);display:flex;flex-direction:column;gap:12px}
+#login[hidden]{display:none}
+#login input[type=password]{width:100%}
+#login .err{color:var(--s4);min-height:1.2em;margin:0}
+nav .ic,nav .scurt,.bar .scurt,.btn-filtre,.upd .sep{display:none}
+body{-webkit-tap-highlight-color:transparent}
+tr.click:active td{background:var(--soft)}
+
+/* ---------- iPhone și ecrane înguste ---------- */
+@media (max-width:820px){
+  body{font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%}
+  header{padding-top:env(safe-area-inset-top)}
+  .bar{padding:10px 16px 8px;gap:8px;flex-wrap:wrap}
+  .brand{flex:1;min-width:0} .brand b{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .brand span{display:none}
+  .bar .spacer{display:none} .bar .lung{display:none} .bar .scurt{display:inline}
+  .upd{order:3;width:100%;text-align:left;font-size:12px;line-height:1.35}
+  .upd br{display:none} .upd .sep{display:inline}
+  #btnRun,#btnIesire{padding:6px 10px;font-size:13px;min-height:34px}
+  nav{position:fixed;left:0;right:0;bottom:0;z-index:12;max-width:none;margin:0;background:var(--panel);
+    border-top:1px solid var(--line);padding:4px 2px calc(2px + env(safe-area-inset-bottom));gap:0;overflow:visible;
+    box-shadow:0 -4px 16px rgba(0,0,0,.06)}
+  nav button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 4px;border:0;
+    font-size:10.5px;line-height:1.1;position:relative;color:var(--muted)}
+  nav button.on{border:0;color:var(--accent);font-weight:600}
+  nav .ic,nav .scurt{display:block} nav .lung{display:none}
+  nav .badge{position:absolute;top:1px;left:calc(50% + 5px);margin:0;font-size:10px;line-height:16px;min-width:16px;text-align:center}
+  main{padding:14px 12px calc(86px + env(safe-area-inset-bottom))}
+  h2{font-size:21px;margin-bottom:6px} .sub{font-size:14px;line-height:1.45}
+  .kpis{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+  .kpi{padding:10px 12px;border-radius:12px} .kpi b{font-size:22px} .kpi span{font-size:12px;line-height:1.3;display:block}
+  .filters{display:grid;grid-template-columns:1fr;gap:8px}
+  .filters.pliabil:not(.deschis) > :not(.mereu){display:none}
+  .btn-filtre{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin:0 0 8px}
+  .btn-filtre[aria-expanded="true"]{border-color:var(--accent);color:var(--accent)}
+  .filters label.chk{font-size:14px;min-height:36px}
+  input[type=text],input[type=date],input[type=password],select,textarea{font-size:16px;min-height:44px;width:100%;min-width:0;border-radius:10px}
+  .btn{min-height:42px;border-radius:10px}
+  .btn.mic{min-height:34px}
+  .card{border-radius:14px}
+  .tw{overflow:visible}
+  .pad{padding:14px}
+  .more{padding:14px}
+  .more .btn{width:100%;margin-top:8px}
+  .toast{bottom:calc(92px + env(safe-area-inset-bottom));max-width:calc(100% - 32px);text-align:center}
+
+  /* Tabelele principale devin carduri */
+  table.lista thead{display:none}
+  table.lista,table.lista tbody{display:block}
+  table.lista tr{display:grid;grid-template-columns:auto 1fr;column-gap:10px;row-gap:5px;padding:14px;border-top:1px solid var(--line)}
+  table.lista tbody tr:first-child{border-top:0}
+  table.lista td{display:block;border:0;padding:0;min-width:0;overflow-wrap:anywhere;grid-column:1/-1}
+  table.lista td.empty{padding:20px 0}
+  table.lista td:empty{display:none}
+  table.lista .mono{white-space:normal}
+  table.lista b{font-size:17px;line-height:1.3}
+  table.lista td small{font-size:13px}
+
+  .t-alerte td:nth-child(1){grid-row:1;grid-column:1}
+  .t-alerte td:nth-child(5){grid-row:1;grid-column:2;justify-self:end;color:var(--muted);font-size:13px}
+  .t-alerte td:nth-child(2){grid-row:2}
+  .t-alerte td:nth-child(3){grid-row:3;font-size:15px}
+  .t-alerte td:nth-child(4){grid-row:4;font-size:13px;color:var(--muted)}
+  .t-alerte td:nth-child(4) br{display:none}
+  .t-alerte td:nth-child(4) a ~ small::before{content:" · "}
+
+  .t-firme td:nth-child(1){grid-row:1;grid-column:1}
+  .t-firme td:nth-child(6){grid-row:1;grid-column:2;justify-self:end;color:var(--muted);font-size:13px}
+  .t-firme td:nth-child(2){grid-row:2}
+  .t-firme td:nth-child(4){grid-row:3;font-size:15px}
+  .t-firme td:nth-child(3){grid-row:4;grid-column:1;color:var(--muted);font-size:13px}
+  .t-firme td:nth-child(3)::before{content:"Scor "}
+  .t-firme td:nth-child(5){grid-row:4;grid-column:2;color:var(--muted);font-size:13px}
+  .t-firme td:nth-child(5)::after{content:" dosare"}
+
+  .t-clienti td:nth-child(1){grid-row:1;grid-column:1}
+  .t-clienti td:nth-child(5){grid-row:1;grid-column:2;justify-self:end;color:var(--muted);font-size:13px}
+  .t-clienti td:nth-child(2){grid-row:2}
+  .t-clienti td:nth-child(3){grid-row:3;font-size:15px}
+  .t-clienti td:nth-child(4){grid-row:4;grid-column:1;color:var(--muted);font-size:13px}
+  .t-clienti td:nth-child(4)::after{content:" dosare"}
+  .t-clienti td:nth-child(6){grid-row:4;grid-column:2}
+  .t-clienti td:nth-child(6) br{display:none}
+  .t-clienti td:nth-child(7){grid-row:5}
+
+  .t-dosare td:nth-child(1){grid-row:1;grid-column:1}
+  .t-dosare td:nth-child(4){grid-row:1;grid-column:2;justify-self:end;color:var(--muted);font-size:13px}
+  .t-dosare td:nth-child(2){grid-row:2;font-size:17px}
+  .t-dosare td:nth-child(3){grid-row:3;color:var(--muted);font-size:14px}
+  .t-dosare td:nth-child(5){grid-row:4;font-size:15px}
+  .t-dosare td:nth-child(6){grid-row:5}
+
+  .t-rulari td:nth-child(1),.t-rulari td:nth-child(4),.t-rulari td:nth-child(6),.t-rulari td:nth-child(8){display:none}
+  .t-rulari td:nth-child(2){grid-row:1;grid-column:1;font-weight:600}
+  .t-rulari td:nth-child(3){grid-row:1;grid-column:2;justify-self:end;color:var(--muted);font-size:13px}
+  .t-rulari td:nth-child(5){grid-row:2}
+  .t-rulari td:nth-child(7){grid-row:3;grid-column:1;font-size:14px}
+  .t-rulari td:nth-child(7)::before{content:"Dosare noi / actualizate: "}
+  .t-rulari td:nth-child(9){grid-row:3;grid-column:2;justify-self:end;font-size:14px}
+  .t-rulari td:nth-child(9)::before{content:"Alerte: "}
+  .t-rulari td:nth-child(10){grid-row:4}
+
+  /* Detaliile unei firme / ale unui dosar ocupă tot ecranul */
+  #drawer{width:100%;border-left:0;padding-top:env(safe-area-inset-top);box-shadow:none}
+  #drawer .dh{padding:8px 12px}
+  #drawer .dh .btn{min-height:40px;padding:6px 14px;font-size:15px}
+  #drawer .db{padding:14px 14px calc(28px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+  #drawer h2{font-size:21px;line-height:1.3}
+  #drawer h3{font-size:16px;margin-top:22px}
+  .dl{grid-template-columns:1fr;gap:0} .dl dt{font-size:12px;margin-top:10px;text-transform:uppercase;letter-spacing:.04em} .dl dd{font-size:15px}
+  #drawer .card{overflow:visible}
+  #drawer .card table tr:has(th){display:none}
+  #drawer .card table,#drawer .card tbody{display:block}
+  #drawer .card table tr{display:block;padding:12px 14px;border-top:1px solid var(--line)}
+  #drawer .card table tr:has(th) + tr{border-top:0}
+  #drawer .card table td{display:block;border:0;padding:2px 0;overflow-wrap:anywhere}
+  #drawer .card table td:has(> .sev:only-child){display:inline-block;margin-right:8px}
+  #drawer .card table .mono{white-space:normal}
+  .note{font-size:15px}
+  #login form{padding:22px}
+}
+/* ---------- Radar de risc (dashboard) ---------- */
+:root{
+  --pv-panel:#ffffff; --pv-line:#dfe6f1; --pv-grid:rgba(42,120,214,.06); --pv-glow:rgba(42,120,214,.16); --pv-track:#edf1f7;
+  --pv-edge:linear-gradient(140deg,rgba(42,120,214,.35),rgba(42,120,214,.06) 45%,rgba(42,120,214,.22));
+  --c1:#2a78d6; --c1-wash:rgba(42,120,214,.10); --pv-band:rgba(42,120,214,.07); --pv-nodata:#eef1f5;
+  --q1:#86b6ef; --q2:#5598e7; --q3:#2a78d6; --q4:#1c5cab; --q5:#0d366b;
+  --q1t:#0d1b2e; --q2t:#0d1b2e; --q3t:#fff; --q4t:#fff; --q5t:#fff;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --pv-panel:#121925; --pv-line:#243045; --pv-grid:rgba(57,135,229,.07); --pv-glow:rgba(57,135,229,.22); --pv-track:#1c2433;
+    --pv-edge:linear-gradient(140deg,rgba(57,135,229,.55),rgba(57,135,229,.06) 45%,rgba(57,135,229,.3));
+    --c1:#3987e5; --c1-wash:rgba(57,135,229,.10); --pv-band:rgba(57,135,229,.09); --pv-nodata:#1d2433;
+    --q1:#1c5cab; --q2:#2a78d6; --q3:#5598e7; --q4:#86b6ef; --q5:#b7d3f6;
+    --q1t:#fff; --q2t:#fff; --q3t:#0d1b2e; --q4t:#0d1b2e; --q5t:#0d1b2e;
+  }
+}
+:root[data-theme="dark"]{
+  --pv-panel:#121925; --pv-line:#243045; --pv-grid:rgba(57,135,229,.07); --pv-glow:rgba(57,135,229,.22); --pv-track:#1c2433;
+  --pv-edge:linear-gradient(140deg,rgba(57,135,229,.55),rgba(57,135,229,.06) 45%,rgba(57,135,229,.3));
+  --c1:#3987e5; --c1-wash:rgba(57,135,229,.10); --pv-band:rgba(57,135,229,.09); --pv-nodata:#1d2433;
+  --q1:#1c5cab; --q2:#2a78d6; --q3:#5598e7; --q4:#86b6ef; --q5:#b7d3f6;
+  --q1t:#fff; --q2t:#fff; --q3t:#0d1b2e; --q4t:#0d1b2e; --q5t:#0d1b2e;
+}
+#t-panou.on{position:relative}
+#t-panou::before{content:"";position:absolute;inset:-20px -20px auto;height:420px;z-index:-1;pointer-events:none;
+  background:radial-gradient(60% 70% at 20% 0%,var(--pv-glow),transparent 70%),
+    linear-gradient(var(--pv-grid) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(90deg,var(--pv-grid) 1px,transparent 1px) 0 0/28px 28px;
+  -webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent)}
+.pv-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.pv-head h2{font-size:22px;letter-spacing:-.01em;margin:0}
+.pv-head .sub{margin:2px 0 0}
+.pv-radar{flex:none;width:44px;height:44px;border-radius:50%;position:relative;border:1px solid var(--pv-line);
+  background:radial-gradient(circle,transparent 30%,var(--pv-line) 31%,transparent 33%,transparent 62%,var(--pv-line) 63%,transparent 65%),var(--pv-panel);
+  box-shadow:0 0 0 4px var(--c1-wash),0 0 24px var(--pv-glow);overflow:hidden}
+.pv-radar::after{content:"";position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 0deg,transparent 0 280deg,rgba(57,135,229,.15) 300deg,var(--c1) 360deg);animation:pv-sweep 3.2s linear infinite}
+.pv-radar i{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--c1);box-shadow:0 0 6px var(--c1);z-index:1}
+@keyframes pv-sweep{to{transform:rotate(360deg)}}
+.pv-filtre{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.seg{display:inline-flex;background:var(--pv-panel);border:1px solid var(--pv-line);border-radius:999px;padding:3px;gap:2px}
+.seg button{border:0;background:none;border-radius:999px;padding:6px 12px;cursor:pointer;color:var(--muted);font-weight:500;white-space:nowrap}
+.seg button[aria-checked="true"]{background:var(--c1);color:#fff;box-shadow:0 2px 10px -2px var(--pv-glow)}
+.seg button:focus-visible,.pv-row:focus-visible,.pv-col:focus-visible,.pv-tile:focus-visible,.pv-kpi:focus-visible{outline:2px solid var(--c1);outline-offset:2px}
+.pv-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;min-height:0}
+.pv-chip{display:inline-flex;align-items:center;gap:6px;background:var(--c1-wash);border:1px solid var(--pv-line);color:var(--text);
+  border-radius:999px;padding:4px 6px 4px 12px;font-size:13px;cursor:pointer}
+.pv-chip b{font-weight:600} .pv-chip span{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--pv-track);color:var(--muted)}
+.pv-chip.reset{background:none;padding-right:12px;color:var(--muted)}
+.pv-card{background:linear-gradient(var(--pv-panel),var(--pv-panel)) padding-box,var(--pv-edge) border-box;border:1px solid transparent;
+  border-radius:16px;box-shadow:0 10px 30px -18px var(--pv-glow);padding:16px;min-width:0}
+.pv-ch{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.pv-ch > div{flex:1;min-width:0}
+.pv-eb{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--c1);font-weight:700}
+.pv-ch h3{margin:2px 0 0;font-size:15px}
+.pv-ch small{display:block;margin-top:2px;font-size:12px}
+.pv-tg{border:1px solid var(--pv-line);background:none;border-radius:8px;padding:3px 9px;font-size:12px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.pv-tg[aria-pressed="true"]{color:var(--c1);border-color:var(--c1)}
+.pv-top{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:14px;margin-bottom:14px}
+.pv-hero{display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.pv-hero::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,var(--pv-glow),transparent 70%);pointer-events:none}
+.pv-big{font-size:60px;line-height:1;font-weight:700;letter-spacing:-.03em;font-variant-numeric:proportional-nums;margin:8px 0 6px;
+  text-shadow:0 0 28px var(--pv-glow)}
+.pv-hl{font-size:15px;font-weight:600}
+.pv-hs{color:var(--muted);font-size:13px;margin-top:8px;display:flex;flex-wrap:wrap;gap:4px 14px}
+.pv-hs b{color:var(--text)}
+.pv-kpis{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pv-kpi{text-align:left;cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;gap:2px}
+.pv-kpi:hover{box-shadow:0 10px 30px -14px var(--pv-glow)}
+.pv-kpi .v{font-size:17px;font-weight:700;line-height:1.25;margin-top:4px;overflow-wrap:anywhere}
+.pv-kpi .d{color:var(--muted);font-size:12.5px}
+.pv-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:14px;margin-bottom:14px}
+.pv-grid .lat{grid-column:1/-1}
+.pv-rows{display:flex;flex-direction:column;gap:4px}
+.pv-row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:baseline;border:0;background:none;text-align:left;
+  padding:6px 8px;border-radius:10px;cursor:pointer;font:inherit;color:inherit;width:100%}
+.pv-row:hover{background:var(--c1-wash)}
+.pv-rl{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-rv{font-size:13px;font-variant-numeric:tabular-nums;font-weight:600}
+.pv-rv small{font-weight:400;color:var(--muted);margin-left:4px}
+.pv-tr{grid-column:1/-1;height:10px;border-radius:0 4px 4px 0;background:none;position:relative}
+.pv-tr::before{content:"";position:absolute;left:0;right:0;top:4px;height:2px;background:var(--pv-track);border-radius:2px}
+.pv-b{position:absolute;left:0;top:0;bottom:0;width:var(--w);background:var(--c1);border-radius:0 4px 4px 0;transform-origin:left}
+.dim .pv-row:not(.sel) .pv-b,.dim .pv-col:not(.sel) .pv-cb,.dim .pv-tile:not(.sel){opacity:.3}
+.pv-row.slab .pv-b{opacity:.4} .pv-row.slab .pv-rl{color:var(--muted)}
+.pv-row.sel{background:var(--c1-wash)} .pv-row.sel .pv-rl{font-weight:700}
+.pv-more{margin-top:8px;border:0;background:none;color:var(--c1);cursor:pointer;font:inherit;font-size:13px;padding:4px 8px}
+.pv-foot{color:var(--muted);font-size:12px;margin:10px 0 0}
+.pv-map{display:block;width:100%;max-width:460px;margin:0 auto;height:auto;overflow:visible}
+.pv-tile{cursor:pointer;outline:none}
+.pv-tile rect{fill:var(--pv-nodata);stroke:var(--pv-panel);stroke-width:2;transition:opacity .15s}
+.pv-tile text{fill:var(--muted);font-size:11px;text-anchor:middle;pointer-events:none}
+.pv-tile .tc{font-weight:700;font-size:12px}
+.pv-tile .tv{font-size:10px;font-variant-numeric:tabular-nums}
+.pv-tile:hover rect,.pv-tile:focus rect{stroke:var(--text);stroke-width:2}
+.pv-tile.sel rect{stroke:var(--text);stroke-width:2.5}
+.pv-tile.q1 rect{fill:var(--q1)} .pv-tile.q1 text{fill:var(--q1t)}
+.pv-tile.q2 rect{fill:var(--q2)} .pv-tile.q2 text{fill:var(--q2t)}
+.pv-tile.q3 rect{fill:var(--q3)} .pv-tile.q3 text{fill:var(--q3t)}
+.pv-tile.q4 rect{fill:var(--q4)} .pv-tile.q4 text{fill:var(--q4t)}
+.pv-tile.q5 rect{fill:var(--q5)} .pv-tile.q5 text{fill:var(--q5t)}
+.pv-leg{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;justify-content:center;font-size:11.5px;color:var(--muted);margin-top:10px}
+.pv-leg span{display:inline-flex;align-items:center;gap:4px;font-variant-numeric:tabular-nums}
+.pv-leg i{width:14px;height:10px;border-radius:3px;display:inline-block}
+.pv-cols{display:flex;align-items:flex-end;justify-content:space-around;gap:6px;padding-top:6px}
+.pv-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;cursor:pointer;font:inherit;color:inherit;
+  padding:6px 2px;border-radius:10px;min-width:0}
+.pv-col:hover,.pv-col.sel{background:var(--c1-wash)}
+.pv-cv{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.pv-ct{height:150px;width:24px;display:flex;align-items:flex-end;position:relative}
+.pv-ct::before{content:"";position:absolute;left:11px;top:0;bottom:0;width:2px;background:var(--pv-track);border-radius:2px}
+.pv-cb{width:24px;height:var(--h);background:var(--c1);border-radius:4px 4px 0 0;position:relative;transform-origin:bottom}
+.pv-cl{font-size:12px;color:var(--muted);text-align:center;line-height:1.2}
+.pv-col.sel .pv-cl{color:var(--text);font-weight:700}
+.pv-svg{display:block;width:100%;height:auto;overflow:visible;touch-action:pan-y}
+.pv-svg .ax{fill:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.pv-svg .gl{stroke:var(--pv-line);stroke-width:1}
+.pv-svg .ln{fill:none;stroke:var(--c1);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.pv-svg .ln.part{stroke-dasharray:4 4}
+.pv-svg .ar{fill:var(--c1-wash)}
+.pv-svg .band{fill:var(--pv-band)}
+.pv-svg .xh{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+.pv-svg .dot{fill:var(--c1);stroke:var(--pv-panel);stroke-width:2}
+.pv-svg .last{fill:var(--pv-panel);stroke:var(--c1);stroke-width:2}
+.pv-svg:focus-visible{outline:2px solid var(--c1);outline-offset:4px;border-radius:6px}
+#pvTip{position:fixed;z-index:50;pointer-events:none;background:var(--pv-panel);color:var(--text);border:1px solid var(--pv-line);
+  border-radius:10px;padding:8px 10px;font-size:12.5px;line-height:1.45;box-shadow:0 10px 30px -10px rgba(0,0,0,.35);max-width:260px}
+#pvTip b{font-weight:700} #pvTip .m{color:var(--muted)}
+.pv-li{display:grid;grid-template-columns:auto 1fr auto;gap:2px 10px;align-items:center;padding:10px 6px;border-top:1px solid var(--pv-line);cursor:pointer;border-radius:8px}
+.pv-li:first-child{border-top:0} .pv-li:hover{background:var(--c1-wash)}
+.pv-li b{overflow-wrap:anywhere} .pv-li small{grid-column:2/-1;font-size:12.5px}
+.pv-li .dt{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pv-tag{display:inline-block;font-size:11px;border-radius:4px;padding:0 6px;margin-left:6px;background:var(--pv-track);color:var(--muted);vertical-align:1px}
+.pv-tbl{width:100%;font-size:13px} .pv-tbl td,.pv-tbl th{padding:6px 8px} .pv-tbl td.n{text-align:right;font-variant-numeric:tabular-nums}
+.pv-tbl th.n{text-align:right}
+.pv-tbl tr.sel td{background:var(--c1-wash);font-weight:600}
+.pv-nota{margin-top:14px;font-size:12.5px;color:var(--muted)}
+.pv-nota summary{cursor:pointer;color:var(--text);font-weight:600}
+.pv-nota p{margin:6px 0}
+.pv-gol{padding:30px 10px;text-align:center;color:var(--muted)}
+.pv-intro .pv-b{animation:pv-grow-x .7s cubic-bezier(.2,.7,.2,1) both}
+.pv-intro .pv-cb{animation:pv-grow-y .7s cubic-bezier(.2,.7,.2,1) both}
+.pv-intro .pv-tile{animation:pv-fade .5s ease both}
+.pv-intro .pv-big{animation:pv-fade .6s ease both}
+@keyframes pv-grow-x{from{transform:scaleX(0)}} @keyframes pv-grow-y{from{transform:scaleY(0)}} @keyframes pv-fade{from{opacity:0;transform:translateY(4px)}}
+@media (prefers-reduced-motion: reduce){
+  .pv-radar::after,.pv-intro .pv-b,.pv-intro .pv-cb,.pv-intro .pv-tile,.pv-intro .pv-big{animation:none}
+}
+@media (max-width:980px){ .pv-top,.pv-grid{grid-template-columns:1fr} }
+@media (max-width:820px){
+  #t-panou::before{inset:-14px -12px auto}
+  .pv-head .sub{font-size:13px}
+  .pv-filtre{display:grid;grid-template-columns:1fr;gap:8px}
+  .seg{display:flex;width:100%} .seg button{flex:1;padding:9px 6px;font-size:14px;min-height:40px}
+  .pv-card{padding:14px;border-radius:18px}
+  .pv-big{font-size:52px}
+  .pv-kpis{gap:10px}
+  .pv-kpi .v{font-size:15px}
+  .pv-rl{font-size:15px} .pv-rv{font-size:14px}
+  .pv-ct{height:120px}
+  .pv-cl{font-size:11px}
+  .pv-li small{font-size:13px}
+}
+.seg.off{opacity:.45;pointer-events:none}
+a.pv-kpi{text-decoration:none !important}
+
+.pv-jd{fill:var(--pv-nodata);stroke:var(--pv-panel);stroke-width:1.3;stroke-linejoin:round;cursor:pointer;transition:opacity .15s;outline:none}
+.pv-jd.q1{fill:var(--q1)} .pv-jd.q2{fill:var(--q2)} .pv-jd.q3{fill:var(--q3)} .pv-jd.q4{fill:var(--q4)} .pv-jd.q5{fill:var(--q5)}
+.pv-jd:hover,.pv-jd:focus-visible{stroke:var(--text);stroke-width:2.2}
+.pv-jd.sel{stroke:var(--text);stroke-width:2.6}
+.dim .pv-jd:not(.sel){opacity:.28}
+.pv-jl{font-family:var(--font-d);font-size:12px;font-weight:700;text-anchor:middle;pointer-events:none;fill:var(--muted)}
+.pv-jl.mic{font-size:9px}
+.pv-jl.q1{fill:var(--q1t)} .pv-jl.q2{fill:var(--q2t)} .pv-jl.q3{fill:var(--q3t)} .pv-jl.q4{fill:var(--q4t)} .pv-jl.q5{fill:var(--q5t)}
+.pv-map{max-width:620px}
+.pv-intro .pv-jd{animation:pv-fade .6s ease both}
+.pv-jinfo{text-align:center;font-size:13px;color:var(--muted);margin-top:8px;min-height:1.4em}
+.pv-jinfo b{color:var(--text)}
+.pv-rs{grid-column:1/-1;font-size:12px;color:var(--muted);margin-top:-2px}
+.pv-alege{display:inline-flex;align-items:center;gap:6px}
+.pv-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px 12px}
+.pv-checks.jud{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.pv-checks label{display:flex;gap:8px;align-items:flex-start;padding:7px 4px;border-radius:8px;cursor:pointer}
+.pv-checks label:hover{background:var(--c1-wash)}
+.pv-checks input{margin-top:3px;accent-color:var(--c1)}
+.pv-checks small{display:block;color:var(--muted);font-size:12px}
+#dBodyDrawer h3 .btn{margin-left:8px;vertical-align:1px}
+@media (prefers-reduced-motion: reduce){.pv-intro .pv-jd{animation:none}}
+@media (max-width:820px){
+  .pv-jl{font-size:17px} .pv-jl.mic{font-size:12px}
+  .pv-alege{justify-content:center;width:100%;min-height:42px}
+  .pv-checks,.pv-checks.jud{grid-template-columns:1fr 1fr}
+  .pv-checks label{font-size:14px}
+}
+
+/* ---------- prognoza ---------- */
+.pv-prog{margin-bottom:14px}
+.pg-list{display:flex;flex-direction:column;gap:2px}
+.pg-li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:8px;border-radius:10px;cursor:pointer}
+.pg-li:hover,.pg-li:focus-visible{background:var(--c1-wash);outline:none}
+.pg-n{min-width:0} .pg-n b{overflow-wrap:anywhere} .pg-n small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px}
+.pg-p{display:flex;align-items:center;gap:8px;justify-self:end}
+.pg-p b{font-family:var(--font-d);font-size:18px;font-variant-numeric:tabular-nums}
+.pg{margin:10px 0 16px;padding:14px 16px;border-radius:16px;background:var(--c1-wash);border:1px solid var(--pv-line)}
+.pg-eb{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--c1);font-weight:700}
+.pg-v{display:flex;align-items:center;gap:10px;margin:6px 0 10px}
+.pg-v b{font-family:var(--font-d);font-size:36px;letter-spacing:-.02em;line-height:1}
+.pg-scala{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.pg-scala span{font-size:11px;color:var(--muted);text-align:center}
+.pg-scala i{display:block;height:6px;border-radius:3px;background:var(--pv-track);margin-bottom:4px}
+.pg-scala .on{color:var(--text);font-weight:700} .pg-scala .on i{background:var(--c1)}
+.pg-s{font-size:13px;color:var(--muted);margin-top:8px}
+.pg-fs{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pg-f{font-size:12px;border:1px solid var(--pv-line);border-radius:999px;padding:2px 10px;background:var(--pv-panel)}
+.pgc{display:inline-block;margin-top:5px;font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;background:var(--c1-wash);color:var(--c1);white-space:nowrap}
+table.fin td.n,table.fin th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:820px){
+  #drawer .card table.fin{display:table;width:100%} #drawer .card table.fin tbody{display:table-row-group}
+  #drawer .card table.fin tr,#drawer .card table.fin tr:has(th){display:table-row;padding:0}
+  #drawer .card table.fin td,#drawer .card table.fin th{display:table-cell;padding:7px 8px;border-top:1px solid var(--line)}
+  .pg-p b{font-size:16px} .pg-li{padding:10px 4px}
+}
+
+/* ---------- Identitate vizuală: fonturi, sticlă, lumini ---------- */
+:root{--font:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;--font-d:"Space Grotesk","Inter",-apple-system,sans-serif;
+  --bg:#f3f6fb; --grad:linear-gradient(135deg,#3987e5,#1c5cab); --sh:0 1px 2px rgba(16,24,40,.04),0 12px 30px -20px rgba(16,24,40,.22);
+  --aura1:rgba(57,135,229,.10); --aura2:rgba(28,92,171,.07)}
+:root[data-theme="dark"]{--bg:#0a0e15; --panel:#121925; --soft:#172031; --line:#243045; --sh:0 14px 34px -22px rgba(0,0,0,.75);
+  --aura1:rgba(57,135,229,.16); --aura2:rgba(98,80,214,.10)}
+html{background:var(--bg)}
+body{font-family:var(--font);letter-spacing:-.006em;background:radial-gradient(1100px 560px at -5% -10%,var(--aura1),transparent 60%),
+  radial-gradient(900px 520px at 105% -8%,var(--aura2),transparent 55%),var(--bg);background-repeat:no-repeat;min-height:100vh}
+h2,h3,.brand b,.kpi b,.pv-big,.pv-kpi .v,#login b,.pv-cv,.pv-rv{font-family:var(--font-d);letter-spacing:-.02em}
+h2{font-weight:700}
+header{background:transparent;border-bottom:1px solid var(--line)}
+header::before{content:"";position:absolute;inset:0;z-index:-1;background:color-mix(in srgb,var(--panel) 76%,transparent);
+  -webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px)}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand > div{min-width:0}
+.brand b span{color:inherit;font-size:inherit}
+.brand b{font-size:18px;font-weight:700}
+.logo{flex:none;width:36px;height:36px;border-radius:11px;background:var(--grad);display:grid;place-items:center;
+  box-shadow:0 8px 20px -8px rgba(42,120,214,.85),inset 0 1px 0 rgba(255,255,255,.25)}
+.logo svg{width:22px;height:22px}
+nav button{font-weight:500;transition:color .15s}
+nav button:hover{color:var(--text)}
+nav button.on{border-bottom-color:var(--c1);box-shadow:0 8px 14px -12px var(--c1)}
+.btn{border-radius:10px;font-weight:500;transition:border-color .15s,box-shadow .15s,transform .1s,filter .15s}
+.btn:active{transform:translateY(1px)}
+.btn.pri{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 8px 22px -12px rgba(42,120,214,.9),inset 0 1px 0 rgba(255,255,255,.18)}
+.btn.pri:hover{filter:brightness(1.1)}
+.btn.ico{display:inline-grid;place-items:center;padding:7px 9px;color:var(--muted)}
+.btn.ico:hover{color:var(--text)}
+:root[data-theme="dark"] .soare,:root:not([data-theme="dark"]) .luna{display:none}
+.card,.kpi{border-radius:16px;box-shadow:var(--sh)}
+:root[data-theme="dark"] .card,:root[data-theme="dark"] .kpi,:root[data-theme="dark"] #login form,:root[data-theme="dark"] #drawer{
+  background:linear-gradient(var(--panel),var(--panel)) padding-box,var(--pv-edge) border-box;border-color:transparent}
+.kpi b{font-weight:700;font-size:26px}
+th{text-transform:uppercase;letter-spacing:.07em;font-size:11px}
+input[type=text],input[type=date],input[type=password],select,textarea{border-radius:10px;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px var(--c1-wash)}
+a,.btn,button{-webkit-font-smoothing:antialiased}
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.sev{border-radius:6px;letter-spacing:.04em}
+.note{border-radius:12px}
+#login{background:radial-gradient(700px 420px at 50% 0%,var(--aura1),transparent 70%),var(--bg)}
+#login form{border-radius:20px;padding:28px;box-shadow:var(--sh)}
+.lg-cap{display:flex;gap:12px;align-items:center}
+#drawer{box-shadow:-20px 0 50px -20px rgba(0,0,0,.45)}
+.pv-head h2{font-size:26px}
+@media (max-width:820px){
+  .logo{width:32px;height:32px;border-radius:10px} .logo svg{width:19px;height:19px}
+  #btnTema{padding:6px 9px;min-height:34px}
+  nav{background:color-mix(in srgb,var(--panel) 80%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px)}
+  nav button.on{box-shadow:none}
+  .pv-head h2{font-size:23px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand"><i class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5" opacity=".55"/><circle cx="12" cy="12" r="4" opacity=".8"/><path d="M12 12l6-6"/><circle cx="12" cy="12" r="1.4" fill="#fff" stroke="none"/></svg></i><div><b><span class="lung">Monitor Portal Just</span><span class="scurt">Monitor Just</span></b><span>Semnale de risc din instanțe pentru partenerii tăi</span></div></div>
+    <div class="spacer"></div>
+    <div class="upd" id="upd">—</div>
+    <button class="btn ico" id="btnTema" type="button" aria-label="Schimbă tema (luminoasă / întunecată)" title="Temă luminoasă / întunecată"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="luna" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/><g class="soare"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2M12 20.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M1.5 12h2M20.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></g></svg></button>
+    <button class="btn pri" id="btnRun"><span class="lung">Actualizează acum</span><span class="scurt">Actualizează</span></button>
+  </div>
+  <nav id="nav">
+    <button data-tab="panou" class="on"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><path d="M12 12l6.5-6.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg><span>Radar</span></button>
+    <button data-tab="alerte"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span>Alerte</span><span class="badge" id="navAl" hidden></span></button>
+    <button data-tab="firme"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span class="lung">Companii la risc</span><span class="scurt">Risc</span></button>
+    <button data-tab="clienti"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="lung">Clienții mei</span><span class="scurt">Clienți</span></button>
+    <button data-tab="dosare"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="lung">Toate dosarele</span><span class="scurt">Dosare</span></button>
+    <button data-tab="reguli"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg><span class="lung">Reguli de alertă</span><span class="scurt">Reguli</span></button>
+    <button data-tab="rulari"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="lung">Istoric și rapoarte</span><span class="scurt">Istoric</span></button>
+  </nav>
+</header>
+
+<main>
+  <section id="t-panou" class="on">
+    <div class="pv-head">
+      <div class="pv-radar" aria-hidden="true"><i style="left:12px;top:14px"></i><i style="left:27px;top:24px"></i></div>
+      <div><h2>Radar de risc</h2><p class="sub" id="pvSub">Unde apar insolvențele și semnalele grave în România: pe sectoare, județe și vârsta firmelor.</p></div>
+    </div>
+    <div class="pv-filtre">
+      <div class="seg" role="radiogroup" aria-label="Perioada" id="pvPer">
+        <button role="radio" data-per="7">7 zile</button><button role="radio" data-per="30">30 de zile</button><button role="radio" data-per="tot">De la început</button>
+      </div>
+      <div class="seg" role="radiogroup" aria-label="Ce măsor" id="pvInd">
+        <button role="radio" data-ind="1">Insolvențe noi</button><button role="radio" data-ind="2">Critic</button><button role="radio" data-ind="4">Risc ridicat</button>
+      </div>
+      <div class="seg" role="radiogroup" aria-label="Cum compar" id="pvMas">
+        <button role="radio" data-mas="rata">La 10.000 de firme</button><button role="radio" data-mas="numar">Număr de firme</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="pvCl"> Doar clienții mei</label>
+      <button class="btn pv-alege" type="button" data-alege><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg> Alege domeniile și județele urmărite</button>
+    </div>
+    <div class="pv-chips" id="pvChips"></div>
+    <div id="pvCorp">
+      <div class="pv-top">
+        <div class="pv-card pv-hero" id="pvHero"></div>
+        <div class="pv-kpis" id="pvKpis"></div>
+      </div>
+      <div class="pv-card pv-prog" id="pvProgCard">
+        <div class="pv-ch"><div><div class="pv-eb">Prognoză · următoarele 90 de zile</div><h3>Cine urmează să intre în insolvență</h3><small id="pvProgSub"></small></div>
+          <button class="pv-tg" data-tabel="prog" aria-pressed="false">Tabel</button></div>
+        <div id="pvProg"></div>
+      </div>
+      <div class="pv-grid">
+        <div class="pv-card">
+          <div class="pv-ch"><div><div class="pv-eb">Sectoare</div><h3>Cele mai expuse domenii de activitate</h3><small id="pvSectSub"></small></div>
+            <button class="pv-tg" data-tabel="sect" aria-pressed="false">Tabel</button></div>
+          <div id="pvSect"></div>
+        </div>
+        <div class="pv-card">
+          <div class="pv-ch"><div><div class="pv-eb">Județe</div><h3>Harta riscului</h3><small id="pvJudSub"></small></div>
+            <button class="pv-tg" data-tabel="jud" aria-pressed="false">Tabel</button></div>
+          <div id="pvJud"></div>
+        </div>
+        <div class="pv-card">
+          <div class="pv-ch"><div><div class="pv-eb">Evoluție</div><h3>Firme afectate pe săptămână</h3><small id="pvTrSub"></small></div>
+            <button class="pv-tg" data-tabel="trend" aria-pressed="false">Tabel</button></div>
+          <div id="pvTrend"></div>
+        </div>
+        <div class="pv-card">
+          <div class="pv-ch"><div><div class="pv-eb">Vârsta firmei</div><h3>Cât de veche e firma</h3><small id="pvVarSub"></small></div>
+            <button class="pv-tg" data-tabel="varsta" aria-pressed="false">Tabel</button></div>
+          <div id="pvVar"></div>
+        </div>
+      </div>
+      <div class="pv-card">
+        <div class="pv-ch"><div><div class="pv-eb">Firmele din selecție</div><h3 id="pvListaT">Firme</h3><small>Clienții tăi primii, apoi cele mai recente. Atinge o firmă pentru dosare și detalii.</small></div></div>
+        <div id="pvLista"></div>
+      </div>
+      <details class="pv-nota"><summary>Cum se calculează</summary><div id="pvMetoda"></div></details>
+    </div>
+    <div id="pvTip" role="tooltip" hidden></div>
+  </section>
+
+  <section id="t-alerte">
+    <div class="kpis" id="kpis"></div>
+    <div class="filters">
+      <select id="aPer">
+        <option value="ultima">Din ultima actualizare</option>
+        <option value="azi">Evenimente de azi</option>
+        <option value="7">Ultimele 7 zile</option>
+        <option value="30">Ultimele 30 de zile</option>
+        <option value="tot">Toată perioada</option>
+      </select>
+      <select id="aGrup"><option value="">Toate tipurile de cauze</option></select>
+      <select id="aSev">
+        <option value="">Severitate: după regulile mele</option>
+        <option value="4">Doar CRITIC</option>
+        <option value="3">RIDICAT și peste</option>
+      </select>
+      <input type="text" class="mereu" id="aQ" placeholder="Caută firmă sau număr de dosar">
+      <label class="chk"><input type="checkbox" id="aCl"> Doar clienții mei</label>
+      <label class="chk" title="Include și semnalele care nu trec de regulile de alertă"><input type="checkbox" id="aToate"> Toate semnalele</label>
+    </div>
+    <div class="card"><div class="tw"><table class="lista t-alerte">
+      <thead><tr><th>Nivel</th><th>Firmă</th><th>Ce s-a întâmplat</th><th>Dosar</th><th>Data</th></tr></thead>
+      <tbody id="aBody"></tbody></table></div><div class="more" id="aMore"></div></div>
+  </section>
+
+  <section id="t-firme">
+    <h2>Companii la risc</h2>
+    <p class="sub">Scor calculat din toate semnalele firmei: insolvență, executări, bănci, fisc, creditori multipli. Nivelul CRITIC înseamnă firmă intrată sau foarte aproape de insolvență.</p>
+    <div class="filters">
+      <select id="fNiv">
+        <option value="4">Nivel CRITIC</option>
+        <option value="3" selected>RIDICAT și peste</option>
+        <option value="2">MEDIU și peste</option>
+        <option value="0">Toate firmele</option>
+      </select>
+      <select id="fGrup"><option value="">Orice tip de semnal</option></select>
+      <select id="fTip"><option value="">Orice tip de entitate</option></select>
+      <select id="fOrd"><option value="scor">Ordonate după scor</option><option value="recent">Cele mai recente</option><option value="nume">Alfabetic</option></select>
+      <input type="text" class="mereu" id="fQ" placeholder="Caută firmă">
+      <label class="chk"><input type="checkbox" id="fCl"> Doar clienții mei</label>
+    </div>
+    <div class="card"><div class="tw"><table class="lista t-firme">
+      <thead><tr><th>Nivel</th><th>Firmă</th><th class="mono">Scor</th><th>Motive principale</th><th>Dosare</th><th>Ultimul semnal</th></tr></thead>
+      <tbody id="fBody"></tbody></table></div><div class="more" id="fMore"></div></div>
+  </section>
+
+  <section id="t-clienti">
+    <h2>Clienții mei</h2>
+    <p class="sub">Firmele pe care le urmărești. Pentru fiecare client caut pe portal <b>toate</b> dosarele (toate instanțele, orice dată), iar zilnic verific din nou.</p>
+    <div class="grid2">
+      <div class="card pad doar-citire"><div class="citire-info"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><div><b>Lista de clienți o actualizează administratorul</b>
+        <p class="muted" style="margin:4px 0 0">Aici vezi situația fiecărui client urmărit: nivelul de risc, probabilitatea de insolvență, motivele și dosarele. Dacă vrei să adaugi sau să scoți un client, spune-i administratorului.</p></div></div></div>
+      <div class="card pad doar-admin">
+        <b>Adaugă sau scoate clienți</b>
+        <p class="muted" style="margin:4px 0 8px">Încarcă fișierul Excel sau lipește direct coloana cu numele clienților, câte unul pe linie.
+        Se păstrează <b>doar numele</b>; celelalte coloane nu sunt citite și nu pleacă de pe calculatorul tău.</p>
+        <div class="filters" style="margin-bottom:8px">
+          <label class="btn">Încarcă Excel / CSV<input type="file" id="cFile" accept=".xlsx,.xls,.csv,.txt" hidden></label>
+          <span id="cColW" hidden>Coloana cu numele: <select id="cCol"></select></span>
+          <label class="chk" id="cCuiW" hidden><input type="checkbox" id="cCui"> ia și CUI-ul (pentru verificarea la ANAF)</label>
+        </div>
+        <textarea id="cText" placeholder="Lipește aici coloana cu numele clienților, de exemplu:&#10;ALFA CONSTRUCT SRL&#10;BETA DISTRIBUTIE S.A.&#10;POPESCU ION PFA"></textarea>
+        <div class="filters" id="cModW" style="margin:8px 0 0">
+          <label class="chk"><input type="radio" name="cMod" value="inlocuieste" checked> Înlocuiește lista actuală</label>
+          <label class="chk"><input type="radio" name="cMod" value="adauga"> Adaugă la lista actuală</label>
+        </div>
+        <div id="cPrev" class="muted" style="margin-top:6px;font-size:13px"></div>
+        <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn pri" id="cAdd">Adaugă și verifică pe portal</button><span id="cMsg" class="muted"></span></div>
+        <div id="cGh" class="note" hidden></div>
+      </div>
+      <div class="card pad">
+        <b>Cum se potrivesc numele</b>
+        <p class="muted" style="margin:4px 0 0">Portalul nu are CUI, doar numele părților. Potrivesc după numele firmei fără diacritice și fără forma juridică, oricum ar fi scrisă (SRL, S.R.L., SA, PFA, P.F.A., II…): „Alfa Construct S.R.L.”, „SC ALFA CONSTRUCT SRL – în insolvență” și „ALFA CONSTRUCT SRL prin lichidator” sunt aceeași firmă. Un client PFA / II nu e confundat cu o persoană fizică cu același nume. Scrie numele complet, ca la Registrul Comerțului.</p>
+      </div>
+    </div>
+    <div class="filters" style="margin-top:16px">
+      <input type="text" id="cCauta" placeholder="Caută client sau CUI">
+      <select id="cRisc"><option value="0">Toți clienții</option><option value="4">Doar CRITIC</option><option value="3">RIDICAT și peste</option><option value="2">MEDIU și peste</option></select>
+      <span class="muted" id="cNr"></span>
+    </div>
+    <div class="card"><div class="tw"><table class="lista t-clienti">
+      <thead><tr><th>Nivel · prognoză</th><th>Client</th><th>Motive</th><th>Dosare</th><th>Ultimul semnal</th><th>Verificare portal</th><th></th></tr></thead>
+      <tbody id="cBody"></tbody></table></div></div>
+  </section>
+
+  <section id="t-dosare">
+    <h2>Toate dosarele cu persoane juridice</h2>
+    <p class="sub" id="dSub"></p>
+    <div class="filters">
+      <input type="text" class="mereu" id="dQ" placeholder="Caută nume parte, obiect sau număr dosar">
+      <select id="dCat"><option value="">Toate categoriile</option></select>
+      <select id="dInst"><option value="">Toate instanțele</option></select>
+      <input type="date" id="dDe"> <input type="date" id="dPana">
+      <select id="dSursa"><option value="">Toate sursele</option><option value="flux">Înregistrate de la data de start</option><option value="client">Găsite la clienții mei</option></select>
+      <label class="chk"><input type="checkbox" id="dSem"> Doar cu semnale de risc</label>
+    </div>
+    <div class="card"><div class="tw"><table class="lista t-dosare">
+      <thead><tr><th></th><th>Număr</th><th>Instanța</th><th>Data</th><th>Categorie / obiect</th><th>Părți</th></tr></thead>
+      <tbody id="dBody"></tbody></table></div><div class="more" id="dMore"></div></div>
+  </section>
+
+  <section id="t-reguli">
+    <h2>Reguli de alertă</h2>
+    <p class="sub">Alege pentru ce tipuri de cauze vrei să fii alertat. Toate dosarele rămân în bază; regulile decid doar ce apare la „Alerte”, în raportul zilnic și în notificare.</p>
+    <div class="note doar-citire"><div class="citire-info"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><div><b>Regulile le stabilește administratorul.</b> Aici vezi ce alerte sunt active acum; bifele nu se pot schimba de pe acest dispozitiv.</div></div></div>
+    <div class="grid2">
+      <div class="card pad rules" id="rGrup"></div>
+      <div>
+        <div class="card pad rules">
+          <label><div style="flex:1"><b>Pentru toate firmele din țară</b><small>Nivelul minim al unui semnal ca să devină alertă</small></div>
+            <select id="rSevToate"></select></label>
+          <label><div style="flex:1"><b>Pentru clienții mei</b><small>De obicei mai sensibil — vrei să știi și semnalele mai mici</small></div>
+            <select id="rSevCl"></select></label>
+          <label><div style="flex:1"><b>Ce primesc pe e-mail</b><small id="rEmailNota">E-mailul pleacă dimineața, doar când are ceva nou</small></div>
+            <select id="rEmail">
+              <option value="auto">Clienții mei, apoi separat celelalte firme</option>
+              <option value="clienti">Doar clienții mei</option>
+            </select></label>
+        </div>
+        <div class="card pad rules" style="margin-top:16px" id="rTip"></div>
+        <div class="card pad" id="rGh" style="margin-top:16px" hidden></div>
+        <div class="doar-admin" style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn pri" id="rSave" disabled>Salvează noile alerte</button><span id="rMsg" class="muted"></span></div>
+        <div class="note" id="rProg"></div>
+      </div>
+    </div>
+    <h3>Ce înseamnă nivelurile</h3>
+    <div class="card pad">
+      <p><span class="sev s4">CRITIC</span> Insolvență cerută / deschisă, faliment, radiere, bancrută, firma apare „în insolvență” sau „prin lichidator”, 10+ creditori.</p>
+      <p><span class="sev s3">RIDICAT</span> Concordat preventiv, dizolvare, executare silită, poprire, sechestru, ordonanță de plată, bancă/leasing/recuperator în instanță, fiscul execută, 3+ creditori diferiți.</p>
+      <p><span class="sev s2">MEDIU</span> Acțiuni în pretenții, cereri de valoare redusă, litigii cu ANAF, salarii neplătite, firma e creditor în insolvența altcuiva.</p>
+      <p style="margin-bottom:0"><span class="sev s1">SCĂZUT</span> Contestații la concediere, parte responsabilă civilmente.</p>
+    </div>
+  </section>
+
+  <section id="t-rulari">
+    <h2>Istoric actualizări și rapoarte zilnice</h2>
+    <p class="sub">Fiecare actualizare descarcă de pe portal.just.ro dosarele noi și pe cele modificate, apoi generează raportul zilei.</p>
+    <div class="card"><div class="tw"><table class="lista t-rulari">
+      <thead><tr><th>#</th><th>Tip</th><th>Început</th><th>Sfârșit</th><th>Stare</th><th>Interogări</th><th>Dosare noi / actualizate</th><th>Semnale noi</th><th>Alerte</th><th>Raport</th></tr></thead>
+      <tbody id="rBody"></tbody></table></div></div>
+  </section>
+</main>
+
+<div id="login" hidden><form id="lgForm">
+  <div class="lg-cap"><i class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5" opacity=".55"/><circle cx="12" cy="12" r="4" opacity=".8"/><path d="M12 12l6-6"/><circle cx="12" cy="12" r="1.4" fill="#fff" stroke="none"/></svg></i><div><b style="font-size:19px">Monitor Portal Just</b><br><span class="muted">Datele sunt criptate. Introdu parola.</span></div></div>
+  <input type="password" id="lgPass" placeholder="Parola" autocomplete="current-password" required>
+  <label class="chk"><input type="checkbox" id="lgTine"> Ține-mă minte pe acest dispozitiv</label>
+  <button class="btn pri" id="lgBtn">Intră</button><p class="err" id="lgErr"></p>
+</form></div>
+<div id="veil"></div>
+<aside id="drawer"><div class="dh"><button class="btn mic" id="dBack" hidden>← Înapoi</button><div class="spacer"></div><button class="btn mic" id="dClose">Închide ✕</button></div><div class="db" id="dBodyDrawer"></div></aside>
+<div class="toast" id="toast"></div>
+
+<script>window.__STATIC__ = {"repo": "spridon86/monitor-portal-just", "ramura": "main"};</script>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const STATIC = window.__STATIC__ || null;
+const api = async (u, o) => {
+  if (STATIC) return apiStatic(u);
+  const r = await fetch(u, o); const j = await r.json(); if (!r.ok) throw new Error(j.eroare || r.status); return j;
+};
+const ghUrl = cale => `https://github.com/${STATIC.repo}/${cale}`;
+const post = (u, b, m='POST') => api(u, {method:m, headers:{'Content-Type':'application/json'}, body: b ? JSON.stringify(b) : undefined});
+const SEV = {4:'CRITIC',3:'RIDICAT',2:'MEDIU',1:'SCĂZUT',0:'—'};
+const pliaza = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+const sev = n => `<span class="sev s${n||0}">${SEV[n||0]}</span>`;
+const fd = s => { if (!s) return ''; const [d,t] = String(s).replace(' ','T').split('T'); const [y,m,z] = d.split('-'); return `${z}.${m}.${y}` + (t && t.slice(0,5) !== '00:00' ? ' ' + t.slice(0,5) : ''); };
+const zi = d => d.toISOString().slice(0,10);
+const toast = m => { const t = $('#toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toast.h); toast.h = setTimeout(() => t.style.display = 'none', 3500); };
+const deb = (f, ms=300) => { let h; return (...a) => { clearTimeout(h); h = setTimeout(() => f(...a), ms); }; };
+let META, SETARI, STARE;
+
+// ---------- tab-uri ----------
+const loaders = {};
+function arata(tab) {
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  document.querySelectorAll('main section').forEach(s => s.classList.toggle('on', s.id === 't-' + tab));
+  history.replaceState(null, '', '#' + tab);
+  loaders[tab] && loaders[tab]();
+}
+$('#nav').onclick = e => { const b = e.target.closest('button'); if (b) arata(b.dataset.tab); };
+window.addEventListener('hashchange', () => arata(location.hash.slice(1) || 'panou'));
+
+// ---------- stare ----------
+async function incarcaStare() {
+  STARE = await api('/api/stare');
+  const u = STARE.ultima_rulare;
+  const run = STATIC ? null : STARE.rulare_in_curs;
+  $('#upd').innerHTML = run ? `<span class="prog">Actualizare în curs… (pornită ${fd(run.start)})</span>`
+    : u ? `Ultima actualizare: <b>${fd(u.stop)}</b><span class="sep"> · </span><br>Dosare de la ${fd(STARE.data_min)} până la ${fd(STARE.data_max)}` : 'Nicio actualizare încă';
+  $('#btnRun').disabled = !!(run && run.tip !== 'client');
+  $('#navAl').hidden = !STARE.alerte_clienti; $('#navAl').textContent = STARE.alerte_clienti;
+  $('#kpis').innerHTML = `
+    <div class="kpi red"><b>${STARE.alerte_ultima}</b><span>alerte în ultima actualizare</span></div>
+    <div class="kpi blue"><b>${STARE.alerte_clienti}</b><span>alerte la clienții tăi</span></div>
+    <div class="kpi"><b>${STARE.insolvente_ultima}</b><span>insolvențe / falimente noi</span></div>
+    <div class="kpi"><b>${STARE.firme_critic.toLocaleString('ro')}</b><span>firme la nivel CRITIC</span></div>
+    <div class="kpi"><b>${STARE.dosare_flux.toLocaleString('ro')}</b><span>dosare cu persoane juridice</span></div>
+    <div class="kpi"><b>${STARE.firme.toLocaleString('ro')}</b><span>firme în bază · ${STARE.clienti} clienți</span></div>`;
+  return STARE;
+}
+let pollH;
+function poll() {
+  clearTimeout(pollH);
+  pollH = setTimeout(async () => {
+    const s = await incarcaStare().catch(() => null);
+    if (s && s.rulare_in_curs) poll(); else { toast('Actualizare terminată'); reincarca(); }
+  }, 5000);
+}
+function reincarca() { PANOU = null; const t = location.hash.slice(1) || 'panou'; loaders[t] && loaders[t](); }
+$('#btnRun').onclick = async () => {
+  const r = await post('/api/ruleaza'); toast(r.mesaj); if (r.ok) { await incarcaStare(); poll(); }
+};
+
+// ---------- alerte ----------
+let aOff = 0;
+function aParams() {
+  const p = new URLSearchParams(); const per = $('#aPer').value;
+  if (per === 'ultima') p.set('rulare', 'ultima');
+  else if (per === 'azi') p.set('de_la', zi(new Date()));
+  else if (per !== 'tot') p.set('de_la', zi(new Date(Date.now() - per * 864e5)));
+  if ($('#aGrup').value) p.set('grup', $('#aGrup').value);
+  if ($('#aSev').value) p.set('sev', $('#aSev').value);
+  if ($('#aQ').value.trim()) p.set('q', $('#aQ').value.trim());
+  if ($('#aCl').checked) p.set('clienti', '1');
+  p.set('alerte', $('#aToate').checked ? '0' : '1');
+  return p;
+}
+function randSemnal(r) {
+  return `<tr class="click" data-firma="${r.firma_id}">
+    <td>${sev(r.sev)}</td>
+    <td><b>${esc(r.firma)}</b>${r.client_id ? '<span class="cl">CLIENT</span>' : ''}<br><small>${esc(r.rol || '')}${r.firma_nivel >= 3 && r.firma_nivel > r.sev ? ' · firmă ' + SEV[r.firma_nivel] : ''}</small></td>
+    <td>${esc(r.motiv)}<br><span class="grp">${esc(META.grupuri[r.grup] || r.grup)}</span></td>
+    <td>${r.numar ? `<a href="#" data-dosar="${r.dosar_id}">${esc(r.numar)}</a><br><small>${esc(r.instanta)}</small>` : `<small>${r.grup === 'anaf' ? 'date ANAF' : 'mai multe dosare'}</small>`}</td>
+    <td class="mono">${fd(r.data_eveniment)}</td></tr>`;
+}
+async function incarcaAlerte(maiMult) {
+  if (!maiMult) { aOff = 0; $('#aBody').innerHTML = '<tr><td colspan="5" class="empty">Se încarcă…</td></tr>'; }
+  const p = aParams(); p.set('offset', aOff); p.set('limit', 200);
+  const j = await api('/api/semnale?' + p);
+  const html = j.randuri.map(randSemnal).join('');
+  const gol = $('#aPer').value === 'ultima'
+    ? 'Nicio alertă nouă la ultima actualizare. <a href="#" id="aSapt">Vezi alertele din ultimele 7 zile</a>'
+    : 'Nicio alertă pentru filtrele alese.';
+  if (!maiMult) $('#aBody').innerHTML = html || `<tr><td colspan="5" class="empty">${gol}</td></tr>`;
+  if ($('#aSapt')) $('#aSapt').onclick = e => { e.preventDefault(); $('#aPer').value = '7'; incarcaAlerte(); };
+  else $('#aBody').insertAdjacentHTML('beforeend', html);
+  aOff += j.randuri.length;
+  $('#aMore').innerHTML = `<span class="muted">${aOff.toLocaleString('ro')} din ${j.total.toLocaleString('ro')}</span>` + (aOff < j.total ? ' <button class="btn mic" id="aMoreB">Încă 200</button>' : '');
+  if ($('#aMoreB')) $('#aMoreB').onclick = () => incarcaAlerte(true);
+}
+loaders.alerte = () => { incarcaStare(); incarcaAlerte(); };
+['#aPer','#aGrup','#aSev','#aCl','#aToate'].forEach(s => $(s).onchange = () => incarcaAlerte());
+$('#aQ').oninput = deb(() => incarcaAlerte());
+
+// ---------- firme ----------
+let fOff = 0;
+async function incarcaFirme(maiMult) {
+  if (!maiMult) { fOff = 0; $('#fBody').innerHTML = '<tr><td colspan="6" class="empty">Se încarcă…</td></tr>'; }
+  const p = new URLSearchParams({nivel: $('#fNiv').value, ordine: $('#fOrd').value, offset: fOff, limit: 100});
+  if ($('#fGrup').value) p.set('grup', $('#fGrup').value);
+  if ($('#fTip').value) p.set('tip', $('#fTip').value);
+  if ($('#fQ').value.trim()) p.set('q', $('#fQ').value.trim());
+  if ($('#fCl').checked) p.set('clienti', '1');
+  const j = await api('/api/firme?' + p);
+  const html = j.randuri.map(f => `<tr class="click" data-firma="${f.id}">
+    <td>${sev(f.nivel)}</td>
+    <td><b>${esc(f.nume)}</b>${f.client_id ? '<span class="cl">CLIENT</span>' : ''}<br><small>${esc(META.tipuri[f.tip] || f.tip)}</small></td>
+    <td class="mono">${f.scor}</td>
+    <td>${f.motive.map(esc).join('<br>')}</td>
+    <td class="mono">${f.nr_dosare}</td><td class="mono">${fd(f.ultim_semnal)}</td></tr>`).join('');
+  if (!maiMult) $('#fBody').innerHTML = html || '<tr><td colspan="6" class="empty">Nicio firmă pentru filtrele alese.</td></tr>';
+  else $('#fBody').insertAdjacentHTML('beforeend', html);
+  fOff += j.randuri.length;
+  $('#fMore').innerHTML = `<span class="muted">${fOff.toLocaleString('ro')} din ${j.total.toLocaleString('ro')}</span>` + (fOff < j.total ? ' <button class="btn mic" id="fMoreB">Încă 100</button>' : '');
+  if ($('#fMoreB')) $('#fMoreB').onclick = () => incarcaFirme(true);
+}
+loaders.firme = () => incarcaFirme();
+['#fNiv','#fGrup','#fTip','#fOrd','#fCl'].forEach(s => $(s).onchange = () => incarcaFirme());
+$('#fQ').oninput = deb(() => incarcaFirme());
+
+// ---------- clienți ----------
+let cPoll;
+let CLIENTI = [];
+function anafEticheta(c) {
+  if (!c.cui) return '';
+  if (!c.anaf_verificat_la) return '<br><small class="muted">ANAF: se verifică la următoarea rulare</small>';
+  const p = [];
+  if (c.anaf_radiat) p.push('<span class="sev s4">RADIAT</span>');
+  if (c.anaf_inactiv) p.push('<span class="sev s4">INACTIV ANAF</span>');
+  if (c.anaf_tva_anulat) p.push('<span class="sev s3">TVA ANULAT</span>');
+  if (!p.length) return `<br><small style="color:var(--ok)">ANAF: activ${c.anaf_platitor_tva ? ', plătitor de TVA' : ''}</small>`;
+  return '<br>' + p.join(' ');
+}
+async function incarcaClienti() {
+  const j = await api('/api/clienti');
+  CLIENTI = j.randuri;
+  randeazaClienti();
+  clearTimeout(cPoll);
+  if (!STATIC && j.randuri.some(c => !c.ultima_verificare || /în curs/.test(c.rezultat_verificare || '')) && location.hash === '#clienti') cPoll = setTimeout(incarcaClienti, 3000);
+}
+function randeazaClienti() {
+  const text = $('#cCauta').value.trim(), q = pliaza(text), niv = +$('#cRisc').value;
+  const lista = CLIENTI.filter(c => (!q || pliaza(c.nume).includes(q) || String(c.cui || '').includes(text)) && (c.nivel || 0) >= niv);
+  $('#cNr').textContent = CLIENTI.length ? `${lista.length} din ${CLIENTI.length} clienți · ${CLIENTI.filter(c => (c.nivel || 0) >= 3).length} la risc RIDICAT sau CRITIC` : '';
+  $('#cBody').innerHTML = lista.map(c => `<tr ${c.firma_id ? `class="click" data-firma="${c.firma_id}"` : ''}>
+    <td>${c.firma_id ? sev(c.nivel) : '<span class="sev s0">—</span>'}${c.p90 != null ? `<br><span class="pgc" title="Probabilitate de insolvență în 90 de zile">${c.deja_insolventa ? 'în insolvență' : pct(c.p90) + ' în 90 z'}</span>` : ''}</td>
+    <td><b>${esc(c.nume)}</b>${c.cui ? `<br><small>CUI ${esc(c.cui)}${c.anaf_denumire && pliaza(c.anaf_denumire) !== pliaza(c.nume) ? ' · oficial: ' + esc(c.anaf_denumire) : ''}</small>` : ''}${anafEticheta(c)}${c.nota ? `<br><small>${esc(c.nota)}</small>` : ''}${c.nr_firme > 1 ? `<br><small>${c.nr_firme} variante de nume găsite</small>` : ''}</td>
+    <td>${(c.motive || []).map(esc).join('<br>') || '<span class="muted">Niciun semnal de risc</span>'}</td>
+    <td class="mono">${c.nr_dosare || 0}</td><td class="mono">${fd(c.ultim_semnal)}</td>
+    <td><small>${esc(c.rezultat_verificare || 'în așteptare')}${c.ultima_verificare ? '<br>' + fd(c.ultima_verificare) : ''}</small></td>
+    <td style="white-space:nowrap">${STATIC ? '' : `<button class="btn mic" data-ver="${c.id}">Verifică acum</button> <button class="btn mic" data-del="${c.id}">Șterge</button>`}</td></tr>`).join('')
+    || `<tr><td colspan="7" class="empty">${CLIENTI.length ? 'Niciun client pentru filtrele alese.' : 'Nu ai adăugat încă niciun client.'}</td></tr>`;
+}
+$('#cCauta').oninput = deb(randeazaClienti, 150);
+$('#cRisc').onchange = randeazaClienti;
+loaders.clienti = incarcaClienti;
+// ---------- import clienți din Excel / coloană lipită (doar numele) ----------
+const SHEETJS = {src: 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
+  integrity: 'sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw'};
+const RX_FORMA = /\b(SRL|SRLD|SA|SNC|SCS|SCA|RA|IFN|PFA|II|IF|GMBH|LTD|LLC)\b/;
+function nucleuJs(s) {
+  let f = pliaza(s).replace(/\b(?:[A-Z]\s?\.\s?)+[A-Z]\b\.?/g, m => m.replace(/[.\s]/g, '') + ' ');
+  f = f.replace(/[^A-Z0-9& ]/g, ' ').replace(/\s+/g, ' ').trim();
+  f = f.replace(/\b(SOCIETATE(A)? CU RASPUNDERE LIMITATA|SOCIETATE(A)? PE ACTIUNI|PERSOANA FIZICA AUTORIZATA|INTREPRINDERE(A)? (INDIVIDUALA|FAMILIALA)|S R L|P F A)\b/g, ' ');
+  f = f.replace(/^(SC|S C|SOCIETATEA COMERCIALA|SOCIETATEA)\s+/, '');
+  return f.replace(/\b(SRL|SRLD|SA|SNC|SCS|SCA|RA|IFN|PFA|II|IF)\b/g, ' ').replace(/\s+/g, ' ').trim();
+}
+const eAntet = s => !RX_FORMA.test(pliaza(s).replace(/\./g, '')) &&
+  /^(NR|CRT|DENUMIRE|DEN|NUME|CLIENT|CLIENTI|FIRMA|PARTENER|SOCIETATE|BENEFICIAR|CUI|CIF)\b/.test(pliaza(s));
+function liniiCurate(text) {
+  const vazute = new Set(), out = [];
+  text.split(/\r?\n/).forEach((l, i) => {
+    const [nume, ...rest] = l.split(';').map(x => x.replace(/\s+/g, ' ').trim());
+    if (!nume || nume.length < 3 || (i === 0 && eAntet(nume))) return;
+    const k = nucleuJs(nume);
+    if (!k || vazute.has(k)) return;
+    vazute.add(k); out.push([nume, ...rest].filter((x, j) => j === 0 || x).join('; '));
+  });
+  return out;
+}
+function citesteCsv(text) {
+  const prima = text.split(/\r?\n/)[0] || '';
+  const sep = [';', '\t', ','].sort((a, b) => prima.split(b).length - prima.split(a).length)[0];
+  return text.split(/\r?\n/).map(l => {
+    const cel = []; let cur = '', ghilim = false;
+    for (const ch of l) {
+      if (ch === '"') ghilim = !ghilim;
+      else if (ch === sep && !ghilim) { cel.push(cur); cur = ''; }
+      else cur += ch;
+    }
+    cel.push(cur); return cel;
+  });
+}
+function incarcaSheetJS() {
+  if (window.XLSX) return Promise.resolve();
+  return new Promise((ok, eroare) => {
+    const s = document.createElement('script');
+    Object.assign(s, {src: SHEETJS.src, integrity: SHEETJS.integrity, crossOrigin: 'anonymous', onload: ok,
+      onerror: () => eroare(new Error('Cititorul de Excel nu a putut fi încărcat. Salvează fișierul ca CSV sau lipește coloana.'))});
+    document.head.appendChild(s);
+  });
+}
+let FOAIE = null;
+function aplicaColoana() {
+  if (!FOAIE) return;
+  const iNume = +$('#cCol').value, iCui = $('#cCui').checked ? +$('#cCui').dataset.col : -1;
+  const antet = !RX_FORMA.test(pliaza(String(FOAIE[0][iNume] || '')).replace(/\./g, ''));
+  $('#cText').value = FOAIE.slice(antet ? 1 : 0)
+    .map(r => String(r[iNume] || '').trim() + (iCui >= 0 && String(r[iCui] || '').trim() ? '; ' + String(r[iCui]).trim() : ''))
+    .filter(x => x.replace(/;.*/, '').trim()).join('\n');
+  previzualizeaza();
+}
+$('#cFile').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  $('#cMsg').textContent = 'Citesc fișierul…';
+  try {
+    let randuri;
+    if (/\.(csv|txt)$/i.test(f.name)) randuri = citesteCsv(await f.text());
+    else {
+      await incarcaSheetJS();
+      const wb = XLSX.read(await f.arrayBuffer(), {type: 'array'});
+      randuri = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1, raw: false, defval: ''});
+    }
+    FOAIE = randuri.filter(r => r.some(c => String(c).trim()));
+    if (!FOAIE.length) throw new Error('Fișierul e gol.');
+    const titluri = FOAIE[0].map((c, i) => String(c).trim() || `Coloana ${i + 1}`);
+    const potrivire = rx => titluri.findIndex(t => rx.test(pliaza(t)));
+    let iNume = potrivire(/CLIENT|DENUMIRE|NUME|FIRMA|PARTENER|SOCIETATE|BENEFICIAR/);
+    if (iNume < 0) iNume = Math.max(0, FOAIE[1] ? FOAIE[1].findIndex(c => RX_FORMA.test(pliaza(String(c)).replace(/\./g, ''))) : 0);
+    const iCui = potrivire(/^(CUI|CIF|COD FISCAL|COD UNIC)/);
+    $('#cCol').innerHTML = titluri.map((t, i) => `<option value="${i}">${esc(t)}</option>`).join('');
+    $('#cCol').value = iNume; $('#cColW').hidden = false;
+    $('#cCuiW').hidden = iCui < 0; $('#cCui').checked = iCui >= 0; $('#cCui').dataset.col = iCui;
+    aplicaColoana();
+    $('#cMsg').textContent = `Am citit „${f.name}”: ${FOAIE.length} rânduri. Am luat doar coloana „${titluri[iNume]}”.`;
+  } catch (err) { $('#cMsg').textContent = err.message; }
+  e.target.value = '';
+};
+$('#cCol').onchange = aplicaColoana; $('#cCui').onchange = aplicaColoana;
+function previzualizeaza() {
+  const linii = liniiCurate($('#cText').value);
+  if (!linii.length) { $('#cPrev').textContent = ''; return linii; }
+  const existente = new Set(CLIENTI.map(c => nucleuJs(c.nume)));
+  const noi = linii.filter(l => !existente.has(nucleuJs(l.split(';')[0]))).length;
+  const inlocuieste = STATIC && document.querySelector('input[name=cMod]:checked').value === 'inlocuieste';
+  $('#cPrev').innerHTML = `<b>${linii.length}</b> clienți recunoscuți (fără dubluri și fără rândul de titlu): ` +
+    `${esc(linii.slice(0, 4).map(l => l.split(';')[0]).join(', '))}${linii.length > 4 ? '…' : ''}<br>` +
+    (inlocuieste ? `Lista actuală (${CLIENTI.length} clienți) va fi înlocuită: ${noi} noi, ` +
+      `${CLIENTI.filter(c => !new Set(linii.map(l => nucleuJs(l.split(';')[0]))).has(nucleuJs(c.nume))).length} scoși.`
+      : `${noi} noi, ${linii.length - noi} existau deja.`);
+  return linii;
+}
+$('#cText').oninput = deb(previzualizeaza, 250);
+document.querySelectorAll('input[name=cMod]').forEach(r => r.onchange = previzualizeaza);
+$('#cAdd').onclick = async () => {
+  const linii = previzualizeaza(); if (!linii.length) { $('#cMsg').textContent = 'Nu am găsit niciun nume de client.'; return; }
+  if (!STATIC) {
+    const r = await post('/api/clienti', {text: linii.join('\n')});
+    $('#cMsg').textContent = `${r.adaugati} adăugați${r.existenti ? `, ${r.existenti} existau deja` : ''}. Îi caut pe portal…`;
+    $('#cText').value = ''; $('#cPrev').textContent = ''; incarcaClienti(); return;
+  }
+  let finale = linii;
+  if (document.querySelector('input[name=cMod]:checked').value === 'adauga') {
+    let actuale = CLIENTI.map(c => [c.nume, c.cui, c.nota].filter(Boolean).join('; '));
+    if (ghCheie()) {
+      try { actuale = (await citesteFisierGH('clienti.txt')).text.split('\n').filter(l => l.trim() && !l.startsWith('#')); } catch (e) { /* rămâne lista din site */ }
+    }
+    finale = liniiCurate(actuale.concat(linii).join('\n'));
+  }
+  const continut = '# Clienții urmăriți — câte unul pe linie: Nume firmă; CUI (opțional); notă (opțională)\n' +
+    `# Actualizat din site pe ${new Date().toLocaleString('ro')} — ${finale.length} clienți\n` + finale.join('\n') + '\n';
+  if (ghCheie()) {
+    const act = new Set(CLIENTI.map(c => nucleuJs(c.nume))), fin = new Set(finale.map(l => nucleuJs(l.split(';')[0])));
+    const noi = [...fin].filter(x => !act.has(x)).length, scosi = [...act].filter(x => !fin.has(x)).length;
+    let intrebare = `Salvezi lista de clienți?\n\nVor fi ${finale.length} clienți: ${noi} noi, ${scosi} scoși.`;
+    if (scosi && (scosi >= 10 || scosi > CLIENTI.length * 0.2))
+      intrebare += `\n\n⚠ ATENȚIE: scoți ${scosi} din cei ${CLIENTI.length} clienți actuali. Dacă voiai doar să adaugi, nu confirma și alege „Adaugă la lista actuală”.`;
+    if (!confirm(intrebare)) return;
+    $('#cAdd').disabled = true; $('#cAdd').textContent = 'Se salvează…';
+    try {
+      await scrieFisierGH('clienti.txt', continut, `Lista de clienți actualizată din site (${finale.length} clienți: ${noi} noi, ${scosi} scoși)`);
+      $('#cMsg').innerHTML = `<span style="color:var(--ok)"><b>✓ Lista de ${finale.length} clienți a fost salvată pe GitHub.</b></span> ` +
+        'Monitorul îi caută acum pe portal (și la ANAF, dacă au CUI); rezultatele apar aici în câteva minute. ' +
+        '<button class="btn mic" id="cAnuleaza" type="button">↶ Anulează</button>';
+      $('#cAnuleaza').onclick = butonAnuleaza('clienti.txt', async cand => {
+        $('#cMsg').innerHTML = `<span style="color:var(--ok)"><b>✓ Am revenit la lista de clienți din ${esc(cand)}.</b></span>`;
+      });
+      $('#cText').value = ''; $('#cPrev').textContent = '';
+      toast('Lista de clienți a fost salvată');
+    } catch (e) {
+      $('#cMsg').innerHTML = `<b style="color:var(--s4)">Nu s-a salvat:</b> ${esc(e.message)}`;
+    } finally { $('#cAdd').disabled = false; actualizeazaPanouri(); }
+    return;
+  }
+  await navigator.clipboard.writeText(continut);
+  window.open(ghUrl('edit/' + STATIC.ramura + '/clienti.txt'), '_blank', 'noopener');
+  $('#cMsg').innerHTML = `<b>Lista (${finale.length} clienți) e copiată.</b> În pagina GitHub care s-a deschis: dă clic în text, ` +
+    `apasă <b>Cmd+A</b>, apoi <b>Cmd+V</b>, apoi butonul verde <b>Commit changes</b>. Monitorul pornește singur în câteva secunde.`;
+};
+$('#cBody').addEventListener('click', async e => {
+  const v = e.target.closest('[data-ver]'), d = e.target.closest('[data-del]');
+  if (v) { e.stopPropagation(); await post(`/api/clienti/${v.dataset.ver}/verifica`); toast('Verific pe portal…'); setTimeout(incarcaClienti, 600); }
+  if (d) { e.stopPropagation(); if (confirm('Ștergi clientul din listă? Dosarele rămân în bază.')) { await post(`/api/clienti/${d.dataset.del}`, null, 'DELETE'); incarcaClienti(); } }
+}, true);
+
+// ---------- dosare ----------
+let dOff = 0;
+async function incarcaDosare(maiMult) {
+  if (!maiMult) { dOff = 0; $('#dBody').innerHTML = '<tr><td colspan="6" class="empty">Se încarcă…</td></tr>'; }
+  const p = new URLSearchParams({offset: dOff, limit: 50});
+  const m = {q:'#dQ', categorie:'#dCat', institutie:'#dInst', de_la:'#dDe', pana_la:'#dPana', sursa:'#dSursa'};
+  for (const [k, s] of Object.entries(m)) if ($(s).value.trim()) p.set(k, $(s).value.trim());
+  if ($('#dSem').checked) p.set('cu_semnale', '1');
+  const j = await api('/api/dosare?' + p);
+  const html = j.randuri.map(d => `<tr class="click" data-dosar="${d.id}">
+    <td>${d.sev ? sev(d.sev) : ''}</td><td class="mono"><b>${esc(d.numar)}</b></td><td>${esc(d.instanta)}</td><td class="mono">${fd(d.data)}</td>
+    <td>${esc(d.categorie_nume)} · <small>${esc(d.stadiu_nume)}</small><br>${esc(d.obiect)}</td>
+    <td><small>${esc(d.parti || '')}${d.nr_parti > 4 ? ` · +${d.nr_parti - 4}` : ''}</small></td></tr>`).join('');
+  if (!maiMult) $('#dBody').innerHTML = html || '<tr><td colspan="6" class="empty">Niciun dosar pentru filtrele alese.</td></tr>';
+  else $('#dBody').insertAdjacentHTML('beforeend', html);
+  dOff += j.randuri.length;
+  $('#dMore').innerHTML = `<span class="muted">${dOff.toLocaleString('ro')} din ${j.total.toLocaleString('ro')}</span>` + (dOff < j.total ? ' <button class="btn mic" id="dMoreB">Încă 50</button>' : '');
+  if ($('#dMoreB')) $('#dMoreB').onclick = () => incarcaDosare(true);
+}
+loaders.dosare = () => {
+  $('#dSub').textContent = !STARE ? '' : STATIC
+    ? `Online sunt ${STARE.site_dosare.toLocaleString('ro')} dosare: cele cu semnale de risc recente și toate dosarele clienților tăi (baza completă are ${STARE.dosare.toLocaleString('ro')}).`
+    : `${STARE.dosare.toLocaleString('ro')} dosare în bază (înregistrate de la ${fd(META.config.data_start)} plus istoricul complet al clienților tăi).`;
+  incarcaDosare(); };
+['#dCat','#dInst','#dDe','#dPana','#dSursa','#dSem'].forEach(s => $(s).onchange = () => incarcaDosare());
+$('#dQ').oninput = deb(() => incarcaDosare(), 400);
+
+// ---------- reguli ----------
+let REGULI_MODIFICATE = false;
+function stareReguli(modificat, mesaj) {
+  REGULI_MODIFICATE = modificat;
+  $('#rSave').disabled = !modificat;
+  $('#rSave').textContent = 'Salvează noile alerte';
+  $('#rMsg').innerHTML = mesaj ?? (modificat ? '<b style="color:var(--s3)">Ai modificări nesalvate.</b>'
+    : '<span style="color:var(--ok)">✓ Regulile afișate sunt cele salvate.</span>');
+}
+$('#t-reguli').addEventListener('change', e => { if (!e.target.closest('#rGh')) stareReguli(true); });
+window.addEventListener('beforeunload', e => { if (REGULI_MODIFICATE) { e.preventDefault(); e.returnValue = ''; } });
+async function incarcaReguli() {
+  if (REGULI_MODIFICATE) return;  // nu pierdem bifele nesalvate la schimbarea tabului
+  SETARI = await api('/api/setari');
+  if (STATIC && ghCheie()) {
+    // Cu site-ul conectat, arătăm regulile exact cum sunt salvate acum în GitHub.
+    try { SETARI = {...SETARI, ...JSON.parse((await citesteFisierGH('setari.json')).text)}; } catch (e) { /* rămân cele din site */ }
+  }
+  const descr = {
+    insolventa: 'Cereri noi de insolvență (de la firmă sau de la creditori), dosare noi de insolvență, deschiderea procedurii, faliment, radiere.',
+    in_insolventa: 'Firma apare „în insolvență” / „prin lichidator” sau în incidente dintr-o insolvență deschisă mai demult.',
+    preinsolventa: 'Firma negociază cu creditorii ca să evite insolvența — semn clar de dificultate.',
+    dizolvare: 'Dizolvare judiciară, lichidare, radiere de la Registrul Comerțului.',
+    executare: 'Creditorii execută silit firma, popriri pe conturi, sechestru pe bunuri.',
+    bancar: 'Bănci, firme de leasing sau de recuperare (KRUK, EOS, Intrum…) dau firma în judecată.',
+    fiscal: 'Contestații la decizii ANAF, executări fiscale, opoziții ale fiscului.',
+    creante: 'Ordonanțe de plată, pretenții, cereri de valoare redusă, evacuări.',
+    creditori: 'Mai mulți creditori diferiți au acționat aceeași firmă (3, 5, 10+).',
+    munca: 'Angajați care cer salarii sau drepturi bănești neplătite.',
+    penal: 'Bancrută, evaziune fiscală, înșelăciune etc. în care firma e inculpată sau responsabilă civil.',
+    expunere: 'Firma (de ex. clientul tău) are de recuperat bani de la o firmă în insolvență.',
+    anaf: 'Pentru clienții cu CUI: ANAF i-a declarat contribuabili inactivi, i-a radiat sau le-a anulat înregistrarea în scopuri de TVA.'
+  };
+  $('#rGrup').innerHTML = `<b>Tipuri de cauze pentru care vreau alerte</b>
+    <table style="margin-top:8px"><thead><tr><th>Cauza</th><th title="Orice firmă din țară">Toate firmele</th><th>Clienții mei</th></tr></thead><tbody>` +
+    Object.entries(META.grupuri).map(([k, v]) => `<tr><td><b>${esc(v)}</b><small style="display:block" class="muted">${esc(descr[k] || '')}</small></td>
+      <td style="text-align:center"><input type="checkbox" name="grup" value="${k}" ${SETARI.grupuri_active.includes(k) ? 'checked' : ''}></td>
+      <td style="text-align:center"><input type="checkbox" name="grupcl" value="${k}" ${SETARI.grupuri_clienti.includes(k) ? 'checked' : ''}></td></tr>`).join('') +
+    '</tbody></table>';
+  $('#rTip').innerHTML = '<b>Ce entități urmăresc</b>' + ['societate', 'pfa', 'asociatie'].map(k =>
+    `<label><input type="checkbox" name="tip" value="${k}" ${SETARI.tipuri.includes(k) ? 'checked' : ''}><div><b>${esc(META.tipuri[k])}</b></div></label>`).join('');
+  const opt = v => [4,3,2,1].map(n => `<option value="${n}" ${n == v ? 'selected' : ''}>${SEV[n]}${n < 4 ? ' și peste' : ''}</option>`).join('');
+  $('#rSevToate').innerHTML = opt(SETARI.sev_min_toate);
+  $('#rSevCl').innerHTML = opt(SETARI.sev_min_clienti);
+  $('#rEmail').value = SETARI.email_continut === 'clienti' ? 'clienti' : 'auto';
+  const areClienti = (await api('/api/clienti')).randuri.length > 0;
+  const efectiv = {auto: areClienti ? 'întâi clienții tăi, apoi separat celelalte firme cu probleme' : 'celelalte firme cu probleme (lista de clienți e goală)', clienti: 'doar clienții tăi'};
+  const notaEmail = () => $('#rEmailNota').textContent = `Acum primești: ${efectiv[$('#rEmail').value]}. E-mailul pleacă dimineața, doar când are ceva nou.`;
+  $('#rEmail').onchange = notaEmail; notaEmail();
+  $('#rProg').innerHTML = `Actualizarea automată rulează zilnic la <b>${esc(META.config.ora_rulare_zilnica || '07:30')}</b> (și la pornirea Mac-ului dacă ora a trecut cât timp era oprit). Raportul zilei apare la „Istoric și rapoarte”.`;
+  if (STATIC) $('#rProg').innerHTML = 'Actualizarea rulează pe GitHub în fiecare noapte (de la ~00:15) și se reia automat din oră în oră până reușește. E-mailul pleacă imediat după.';
+  stareReguli(false);
+  aplicaRol();
+}
+loaders.reguli = incarcaReguli;
+// Ce se schimbă față de regulile salvate, în cuvinte (pentru confirmarea dinainte de salvare).
+function diferenteReguli(v, n) {
+  const r = [], G = META.grupuri, E = {auto: 'clienții mei, apoi celelalte firme', toate: 'clienții mei, apoi celelalte firme', clienti: 'doar clienții mei'};
+  const liste = (a = [], b = [], nume, unde) => {
+    b.filter(k => !a.includes(k)).forEach(k => r.push(`+ ${nume(k)}${unde}`));
+    a.filter(k => !b.includes(k)).forEach(k => r.push(`− ${nume(k)}${unde}`));
+  };
+  liste(v.grupuri_active, n.grupuri_active, k => G[k] || k, ' — toate firmele');
+  liste(v.grupuri_clienti, n.grupuri_clienti, k => G[k] || k, ' — clienții mei');
+  liste(v.tipuri, n.tipuri, k => META.tipuri[k] || k, ' — entități urmărite');
+  if (+v.sev_min_toate !== n.sev_min_toate) r.push(`Nivel minim, toate firmele: ${SEV[v.sev_min_toate]} → ${SEV[n.sev_min_toate]}`);
+  if (+v.sev_min_clienti !== n.sev_min_clienti) r.push(`Nivel minim, clienții mei: ${SEV[v.sev_min_clienti]} → ${SEV[n.sev_min_clienti]}`);
+  if ((v.email_continut === 'clienti' ? 'clienti' : 'auto') !== n.email_continut) r.push(`E-mail: ${E[v.email_continut || 'auto']} → ${E[n.email_continut]}`);
+  return r;
+}
+function butonAnuleaza(cale, dupa) {
+  return async e => {
+    const b = e.currentTarget;
+    if (!confirm('Anulezi această salvare și revii la versiunea de dinainte?')) return;
+    b.disabled = true; b.textContent = 'Revin…';
+    try { const cand = await revinoLaPrecedenta(cale); toast('Am revenit la versiunea de dinainte'); await dupa(cand); }
+    catch (err) { b.disabled = false; b.textContent = '↶ Anulează'; toast('Nu s-a putut anula: ' + err.message); }
+  };
+}
+$('#rSave').onclick = async () => {
+  const s = {
+    grupuri_active: [...document.querySelectorAll('input[name=grup]:checked')].map(i => i.value),
+    grupuri_clienti: [...document.querySelectorAll('input[name=grupcl]:checked')].map(i => i.value),
+    tipuri: [...document.querySelectorAll('input[name=tip]:checked')].map(i => i.value),
+    sev_min_toate: +$('#rSevToate').value, sev_min_clienti: +$('#rSevCl').value,
+    doar_clienti: false, email_continut: $('#rEmail').value,
+  };
+  const ora = () => new Date().toLocaleTimeString('ro', {hour: '2-digit', minute: '2-digit'});
+  $('#rSave').disabled = true; $('#rSave').textContent = 'Se salvează…';
+  try {
+    if (STATIC) {
+      if (!ghCheie()) {
+        stareReguli(true, '<b>Conectează o singură dată site-ul la GitHub</b> (pașii de mai sus), apoi apasă din nou „Salvează noile alerte”.');
+        $('#rGh').scrollIntoView({behavior: 'smooth', block: 'center'});
+        return;
+      }
+      const dif = diferenteReguli(SETARI, s), avert = [];
+      if (!dif.length) { stareReguli(false, '<span class="muted">Nu ai schimbat nimic față de regulile salvate.</span>'); return; }
+      if (!s.grupuri_active.length && !s.grupuri_clienti.length) avert.push('⚠ Nicio cauză bifată: nu vei mai primi nicio alertă.');
+      if (!s.tipuri.length) avert.push('⚠ Nicio entitate bifată: nu vei mai primi nicio alertă.');
+      if (!confirm('Salvezi aceste modificări?\n\n' + dif.join('\n') + (avert.length ? '\n\n' + avert.join('\n') : '') +
+                   '\n\nSe aplică pentru toți cei care folosesc monitorul, de la următoarea rulare.')) { stareReguli(true); return; }
+      await scrieFisierGH('setari.json', JSON.stringify(s, null, 2) + '\n', 'Reguli de alertă actualizate din site: ' + dif.join('; '));
+      SETARI = {...SETARI, ...s};
+      stareReguli(false, `<span style="color:var(--ok)"><b>✓ Salvat pe GitHub la ${ora()}.</b></span> Se aplică de la următoarea rulare; site-ul se actualizează în 1–2 minute. ` +
+        '<button class="btn mic" id="rAnuleaza" type="button">↶ Anulează</button>');
+      $('#rAnuleaza').onclick = butonAnuleaza('setari.json', async cand => {
+        REGULI_MODIFICATE = false; await incarcaReguli();
+        stareReguli(false, `<span style="color:var(--ok)"><b>✓ Am revenit la regulile din ${esc(cand)}.</b></span>`);
+      });
+    } else {
+      SETARI = await post('/api/setari', s);
+      stareReguli(false, `<span style="color:var(--ok)"><b>✓ Salvat la ${ora()}.</b></span> Alertele folosesc noile reguli.`);
+      incarcaStare();
+    }
+    toast('Noile alerte au fost salvate');
+  } catch (e) {
+    stareReguli(true, `<b style="color:var(--s4)">Nu s-a salvat:</b> ${esc(e.message)}`);
+    if (e.status === 401) actualizeazaPanouri();
+  }
+};
+
+// ---------- rulări ----------
+loaders.rulari = async () => {
+  const j = await api('/api/rulari');
+  const tip = {initial: 'Încărcare inițială', zilnic: 'Actualizare zilnică', client: 'Verificare client'};
+  $('#rBody').innerHTML = j.randuri.map(r => `<tr>
+    <td class="mono">${r.id}</td><td>${tip[r.tip] || r.tip}</td><td class="mono">${fd(r.start)}</td><td class="mono">${fd(r.stop)}</td>
+    <td>${r.stare === 'ok' ? '<span style="color:var(--ok)">ok</span>' : esc(r.stare)}${r.mesaj ? `<br><small>${esc(r.mesaj)}</small>` : ''}</td>
+    <td class="mono">${r.interogari ?? ''}</td><td class="mono">${(r.dosare_noi ?? 0).toLocaleString('ro')} / ${(r.dosare_actualizate ?? 0).toLocaleString('ro')}</td>
+    <td class="mono">${(r.semnale_noi ?? 0).toLocaleString('ro')}</td><td class="mono">${r.tip === 'client' ? '' : (r.alerte ?? 0).toLocaleString('ro')}</td>
+    <td>${r.raport ? `<a href="/rapoarte/${encodeURIComponent(r.raport)}" target="_blank">Deschide</a>` : ''}</td></tr>`).join('')
+    || '<tr><td colspan="10" class="empty">Nicio rulare încă.</td></tr>';
+};
+
+// ---------- panou detalii ----------
+const stiva = [];
+function deschide(html) { $('#dBodyDrawer').innerHTML = html; $('#drawer').classList.add('on'); $('#veil').classList.add('on'); $('#dBack').hidden = stiva.length < 2; $('#dBodyDrawer').scrollTop = 0; }
+function inchide() { $('#drawer').classList.remove('on'); $('#veil').classList.remove('on'); stiva.length = 0; }
+$('#dClose').onclick = inchide; $('#veil').onclick = inchide;
+document.addEventListener('keydown', e => { if (e.key === 'Escape') inchide(); });
+$('#dBack').onclick = () => { stiva.pop(); const p = stiva.pop(); p && p(); };
+
+async function arataFirma(id) {
+  stiva.push(() => arataFirma(id));
+  const f = await api('/api/firma/' + id);
+  deschide(`<h2>${esc(f.nume)} ${f.client_id ? '<span class="cl">CLIENT</span>' : ''}</h2>${prognozaHtml(f)}
+    <dl class="dl"><dt>Nivel de risc</dt><dd>${sev(f.nivel)} · scor ${f.scor}</dd>
+    <dt>Tip</dt><dd>${esc(f.tip_nume)}${f.status ? ` · apare „${esc(f.status)}”` : ''}</dd>
+    <dt>Dosare în bază</dt><dd>${f.nr_dosare}</dd><dt>Ultimul semnal</dt><dd>${fd(f.ultim_semnal) || '—'}</dd>${regInfo(f)}
+    ${f.alte_variante.length ? `<dt>Alte variante</dt><dd>${f.alte_variante.map(v => `<a href="#" data-firma="${v.id}">${esc(v.nume)}</a>`).join(', ')}</dd>` : ''}</dl>
+    ${finHtml(f.fin)}
+    ${f.client_id || !esteAdmin() ? '' : `<button class="btn mic" id="addCl">+ Adaugă la clienții mei</button>`}
+    <h3>Semnale de risc (${f.semnale.length})</h3>
+    <div class="card"><table><tr><th>Nivel</th><th>Ce s-a întâmplat</th><th>Dosar</th><th>Data</th></tr>
+    ${f.semnale.map(s => `<tr><td>${sev(s.sev)}</td><td>${esc(s.motiv)}<br><span class="grp">${esc(META.grupuri[s.grup] || s.grup)}</span>${s.rol ? ` <small>${esc(s.rol)}</small>` : ''}</td>
+      <td>${s.numar ? `<a href="#" data-dosar="${s.dosar_id}">${esc(s.numar)}</a><br><small>${esc(s.institutie ? s.institutie.replace(/([a-z])([A-Z])/g, '$1 $2') : '')}</small>` : ''}</td><td class="mono">${fd(s.data_eveniment)}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Niciun semnal.</td></tr>'}
+    </table></div>
+    <h3>Dosare (${f.dosare.length})</h3>
+    <div class="card"><table><tr><th>Număr</th><th>Instanța</th><th>Data</th><th>Obiect</th><th>Calitate</th></tr>
+    ${f.dosare.map(d => `<tr class="click" data-dosar="${d.id}"><td class="mono">${esc(d.numar)}</td><td>${esc(d.instanta)}</td><td class="mono">${fd(d.data)}</td><td>${esc(d.obiect)}<br><small>${esc(d.categorie_nume)} · ${esc(d.stadiu_nume)}</small></td><td><small>${esc(d.rol)}</small></td></tr>`).join('')}
+    </table></div>`);
+  if ($('#addCl')) $('#addCl').onclick = async () => {
+    if (STATIC) {
+      await navigator.clipboard.writeText(f.nume);
+      toast('Numele a fost copiat. Adaugă-l pe o linie nouă în clienti.txt și salvează.');
+      window.open(ghUrl('edit/' + STATIC.ramura + '/clienti.txt'), '_blank', 'noopener'); return;
+    }
+    await post('/api/clienti', {text: f.nume}); toast('Adăugat la clienți. Îl caut pe portal…'); $('#addCl').remove(); };
+}
+const DOCUMENTE = {
+  _Hotarare: 'Hotărâre', Hotarare: 'Hotărâre', _IncheiereFinalaDezinvestire: 'Încheiere finală (dezînvestire)',
+  incheieredesedinta: 'Încheiere de ședință', incheiereAmanareinitialaapronuntarii: 'Încheiere — amânarea pronunțării',
+  incheiereAmanareulterioaraapronuntarii: 'Încheiere — nouă amânare a pronunțării', Rezolutie: 'Rezoluție',
+  incheiereindreptareeroaremateriala: 'Încheiere — îndreptare eroare materială', Decizie: 'Decizie', Sentinta: 'Sentință'
+};
+const docNume = s => DOCUMENTE[s] || String(s || '').replace(/^_/, '').replace(/([a-z])([A-Z])/g, '$1 $2');
+async function arataDosar(id) {
+  stiva.push(() => arataDosar(id));
+  const d = await api('/api/dosar/' + id);
+  const azi = zi(new Date());
+  const sed = [...d.sedinte].sort((a, b) => String(b.data).localeCompare(String(a.data)));
+  const urm = sed.filter(s => String(s.data).slice(0, 10) >= azi).pop();
+  const ultSol = sed.find(s => String(s.data).slice(0, 10) <= azi && (s.solutie || s.solutie_sumar));
+  const grupe = {};
+  d.parti.forEach(p => (grupe[p.calitate || '—'] ||= []).push(p));
+  deschide(`<h2>Dosar ${esc(d.numar)}</h2>
+    <div class="muted">${esc(d.instanta)}${d.departament ? ' · ' + esc(d.departament) : ''}</div>
+    <p style="font-size:15px;margin:10px 0"><b>${esc(d.obiect)}</b><br><span class="muted">${esc(d.categorie_nume)} · ${esc(d.stadiu_nume)}</span></p>
+    ${urm ? `<div class="note"><b>Următorul termen:</b> ${fd(urm.data)}${urm.ora ? ', ora ' + esc(urm.ora) : ''}${urm.complet ? ' · ' + esc(urm.complet) : ''}</div>` : ''}
+    ${ultSol ? `<div class="note"><b>Ultima soluție${ultSol.data_pronuntare || ultSol.data ? ' (' + fd(ultSol.data_pronuntare || ultSol.data) + ')' : ''}:</b> ${esc(ultSol.solutie)}${ultSol.solutie_sumar ? `<div style="white-space:pre-wrap;margin-top:4px">${esc(ultSol.solutie_sumar)}</div>` : ''}</div>` : ''}
+    <dl class="dl"><dt>Înregistrat</dt><dd>${fd(d.data)}</dd>
+    ${d.numar_vechi ? `<dt>Număr vechi</dt><dd>${esc(d.numar_vechi)}</dd>` : ''}
+    <dt>Ultima modificare</dt><dd>${fd(d.data_modificare)}</dd>
+    <dt>Ședințe</dt><dd>${d.sedinte.length}${d.cai_atac.length ? ` · ${d.cai_atac.length} căi de atac` : ''}</dd>
+    <dt>Pe portal</dt><dd><a href="https://portal.just.ro/" target="_blank" rel="noopener">portal.just.ro</a> <button class="btn mic" id="cpy">Copiază numărul</button></dd></dl>
+    ${d.semnale.length ? `<h3>De ce e important</h3><div class="card"><table>${d.semnale.map(s => `<tr><td>${sev(s.sev)}</td><td><a href="#" data-firma="${s.firma_id}">${esc(s.firma)}</a><br>${esc(s.motiv)}</td></tr>`).join('')}</table></div>` : ''}
+    <h3>Părți (${d.parti.length})</h3>
+    <div class="card"><table><tr><th>Calitate</th><th>Nume</th></tr>
+    ${Object.entries(grupe).map(([cal, ps]) => `<tr><td style="white-space:nowrap"><b>${esc(cal)}</b></td><td>${ps.map(p =>
+      (p.firma_id ? `<a href="#" data-firma="${p.firma_id}">${esc(p.nume)}</a> ${p.nivel >= 2 ? sev(p.nivel) : ''}` : esc(p.nume)) +
+      ` <small>${esc(META.tipuri[p.tip] || p.tip || '')}</small>`).join('<br>')}</td></tr>`).join('')}
+    </table></div>
+    <h3>Termene, soluții și documente (${sed.length})</h3>
+    <div class="card"><table><tr><th>Data</th><th>Ce s-a întâmplat</th></tr>
+    ${sed.map(s => { const viitor = String(s.data).slice(0, 10) >= azi; return `<tr><td class="mono">${fd(s.data)}${s.ora ? '<br>' + esc(s.ora) : ''}${viitor ? '<br><span class="cl">VIITOR</span>' : ''}</td>
+      <td>${s.complet ? `<small>${esc(s.complet)}</small><br>` : ''}
+      ${s.solutie ? `<b>${esc(s.solutie)}</b>` : (viitor ? '<span class="muted">Termen stabilit</span>' : '<span class="muted">Fără soluție publicată</span>')}
+      ${s.solutie_sumar ? `<div style="white-space:pre-wrap;margin-top:4px">${esc(s.solutie_sumar)}</div>` : ''}
+      ${s.document ? `<div style="margin-top:4px"><span class="grp">${esc(docNume(s.document))}${s.numar_document ? ' nr. ' + esc(s.numar_document) : ''}${s.data_pronuntare ? ' din ' + fd(s.data_pronuntare) : ''}</span></div>` : ''}</td></tr>`; }).join('') || '<tr><td colspan="2" class="empty">Nicio ședință publicată.</td></tr>'}
+    </table></div>
+    ${d.cai_atac.length ? `<h3>Căi de atac</h3><div class="card"><table><tr><th>Tip</th><th>Declarată de</th><th>Data</th></tr>${d.cai_atac.map(c => `<tr><td>${esc(c.tip)}</td><td>${esc(c.parte)}</td><td class="mono">${fd(c.data_declarare)}</td></tr>`).join('')}</table></div>` : ''}
+    <p class="muted" style="font-size:12px;margin-top:16px">Portalul instanțelor publică doar datele de mai sus (părți, termene, soluții pe scurt).
+    Cererile și actele din dosar sunt accesibile doar părților, iar hotărârile motivate se publică anonimizat pe rejust.ro.</p>`);
+  $('#cpy').onclick = () => { navigator.clipboard.writeText(d.numar).then(() => toast('Număr copiat: ' + d.numar)); };
+}
+document.addEventListener('click', e => {
+  const dz = e.target.closest('[data-dosar]'); const fz = e.target.closest('[data-firma]');
+  const inner = dz && fz ? (fz.contains(dz) ? dz : fz) : (dz || fz);
+  if (!inner || e.target.closest('[data-ver],[data-del]')) return;
+  e.preventDefault();
+  (inner === dz ? arataDosar(dz.dataset.dosar) : arataFirma(fz.dataset.firma)).catch(err => toast(err.message));
+});
+
+
+// ---------- modul online (GitHub): date criptate, filtrate în browser ----------
+let DATA = null, IDX = null;
+async function cheieDinParola(parola, sare, iter, uz) {
+  const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(parola), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name: 'PBKDF2', salt: sare, iterations: iter, hash: 'SHA-256'}, km, {name: 'AES-GCM', length: 256}, false, [uz]);
+}
+async function decripteazaOcteti(buf, parola) {
+  const iter = new DataView(buf.buffer, buf.byteOffset).getUint32(4);
+  const sare = buf.slice(8, 24), iv = buf.slice(24, 36), ct = buf.slice(36);
+  const cheie = await cheieDinParola(parola, sare, iter, 'decrypt');
+  let gz;
+  try { gz = await crypto.subtle.decrypt({name: 'AES-GCM', iv}, cheie, ct); } catch { throw new Error('Parolă greșită'); }
+  const txt = await new Response(new Blob([gz]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+  return JSON.parse(txt);
+}
+async function cripteazaOcteti(obiect, parola, iter = 600000) {
+  const sare = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const gz = await new Response(new Blob([JSON.stringify(obiect)]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer();
+  const ct = new Uint8Array(await crypto.subtle.encrypt({name: 'AES-GCM', iv}, await cheieDinParola(parola, sare, iter, 'encrypt'), gz));
+  const out = new Uint8Array(36 + ct.length);
+  out.set(new TextEncoder().encode('MPJ1')); new DataView(out.buffer).setUint32(4, iter); out.set(sare, 8); out.set(iv, 24); out.set(ct, 36);
+  return out;
+}
+async function decripteaza(parola) {
+  const r = await fetch('data.bin', {cache: 'no-store'});
+  if (!r.ok) throw new Error('Datele nu au putut fi descărcate (' + r.status + ')');
+  return decripteazaOcteti(new Uint8Array(await r.arrayBuffer()), parola);
+}
+// Accesul de administrator de pe orice dispozitiv: acces.bin conține cheia GitHub și parola site-ului, criptate cu parola de administrator.
+async function accesAdmin(parola) {
+  const r = await fetch('acces.bin', {cache: 'no-store'}).catch(() => null);
+  if (!r || !r.ok) return null;
+  try { return await decripteazaOcteti(new Uint8Array(await r.arrayBuffer()), parola); } catch { return null; }
+}
+function indexeaza() {
+  IDX = {firme: new Map(), dosare: new Map(), dosareFirma: new Map(), semnaleDosar: new Map(), cauta: new Map()};
+  DATA.firme.forEach(f => IDX.firme.set(f.id, f));
+  DATA.dosare.forEach(d => {
+    IDX.dosare.set(d.id, d);
+    d.parti.forEach(p => { if (p.firma_id) { const l = IDX.dosareFirma.get(p.firma_id) || []; l.push(d.id); IDX.dosareFirma.set(p.firma_id, l); } });
+  });
+  DATA.semnale.forEach(s => { if (s.dosar_id) { const l = IDX.semnaleDosar.get(s.dosar_id) || []; l.push(s); IDX.semnaleDosar.set(s.dosar_id, l); } });
+}
+const ordSemnale = (a, b) => (!!b.client_id - !!a.client_id) || (b.sev - a.sev) || String(b.data_eveniment).localeCompare(String(a.data_eveniment)) || (b.id - a.id);
+const pagina = (arr, p, lim) => { const off = +p.get('offset') || 0, n = +p.get('limit') || lim; return {total: arr.length, randuri: arr.slice(off, off + n)}; };
+function apiStatic(u) {
+  const url = new URL(u, location.href), p = url.searchParams, cale = url.pathname.replace(/^.*\/api\//, '/api/');
+  let m;
+  if (cale === '/api/meta') return DATA.meta;
+  if (cale === '/api/panou') return DATA.panou;
+  if (cale === '/api/stare') return DATA.stare;
+  if (cale === '/api/setari') return DATA.setari;
+  if (cale === '/api/rulari') return {randuri: DATA.rulari};
+  if (cale === '/api/clienti') return {randuri: DATA.clienti};
+  if (cale === '/api/semnale') {
+    let a = DATA.semnale;
+    if (p.get('rulare') === 'ultima') { const id = DATA.stare.ultima_rulare ? DATA.stare.ultima_rulare.id : -1; a = a.filter(s => s.rulare_id === id); }
+    if (p.get('alerte') !== '0') a = a.filter(s => s.alerta);
+    if (p.get('de_la')) a = a.filter(s => String(s.data_eveniment) >= p.get('de_la'));
+    if (p.get('pana_la')) a = a.filter(s => String(s.data_eveniment) <= p.get('pana_la'));
+    if (p.get('grup')) a = a.filter(s => s.grup === p.get('grup'));
+    if (p.get('sev')) a = a.filter(s => s.sev >= +p.get('sev'));
+    if (p.get('clienti') === '1') a = a.filter(s => s.client_id);
+    if (p.get('firma')) a = a.filter(s => s.firma_id === +p.get('firma'));
+    if (p.get('q')) { const q = pliaza(p.get('q')); a = a.filter(s => pliaza(s.firma).includes(q) || pliaza(s.motiv).includes(q) || String(s.numar || '').includes(p.get('q'))); }
+    return pagina([...a].sort(ordSemnale), p, 200);
+  }
+  if (cale === '/api/firme') {
+    let a = DATA.firme;
+    if (p.get('q')) { const q = pliaza(p.get('q')); a = a.filter(f => pliaza(f.nume).includes(q)); }
+    if (p.get('nivel')) a = a.filter(f => f.nivel >= +p.get('nivel'));
+    if (p.get('tip')) a = a.filter(f => f.tip === p.get('tip'));
+    if (p.get('clienti') === '1') a = a.filter(f => f.client_id);
+    if (p.get('grup')) { const ids = new Set(DATA.semnale.filter(s => s.grup === p.get('grup')).map(s => s.firma_id)); a = a.filter(f => ids.has(f.id)); }
+    const o = p.get('ordine');
+    const cmp = o === 'nume' ? (x, y) => x.nume.localeCompare(y.nume)
+      : o === 'recent' ? (x, y) => String(y.ultim_semnal).localeCompare(String(x.ultim_semnal)) || y.scor - x.scor
+      : (x, y) => y.scor - x.scor || String(y.ultim_semnal).localeCompare(String(x.ultim_semnal));
+    return pagina([...a].sort(cmp), p, 100);
+  }
+  if ((m = cale.match(/^\/api\/firma\/(\d+)$/))) {
+    const id = +m[1], f = IDX.firme.get(id);
+    if (!f) throw new Error('Firma nu e în datele online');
+    const dos = (IDX.dosareFirma.get(id) || []).map(did => { const d = IDX.dosare.get(did);
+      return {id: d.id, numar: d.numar, instanta: d.instanta, data: d.data, categorie_nume: d.categorie_nume, stadiu_nume: d.stadiu_nume,
+        obiect: d.obiect, rol: d.parti.filter(x => x.firma_id === id).map(x => x.calitate).join(', ')}; })
+      .sort((a, b) => String(b.data).localeCompare(String(a.data)));
+    return {...f, tip_nume: DATA.meta.tipuri[f.tip] || f.tip, semnale: DATA.semnale.filter(s => s.firma_id === id).sort(ordSemnale),
+      dosare: dos, alte_variante: DATA.firme.filter(x => x.nucleu === f.nucleu && x.id !== id).slice(0, 20)};
+  }
+  if (cale === '/api/dosare') {
+    let a = DATA.dosare;
+    if (p.get('q')) { const q = pliaza(p.get('q'));
+      a = a.filter(d => { let c = IDX.cauta.get(d.id); if (!c) { c = pliaza(d.numar + ' ' + d.obiect + ' ' + d.parti.map(x => x.nume).join(' ')); IDX.cauta.set(d.id, c); } return c.includes(q); }); }
+    if (p.get('categorie')) a = a.filter(d => d.categorie === p.get('categorie'));
+    if (p.get('institutie')) a = a.filter(d => d.institutie === p.get('institutie'));
+    if (p.get('de_la')) a = a.filter(d => String(d.data) >= p.get('de_la'));
+    if (p.get('pana_la')) a = a.filter(d => String(d.data) <= p.get('pana_la') + 'T23:59:59');
+    if (p.get('cu_semnale') === '1') a = a.filter(d => IDX.semnaleDosar.has(d.id));
+    if (p.get('sursa') === 'flux') a = a.filter(d => d.din_flux); else if (p.get('sursa') === 'client') a = a.filter(d => d.din_client);
+    const r = pagina([...a].sort((x, y) => String(y.data).localeCompare(String(x.data))), p, 50);
+    r.randuri = r.randuri.map(d => ({...d, parti: d.parti.slice(0, 4).map(x => `${x.nume} (${x.calitate})`).join(' · '), nr_parti: d.parti.length,
+      sev: Math.max(0, ...(IDX.semnaleDosar.get(d.id) || []).map(s => s.sev)) || null}));
+    return r;
+  }
+  if ((m = cale.match(/^\/api\/dosar\/(\d+)$/))) {
+    const d = IDX.dosare.get(+m[1]);
+    if (!d) throw new Error('Dosarul nu e în datele online');
+    return {...d, parti: d.parti.map(x => ({...x, nivel: x.firma_id && IDX.firme.has(x.firma_id) ? IDX.firme.get(x.firma_id).nivel : null})),
+      semnale: (IDX.semnaleDosar.get(d.id) || []).slice().sort((a, b) => b.sev - a.sev)};
+  }
+  throw new Error('Funcție indisponibilă în varianta online: ' + cale);
+}
+async function intraOnline() {
+  const salvata = localStorage.getItem('mpj_parola') || sessionStorage.getItem('mpj_parola');
+  const incearca = async parola => {
+    $('#lgErr').textContent = ''; $('#lgBtn').disabled = true; $('#lgBtn').textContent = 'Decriptez…';
+    try {
+      let parolaSite = parola, acces = null;
+      try { DATA = await decripteaza(parola); }
+      catch (e) {
+        if (e.message !== 'Parolă greșită' || !(acces = await accesAdmin(parola))) throw e;
+        parolaSite = acces.parola_site;
+        try { DATA = await decripteaza(parolaSite); }
+        catch { throw new Error('Parola de administrator e corectă, dar parola site-ului s-a schimbat între timp. Intră o dată cu parola site-ului de pe dispozitivul administrator și salvează din nou parola de administrator.'); }
+      }
+      indexeaza();
+      ($('#lgTine').checked ? localStorage : sessionStorage).setItem('mpj_parola', parolaSite);
+      if (acces) { ghSeteaza(acces.cheie, $('#lgTine').checked); aplicaRol(); }
+      $('#login').hidden = true; await porneste(); return true;
+    } catch (e) {
+      localStorage.removeItem('mpj_parola'); sessionStorage.removeItem('mpj_parola');
+      $('#login').hidden = false; $('#lgErr').textContent = e.message; return false;
+    } finally { $('#lgBtn').disabled = false; $('#lgBtn').textContent = 'Intră'; }
+  };
+  $('#lgForm').onsubmit = e => { e.preventDefault(); incearca($('#lgPass').value); };
+  if (salvata && await incearca(salvata)) return;
+  $('#login').hidden = false; $('#lgPass').focus();
+}
+function adaptareOnline() {
+  $('#btnRun').innerHTML = '<span class="lung">Rulează acum pe GitHub</span><span class="scurt">Rulează</span>';
+  $('#btnRun').onclick = () => window.open(ghUrl('actions/workflows/zilnic.yml'), '_blank', 'noopener');
+  $('#btnRun').insertAdjacentHTML('afterend', '<button class="btn" id="btnIesire">Ieșire</button>');
+  $('#btnIesire').onclick = async () => {
+    localStorage.removeItem('mpj_parola'); sessionStorage.removeItem('mpj_parola'); sessionStorage.removeItem('mpj_gh_cheie');
+    // Cu parola de administrator setată, ieșirea scoate și drepturile de pe acest dispozitiv; fără ea, cheia rămâne (altfel s-ar pierde).
+    const r = await fetch('acces.bin', {method: 'HEAD', cache: 'no-store'}).catch(() => null);
+    if (r && r.ok) localStorage.removeItem('mpj_gh_cheie');
+    location.reload();
+  };
+  $('#btnRun').classList.add('doar-admin');
+  if (CERE_ADMIN && !esteAdmin() && !location.hash) history.replaceState(null, '', '#reguli');
+  actualizeazaPanouri();
+  $('#cAdd').insertAdjacentHTML('afterend', `<a class="btn" href="${ghUrl('edit/' + STATIC.ramura + '/clienti.txt')}" target="_blank" rel="noopener">Editează direct pe GitHub</a>`);
+  $('#rProg').innerHTML = 'Actualizarea rulează pe GitHub în fiecare noapte (de la ~00:15) și se reia automat din oră în oră până reușește. E-mailul pleacă imediat după.';
+}
+
+// ---------- salvare directă în GitHub (cheie de acces, o singură dată pe dispozitiv) ----------
+let CHEIE_GH = '';
+const ghCheie = () => { try { return localStorage.getItem('mpj_gh_cheie') || sessionStorage.getItem('mpj_gh_cheie') || CHEIE_GH; } catch { return CHEIE_GH; } };
+const ghSeteaza = (v, persistent = true) => {
+  CHEIE_GH = v;
+  try {
+    localStorage.removeItem('mpj_gh_cheie'); sessionStorage.removeItem('mpj_gh_cheie');
+    if (v) (persistent ? localStorage : sessionStorage).setItem('mpj_gh_cheie', v);
+  } catch { /* doar în memorie */ }
+};
+// ---------- roluri: administrator (dispozitivul conectat la GitHub) și doar citire (toți ceilalți) ----------
+// Pe site, doar dispozitivul pe care e salvată cheia GitHub poate modifica regulile și lista de clienți. Ceilalți văd tot, dar
+// doar citesc. Panoul de conectare apare doar dacă adresa se termină cu ?admin (…/monitor-portal-just-site/?admin).
+const CERE_ADMIN = /[?&]admin(=|&|$)/.test(location.search);
+const esteAdmin = () => !STATIC || !!ghCheie();
+function aplicaRol() {
+  if (!STATIC) return;
+  const admin = esteAdmin();
+  document.body.classList.toggle('citire', !admin);
+  document.querySelectorAll('#rGrup input, #rTip input, #rSevToate, #rSevCl, #rEmail').forEach(i => { i.disabled = !admin; });
+  $('#rGh').hidden = !(admin || CERE_ADMIN);
+  $('#cGh').hidden = !admin;
+}
+if (STATIC) { $('#btnRun').classList.add('doar-admin'); aplicaRol(); }  // din prima clipă, nu abia după decriptare
+async function gh(cale, opt = {}) {
+  const r = await fetch('https://api.github.com' + cale, {cache: 'no-store', ...opt, headers: {Accept: 'application/vnd.github+json',
+    Authorization: 'Bearer ' + ghCheie(), 'X-GitHub-Api-Version': '2022-11-28', ...(opt.body ? {'Content-Type': 'application/json'} : {})}});
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) {
+    const e = new Error(r.status === 401 ? 'Cheia GitHub de pe acest dispozitiv nu mai e valabilă. Apasă „Ieșire” și intră din nou cu parola de administrator (sau conectează o cheie nouă).'
+      : (r.status === 403 || r.status === 404) ? 'Cheia GitHub nu are acces de scriere la acest repository (Contents: Read and write).'
+      : `GitHub: ${j.message || r.status}`);
+    e.status = r.status; throw e;
+  }
+  return j;
+}
+const b64Octeti = b => { let t = ''; for (let i = 0; i < b.length; i += 0x8000) t += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000)); return btoa(t); };
+const b64 = s => b64Octeti(s instanceof Uint8Array ? s : new TextEncoder().encode(s));
+const dinB64 = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g, '')), c => c.charCodeAt(0)));
+async function citesteFisierGH(cale) {
+  const j = await gh(`/repos/${STATIC.repo}/contents/${cale}?ref=${STATIC.ramura}`);
+  return {text: dinB64(j.content), sha: j.sha};
+}
+// Anulează ultima salvare a unui fișier: scrie din nou versiunea dinaintea ei (istoricul complet rămâne în GitHub).
+async function revinoLaPrecedenta(cale) {
+  const c = await gh(`/repos/${STATIC.repo}/commits?path=${cale}&sha=${STATIC.ramura}&per_page=2`);
+  if (c.length < 2) throw new Error('Nu există o versiune anterioară a acestui fișier.');
+  const j = await gh(`/repos/${STATIC.repo}/contents/${cale}?ref=${c[1].sha}`);
+  const cand = new Date(c[1].commit.committer.date).toLocaleString('ro');
+  await scrieFisierGH(cale, dinB64(j.content), `Anulat din site: revenire la versiunea din ${cand}`);
+  return cand;
+}
+async function stergeFisierGH(cale, mesaj) {
+  const {sha} = await citesteFisierGH(cale);
+  return gh(`/repos/${STATIC.repo}/contents/${cale}`, {method: 'DELETE', body: JSON.stringify({message: mesaj, sha, branch: STATIC.ramura})});
+}
+async function scrieFisierGH(cale, continut, mesaj) {
+  let sha;
+  try { sha = (await citesteFisierGH(cale)).sha; } catch (e) { if (e.status !== 404) throw e; }
+  return gh(`/repos/${STATIC.repo}/contents/${cale}`, {method: 'PUT',
+    body: JSON.stringify({message: mesaj, content: b64(continut), sha, branch: STATIC.ramura})});
+}
+// ---------- parola de administrator: intră ca administrator de pe orice calculator ----------
+const FISIER_ACCES = 'acces-admin.bin';
+const PANOU_ACCES = `<div class="acces-adm">
+    <b>Administrator de pe orice calculator sau telefon</b> <span class="acc-stare muted"></span>
+    <p class="muted" style="margin:6px 0">Alege o parolă de administrator. Pe orice dispozitiv, la ecranul de intrare scrii această parolă
+      în locul parolei site-ului și intri direct ca administrator. Ceilalți folosesc în continuare parola obișnuită și văd site-ul doar în citire.</p>
+    <div class="acc-rand"><input type="password" class="acc-p1" placeholder="Parola de administrator (minim 12 caractere)" autocomplete="new-password">
+      <input type="password" class="acc-p2" placeholder="Scrie-o încă o dată" autocomplete="new-password"></div>
+    <div class="acc-rand"><button class="btn pri acc-salv" type="button">Salvează parola de administrator</button>
+      <button class="btn acc-opreste" type="button" hidden>Oprește accesul cu parolă</button></div>
+    <div class="acc-msg" style="font-size:13px;margin-top:6px"></div></div>`;
+async function panouAcces(el) {
+  const stare = el.querySelector('.acc-stare'), msg = el.querySelector('.acc-msg'), opreste = el.querySelector('.acc-opreste');
+  const arata = activ => { stare.innerHTML = activ ? '· <b style="color:var(--ok)">activă</b>' : '· nesetată'; opreste.hidden = !activ;
+    el.querySelector('.acc-salv').textContent = activ ? 'Schimbă parola de administrator' : 'Salvează parola de administrator'; };
+  try { await citesteFisierGH(FISIER_ACCES); arata(true); } catch (e) { arata(false); }
+  el.querySelector('.acc-salv').onclick = async () => {
+    const p1 = el.querySelector('.acc-p1').value, p2 = el.querySelector('.acc-p2').value;
+    const parolaSite = localStorage.getItem('mpj_parola') || sessionStorage.getItem('mpj_parola') || '';
+    const eroare = t => { msg.innerHTML = `<b style="color:var(--s4)">${esc(t)}</b>`; };
+    if (p1.length < 12) return eroare('Parola de administrator trebuie să aibă cel puțin 12 caractere.');
+    if (p1 !== p2) return eroare('Cele două parole nu sunt la fel.');
+    if (!parolaSite) return eroare('Ieși și intră din nou pe site cu parola site-ului, apoi încearcă iar.');
+    if (p1 === parolaSite) return eroare('Parola de administrator trebuie să fie diferită de parola site-ului (pe aceea o au și ceilalți).');
+    const b = el.querySelector('.acc-salv'); b.disabled = true; msg.textContent = 'Criptez și salvez…';
+    try {
+      const octeti = await cripteazaOcteti({v: 1, cheie: ghCheie(), parola_site: parolaSite, creat: new Date().toISOString()}, p1);
+      await scrieFisierGH(FISIER_ACCES, octeti, 'Parola de administrator setată din site (cheie criptată)');
+      el.querySelector('.acc-p1').value = el.querySelector('.acc-p2').value = '';
+      arata(true);
+      msg.innerHTML = '<span style="color:var(--ok)"><b>✓ Gata.</b></span> Site-ul se republică în câteva minute; după aceea intri ca administrator ' +
+        'de pe orice dispozitiv cu această parolă. Dacă bifezi „Ține-mă minte”, rămâi administrator pe acel dispozitiv; altfel, doar până închizi fereastra.';
+      toast('Parola de administrator a fost salvată');
+    } catch (e) { eroare('Nu s-a salvat: ' + e.message); }
+    finally { b.disabled = false; }
+  };
+  opreste.onclick = async () => {
+    if (!confirm('Oprești intrarea ca administrator cu parolă?\n\nAdministrator rămâne doar acest dispozitiv (și cele unde ai bifat „Ține-mă minte”).')) return;
+    opreste.disabled = true;
+    try { await stergeFisierGH(FISIER_ACCES, 'Intrarea ca administrator cu parolă a fost oprită din site'); arata(false); msg.textContent = 'Oprit. Site-ul se republică în câteva minute.'; }
+    catch (e) { msg.innerHTML = `<b style="color:var(--s4)">Nu s-a putut opri: ${esc(e.message)}</b>`; }
+    finally { opreste.disabled = false; }
+  };
+}
+function panouGitHub(sel) {
+  const el = $(sel); if (!el || !STATIC) return;
+  if (ghCheie()) {
+    el.innerHTML = '<span style="color:var(--ok)"><b>✓ Acest dispozitiv este administrator</b></span> — doar de aici se pot salva regulile și lista de clienți; ' +
+      'toți ceilalți văd site-ul doar în citire. Istoricul modificărilor: ' +
+      `<a href="${ghUrl('commits/' + STATIC.ramura + '/setari.json')}" target="_blank" rel="noopener">reguli</a> · ` +
+      `<a href="${ghUrl('commits/' + STATIC.ramura + '/clienti.txt')}" target="_blank" rel="noopener">clienți</a> · ` +
+      '<a href="#" class="gh-iesire">Scoate drepturile de pe acest dispozitiv</a>' + (sel === '#rGh' ? PANOU_ACCES : '');
+    if (sel === '#rGh') panouAcces(el);
+    el.querySelector('.gh-iesire').onclick = e => {
+      e.preventDefault();
+      if (!confirm('Scoți drepturile de administrator de pe acest dispozitiv?\n\nSite-ul rămâne doar în citire aici. Le iei înapoi intrând pe site cu parola de administrator (sau cu cheia GitHub, la adresa site-ului cu ?admin la final).')) return;
+      ghSeteaza(''); actualizeazaPanouri(); incarcaReguli();
+    };
+    return;
+  }
+  el.innerHTML = `<b>Fă acest dispozitiv administrator (o singură dată)</b>
+    <p class="muted" style="margin:6px 0">Doar dispozitivul pe care pui cheia GitHub poate modifica regulile și clienții; ceilalți văd site-ul doar în citire. Cheia rămâne doar în acest browser:</p>
+    <ol class="muted" style="margin:0 0 8px 18px;padding:0;font-size:13px;line-height:1.6">
+      <li>Deschide <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">crearea unei chei GitHub</a>.</li>
+      <li>Token name: <b>Monitor Portal Just</b> · Expiration: <b>1 an</b>.</li>
+      <li>Repository access: <b>Only select repositories</b> → <b>${esc(STATIC.repo.split('/')[1])}</b>.</li>
+      <li>Permissions → Repository permissions → <b>Contents</b>: <b>Read and write</b>.</li>
+      <li><b>Generate token</b>, copiază cheia (începe cu <code>github_pat_</code>) și lipește-o aici:</li>
+    </ol>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="password" class="gh-cheie" placeholder="github_pat_…" autocomplete="off" style="flex:1;min-width:200px">
+      <button class="btn pri gh-conecteaza" type="button">Conectează</button></div>
+    <div class="gh-msg" style="font-size:13px;margin-top:6px"></div>`;
+  el.querySelector('.gh-conecteaza').onclick = async () => {
+    const v = el.querySelector('.gh-cheie').value.trim(), msg = el.querySelector('.gh-msg');
+    if (!v) return;
+    ghSeteaza(v); msg.textContent = 'Verific cheia…';
+    try { await citesteFisierGH('setari.json'); actualizeazaPanouri(); REGULI_MODIFICATE = false; incarcaReguli(); toast('Acest dispozitiv este acum administrator'); }
+    catch (e) { ghSeteaza(''); msg.innerHTML = `<b style="color:var(--s4)">${esc(e.message)}</b>`; }
+  };
+}
+function actualizeazaPanouri() {
+  if (!STATIC) return;
+  aplicaRol();
+  panouGitHub('#rGh'); panouGitHub('#cGh');
+  if (!$('#cAdd').disabled) $('#cAdd').textContent = ghCheie() ? 'Salvează lista pe GitHub' : 'Copiază lista și deschide GitHub';
+}
+
+// ---------- filtre pliabile pe telefon ----------
+['#aQ', '#fQ', '#dQ'].forEach(sel => {
+  const f = $(sel).closest('.filters');
+  f.classList.add('pliabil');
+  f.prepend($(sel));
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'btn btn-filtre'; b.setAttribute('aria-expanded', 'false');
+  const eticheta = () => {
+    const active = [...f.querySelectorAll('select')].filter(s => s.selectedIndex > (s.id === 'fNiv' ? 1 : 0)).length +
+      [...f.querySelectorAll('input[type=checkbox]:checked,input[type=date]')].filter(i => i.type === 'checkbox' || i.value).length;
+    b.textContent = (f.classList.contains('deschis') ? 'Ascunde filtrele' : 'Filtre') + (active ? ` (${active} active)` : '');
+  };
+  b.onclick = () => { f.classList.toggle('deschis'); b.setAttribute('aria-expanded', f.classList.contains('deschis')); eticheta(); };
+  f.addEventListener('change', eticheta);
+  f.after(b); eticheta();
+});
+
+// ---------- Radar de risc (dashboard): sectoare, județe, vârsta firmelor ----------
+const PV = {per: 30, ind: 1, mas: 'rata', cl: false, sel: {dom: new Set(), jud: new Set(), varsta: new Set()},
+  tabel: {}, toateSect: false, nLista: 25, nProg: 10};
+let PV_SALVAT = {dom: [], jud: [], varsta: []};
+try {
+  const s = JSON.parse(localStorage.getItem('mpj_radar') || '{}');
+  if ([7, 30, 'tot'].includes(s.per)) PV.per = s.per;
+  if ([1, 2, 4].includes(s.ind)) PV.ind = s.ind;
+  if (['rata', 'numar'].includes(s.mas)) PV.mas = s.mas;
+  ['dom', 'jud', 'varsta'].forEach(d => { if (Array.isArray(s[d])) PV_SALVAT[d] = s[d].map(String); });
+} catch { /* fără preferințe salvate */ }
+const pvCod = (dim, i) => dim === 'varsta' ? String(i) : PV_SURSA[dim]()[i].cod;
+const pvSalveaza = () => {
+  const sel = {};
+  if (PANOU) ['dom', 'jud', 'varsta'].forEach(d => { sel[d] = [...PV.sel[d]].map(i => pvCod(d, i)); });
+  if (PANOU) PV_SALVAT = sel;
+  try { localStorage.setItem('mpj_radar', JSON.stringify({per: PV.per, ind: PV.ind, mas: PV.mas, ...sel})); } catch { /* ignorat */ }
+};
+let PANOU = null, PVF = null, PVR = null, PVP = [];
+const VARSTE = [['sub 1 an', 0, 12], ['1–2 ani', 12, 36], ['3–5 ani', 36, 72], ['6–10 ani', 72, 132], ['11–20 ani', 132, 252], ['peste 20 de ani', 252, 1e6]];
+// Contururile județelor (Natural Earth, domeniu public), simplificate: [traseu SVG, x etichetă, y etichetă].
+const HARTA_RO = {"w":620,"h":436,"j":{"AB":["M168.5 185.3L164.7 183.1L161.5 179.8L160.3 174.8L160.2 169.0L161.3 164.4L162.9 161.7L164.6 161.1L166.8 161.4L169.8 163.8L180.5 164.5L184.4 168.6L185.8 171.6L190.9 167.9L197.0 168.9L200.6 166.1L207.2 164.8L216.2 169.6L221.7 170.0L222.1 171.3L220.8 174.5L223.7 176.7L225.1 176.5L225.4 173.7L231.8 172.5L238.2 171.9L244.4 173.4L246.0 172.1L248.1 172.3L249.8 173.8L249.9 175.7L247.7 179.0L250.1 182.0L255.7 185.0L256.9 189.4L258.9 191.5L259.2 198.7L249.0 209.3L247.2 214.1L246.1 214.2L243.2 211.9L237.9 212.8L236.7 214.3L237.4 219.6L235.6 221.6L231.2 222.6L228.2 221.3L226.7 222.1L227.4 225.8L230.9 227.5L227.3 234.0L224.7 234.2L223.2 235.4L220.9 241.8L222.2 250.6L221.0 256.5L223.6 263.5L221.8 266.2L219.1 266.7L218.4 261.3L213.7 256.5L210.0 254.5L207.7 252.0L206.8 249.4L207.3 246.6L205.3 243.3L205.1 239.4L201.5 226.2L198.1 221.2L195.6 214.6L192.0 213.0L185.6 204.7L185.1 202.8L186.8 202.8L187.0 201.5L185.1 197.2L183.6 195.5L178.6 193.9L175.1 184.8Z",212.4,198.9],"AG":["M332.2 272.2L333.8 277.0L331.2 283.6L329.7 290.8L327.3 293.0L325.1 290.7L324.3 290.8L322.6 296.6L323.3 300.4L326.3 304.4L327.3 307.4L327.0 309.1L324.8 312.1L326.0 322.1L325.3 330.8L323.8 334.6L326.2 338.1L324.2 340.3L326.8 345.7L332.7 349.8L331.1 353.9L331.5 359.3L330.2 361.9L325.8 360.4L321.4 361.0L317.7 363.7L313.3 363.9L309.7 366.6L305.0 365.7L302.1 366.4L300.7 365.4L297.6 365.2L296.2 362.5L295.1 355.2L295.6 351.7L293.9 341.8L291.6 336.7L294.2 334.1L293.4 333.2L289.2 333.1L287.8 331.8L283.7 323.2L283.3 319.1L282.1 319.4L280.0 323.3L276.8 325.9L275.0 323.0L279.9 317.0L278.3 312.6L281.6 296.0L281.0 292.4L278.8 288.5L279.1 283.1L278.4 279.8L280.2 275.9L278.7 267.8L281.7 258.9L280.9 255.9L292.8 252.4L296.9 252.0L298.8 252.7L301.3 255.8L304.0 254.5L310.8 254.2L318.1 255.1L325.4 260.2L330.0 269.6Z",305.4,305.2],"AR":["M74.2 156.2L75.6 155.5L77.4 152.5L81.9 153.7L103.8 152.5L113.8 156.7L121.4 157.3L125.2 160.2L128.9 167.9L132.9 169.8L136.1 172.4L141.0 174.3L142.8 177.7L155.7 179.7L161.5 179.8L164.7 183.1L160.4 186.2L158.7 190.3L155.8 194.0L153.0 194.9L146.9 194.1L144.5 195.9L143.6 197.9L143.7 202.4L141.9 207.8L142.7 212.2L141.5 215.3L136.0 222.3L132.1 223.1L130.2 224.7L123.8 223.5L120.5 221.0L119.7 219.4L115.3 218.5L112.3 216.2L109.4 216.7L107.9 220.6L105.9 220.7L103.9 219.6L103.1 223.5L100.8 220.8L97.0 219.3L93.6 223.8L91.2 221.3L91.3 218.7L87.9 215.3L84.1 214.8L82.9 211.5L79.7 210.9L77.9 211.3L77.4 213.8L73.4 217.3L70.2 215.7L66.1 217.5L63.2 215.2L62.0 212.6L59.8 213.6L59.0 216.7L56.9 216.9L55.1 215.3L55.1 213.6L54.2 212.7L50.2 212.7L44.4 211.1L42.8 207.9L40.5 205.5L30.3 198.7L30.3 197.5L32.9 196.4L32.6 192.2L36.4 189.3L39.1 189.0L41.5 190.6L43.5 189.8L47.1 191.1L49.6 190.8L51.8 192.7L56.1 188.5L59.1 187.8L61.4 178.3L62.5 177.0L66.5 176.4L68.0 175.3L65.7 169.6L65.9 167.6L68.7 163.0L69.4 157.6L70.4 156.4Z",99.0,189.7],"B":["M384.3 347.3L384.9 353.6L390.0 354.9L388.4 359.7L391.3 362.2L390.3 365.2L387.1 364.2L386.7 365.6L388.7 370.8L386.9 372.4L383.8 368.2L380.2 367.3L375.9 362.5L375.9 359.6L380.2 359.1L380.2 356.2L376.7 354.6L379.9 349.0Z",383.4,359.7],"BC":["M409.2 212.5L407.7 211.2L406.3 207.5L403.4 204.8L404.5 203.1L404.3 201.7L399.9 197.8L398.8 197.6L393.9 200.4L397.1 186.1L396.6 184.4L394.6 183.6L388.5 185.7L388.4 180.4L387.1 178.3L380.0 176.5L379.1 175.6L379.0 171.6L382.0 168.6L378.2 158.6L378.0 151.6L381.3 150.8L384.7 152.3L386.9 152.3L394.1 148.1L395.5 149.0L397.0 151.8L397.1 154.7L404.2 154.7L407.2 151.7L415.6 151.6L418.4 148.9L422.4 147.2L424.3 144.8L427.3 145.3L430.1 147.1L432.2 146.7L433.3 145.3L433.6 142.4L435.7 140.3L436.1 137.8L438.1 138.8L438.9 142.5L441.1 144.4L447.3 143.7L455.2 145.8L457.8 144.5L464.2 151.1L465.0 152.8L465.2 159.4L474.4 177.1L476.6 187.3L477.1 199.2L472.8 198.3L470.1 200.2L466.1 198.4L463.1 198.2L456.7 200.1L450.4 206.9L444.2 205.8L441.2 208.8L437.7 207.6L421.4 207.3L419.2 209.1L418.8 212.7L416.8 213.7Z",429.2,176.1],"BH":["M77.4 152.5L78.2 151.0L81.3 150.0L82.5 148.2L82.8 146.3L80.5 144.5L82.6 138.6L84.8 135.8L87.9 134.6L88.3 128.8L92.2 125.6L93.7 120.9L91.1 118.1L99.7 110.3L100.8 107.0L103.4 103.9L103.6 100.0L106.2 92.2L109.9 87.3L114.0 85.7L115.3 83.1L114.5 73.7L115.7 71.4L121.7 66.4L124.9 65.6L126.2 64.1L129.2 69.4L133.6 73.4L138.3 82.0L143.3 82.5L146.9 81.5L152.2 85.9L153.3 89.9L152.6 92.5L150.8 97.6L147.6 101.9L147.6 103.2L153.9 114.7L158.7 117.8L162.4 122.2L160.3 127.8L165.0 130.2L165.1 132.9L163.7 136.4L159.9 138.5L158.9 140.6L163.3 146.2L165.3 152.6L168.2 156.1L167.8 162.0L165.4 161.1L162.9 161.7L160.6 166.8L160.3 174.8L161.5 179.8L155.7 179.7L142.8 177.7L141.0 174.3L136.1 172.4L132.9 169.8L128.9 167.9L125.2 160.2L121.4 157.3L113.8 156.7L103.8 152.5L81.9 153.7Z",128.4,126.9],"BN":["M259.2 140.6L261.1 136.5L261.6 128.5L256.9 124.5L256.9 121.4L255.2 119.9L255.8 115.0L254.7 112.5L249.1 108.8L243.9 106.5L242.1 98.2L242.5 96.1L246.2 92.3L246.8 89.6L253.4 81.5L254.3 77.6L261.1 75.6L263.1 74.0L264.8 70.3L271.5 67.2L283.8 70.0L296.1 69.6L303.4 65.3L309.0 65.3L314.9 70.3L317.7 74.7L317.4 77.1L314.5 79.2L315.1 82.5L312.1 83.8L315.6 90.5L313.7 96.9L316.9 98.7L316.0 103.9L316.4 110.5L305.3 113.9L299.8 118.2L295.9 125.5L294.6 130.2L292.6 130.4L288.1 128.3L284.5 130.2L278.0 142.2L269.0 144.3Z",281.1,100.0],"BR":["M470.8 272.4L474.7 265.7L481.0 262.3L484.8 264.0L489.1 263.9L493.2 268.0L496.8 270.0L510.6 271.6L509.9 276.4L507.7 281.3L511.3 284.5L513.5 285.5L515.8 284.5L516.6 285.3L517.1 286.4L515.0 291.5L518.6 293.7L520.2 296.2L519.2 298.7L517.2 300.5L518.0 304.8L517.1 307.1L517.8 312.7L516.7 314.1L516.8 319.1L513.8 323.9L513.2 328.1L510.8 331.2L509.5 331.7L506.3 330.1L502.7 330.1L500.2 327.4L497.7 326.4L488.0 329.0L470.1 328.4L466.6 327.1L462.6 328.3L456.2 325.9L456.3 320.8L454.5 317.4L455.5 315.7L459.2 313.8L460.6 304.3L456.8 303.1L456.5 298.8L453.8 296.4L453.0 291.5L451.2 291.3L450.0 294.2L448.6 294.2L447.2 289.9L448.7 288.3L454.0 286.4L457.9 286.9L461.3 286.1L463.0 286.8L463.3 281.9L465.0 280.6L467.0 280.7L468.4 279.8Z",486.8,299.7],"BT":["M422.6 0.0L424.8 1.4L425.5 0.4L426.2 1.8L431.3 2.1L436.3 6.2L437.0 8.5L439.0 6.6L440.6 9.4L442.9 10.2L442.9 11.0L440.8 12.4L445.8 13.9L445.7 18.6L450.2 22.8L448.8 24.1L449.3 25.4L451.0 24.7L452.4 27.2L453.3 26.7L454.1 27.5L452.9 29.9L454.7 31.8L453.5 33.3L456.9 36.3L456.9 40.3L459.6 42.1L457.4 43.5L461.9 49.3L462.4 52.5L460.8 52.8L461.4 54.9L467.2 62.9L471.1 65.4L471.3 66.2L467.7 67.9L462.4 68.1L458.2 73.9L449.1 71.3L447.7 73.2L449.0 77.4L446.7 79.1L444.4 78.9L440.2 75.3L429.2 75.2L425.6 73.7L420.6 80.0L417.2 79.1L414.3 75.1L414.3 70.4L412.0 62.3L396.0 42.3L386.7 35.7L385.3 33.7L384.2 28.0L388.8 26.6L390.9 22.4L394.2 19.1L396.3 14.2L397.3 5.9L399.1 6.3L403.5 4.6L416.0 2.4Z",427.0,39.9],"BV":["M340.1 266.2L338.3 267.4L336.2 271.2L332.2 272.2L330.0 269.6L325.4 260.2L318.1 255.1L310.8 254.2L304.0 254.5L301.3 255.8L298.0 252.3L292.8 252.4L291.7 243.2L288.9 235.6L290.2 234.0L295.8 231.5L295.9 229.9L294.6 228.8L294.6 226.4L293.2 223.3L298.7 219.5L301.5 219.6L301.3 216.1L309.3 210.5L310.7 208.6L311.0 204.8L314.0 202.3L320.9 201.8L332.4 198.8L339.9 202.6L341.7 204.6L341.3 205.9L342.0 207.7L345.1 210.5L346.9 209.9L349.1 210.9L348.1 220.7L348.5 228.3L355.8 234.8L355.9 238.0L358.1 237.3L359.9 237.9L362.3 236.7L364.5 238.9L370.5 241.2L374.1 244.3L376.2 248.0L380.6 251.0L384.0 255.6L380.5 263.4L372.5 260.5L371.1 261.7L369.7 266.1L367.3 267.5L363.7 264.2L361.1 264.9L354.6 263.1L342.0 265.1Z",332.0,237.3],"BZ":["M397.2 252.1L399.0 250.6L403.3 238.1L402.4 233.1L405.3 235.9L412.3 247.5L414.8 249.9L419.8 249.7L421.3 250.3L426.9 255.7L432.7 259.4L436.1 259.9L436.9 257.4L441.4 258.6L443.0 260.3L443.4 263.4L446.3 266.0L448.0 266.3L452.0 264.7L452.7 268.3L455.5 266.5L457.2 266.5L461.1 267.9L463.2 271.5L470.8 272.4L468.4 279.8L467.0 280.7L465.0 280.6L463.3 281.9L463.0 286.8L461.3 286.1L457.9 286.9L454.0 286.4L448.7 288.3L447.2 289.9L448.6 294.2L450.0 294.2L451.2 291.3L453.0 291.5L453.8 296.4L456.5 298.8L456.8 303.1L460.6 304.3L459.2 313.8L455.5 315.7L454.5 317.4L456.3 320.8L456.2 325.9L454.4 327.6L456.1 329.9L451.2 331.5L450.5 327.8L446.5 325.5L442.1 327.5L437.7 325.3L433.2 325.7L427.8 324.4L420.7 324.3L417.0 321.6L413.3 316.8L413.1 315.0L415.3 311.0L413.0 308.0L409.5 306.5L408.2 297.8L404.7 293.6L404.7 290.2L402.3 291.5L400.1 289.0L394.6 288.3L393.7 285.1L391.1 282.1L391.5 278.8L388.9 272.4L380.5 263.4L384.0 255.6L390.6 254.4L392.2 250.1L393.5 250.0Z",426.1,284.6],"CJ":["M246.8 89.6L246.2 92.3L242.2 97.1L243.4 105.6L244.6 107.3L249.1 108.8L254.7 112.5L255.8 115.0L255.2 119.9L256.9 121.4L256.9 124.5L260.4 127.1L262.0 129.7L261.1 136.5L259.2 140.6L256.6 141.4L253.5 147.0L253.2 148.8L254.6 151.2L254.2 153.8L249.3 156.3L247.8 160.7L248.5 164.1L244.5 168.5L244.5 170.7L246.0 172.1L245.5 172.8L243.6 173.4L238.2 171.9L226.1 173.5L225.0 174.1L225.1 176.5L223.7 176.7L220.8 174.5L222.1 171.3L221.7 170.0L216.2 169.6L207.2 164.8L200.6 166.1L197.0 168.9L190.9 167.9L185.8 171.6L184.4 168.6L180.5 164.5L169.8 163.8L167.8 162.0L167.9 155.4L165.3 152.6L163.3 146.2L158.9 140.6L159.9 138.5L163.7 136.4L165.1 132.9L165.0 130.2L160.3 127.8L162.4 122.2L172.1 122.8L173.5 123.8L176.5 129.5L180.4 130.3L182.0 132.0L187.3 132.3L190.6 131.5L193.6 132.1L195.4 127.0L196.7 126.2L198.4 129.2L201.1 128.8L203.5 130.4L204.7 127.8L203.1 125.6L203.2 124.1L205.9 124.1L207.6 121.7L212.4 120.7L212.5 119.1L210.6 114.0L212.7 112.9L214.2 108.3L219.5 105.9L221.5 106.2L224.2 102.3L226.4 101.1L233.5 99.6L235.1 92.5L234.1 90.4L235.9 88.8Z",216.1,139.4],"CL":["M457.9 391.8L449.6 389.6L444.8 386.5L443.1 387.6L435.4 388.4L426.9 393.0L404.7 397.2L404.8 394.9L407.6 389.6L407.1 383.7L404.7 380.2L398.8 376.6L395.8 372.9L396.5 370.4L401.0 364.2L406.2 361.4L407.4 359.8L407.6 358.5L404.4 356.4L404.8 354.7L412.2 350.8L417.9 353.6L420.6 352.9L423.8 350.1L428.8 353.5L432.5 353.3L436.4 355.0L441.5 354.4L449.4 357.2L455.2 356.4L466.9 356.6L471.6 355.3L482.7 357.2L488.2 359.0L494.2 363.8L510.1 369.7L506.4 376.7L504.2 378.1L494.7 380.6L491.1 383.4L482.9 383.8L480.3 384.7L472.2 390.5L462.2 388.9L459.6 391.7Z",447.2,372.6],"CS":["M79.4 321.2L84.8 319.3L84.5 316.0L79.6 313.4L76.4 312.8L74.9 311.7L74.8 310.1L72.8 309.8L72.7 309.0L73.5 307.3L77.3 305.9L78.6 300.1L82.0 297.6L81.4 294.5L82.7 293.8L84.5 290.5L84.2 286.0L85.9 283.0L85.7 279.7L81.1 274.3L80.5 272.0L81.6 269.1L81.5 266.5L86.9 262.0L88.4 257.1L91.5 255.7L93.5 255.7L101.2 259.5L108.8 256.0L110.4 256.9L112.9 261.0L115.7 261.3L119.1 259.0L117.6 258.3L117.6 255.3L122.8 254.5L126.8 251.6L129.4 253.4L132.5 253.6L134.8 249.5L137.2 247.7L144.4 246.3L146.9 251.2L150.4 252.5L150.8 255.1L153.0 255.4L159.0 261.1L161.0 269.9L159.5 273.6L161.4 277.6L161.4 279.9L159.3 283.7L159.1 286.2L154.6 290.2L152.1 295.0L152.9 296.2L156.8 296.8L157.6 298.2L157.2 300.2L152.4 306.6L150.2 315.1L147.4 319.8L143.5 331.7L141.1 332.4L139.0 330.0L135.1 329.6L131.8 326.6L129.8 327.2L125.8 338.1L126.6 344.6L125.8 346.4L117.4 347.0L114.8 341.1L106.8 337.5L99.3 339.3L92.7 338.3L90.3 335.9L88.7 330.9L87.5 329.8L76.7 329.2L75.6 328.7L74.5 326.2L72.1 324.7L73.8 321.6Z",118.2,294.8],"CT":["M468.2 401.8L465.4 398.2L461.7 396.4L460.3 394.7L460.6 392.6L459.6 391.7L462.2 388.9L472.2 390.5L480.3 384.7L482.9 383.8L491.1 383.4L494.7 380.6L504.2 378.1L508.1 374.5L511.7 365.6L515.8 361.4L514.2 355.6L509.9 353.9L508.8 352.3L510.0 351.1L510.6 343.1L507.1 339.1L503.1 337.7L501.9 336.4L500.5 333.0L501.7 330.7L505.0 329.8L509.5 331.7L512.2 329.9L518.1 329.4L521.4 330.7L527.1 336.2L529.9 335.5L531.3 331.4L535.1 331.4L538.4 335.5L543.1 337.5L548.3 337.5L552.6 336.2L560.1 339.1L560.5 342.4L565.6 340.8L568.4 337.5L567.4 335.6L573.0 337.9L573.3 339.5L571.7 342.9L570.1 343.4L572.3 340.0L572.5 338.4L571.0 337.5L571.4 339.2L568.8 338.8L564.6 343.4L559.3 346.5L560.7 343.4L558.9 343.4L558.0 345.3L558.8 345.3L558.7 347.0L560.2 347.9L556.6 349.6L556.6 351.1L557.5 349.8L559.3 351.1L557.5 357.3L558.3 359.3L559.6 355.3L564.7 349.6L568.0 347.8L569.2 344.7L563.9 356.6L560.8 359.1L554.9 367.2L554.0 370.5L553.2 369.9L552.1 370.3L550.2 373.3L549.9 378.3L552.6 387.3L550.9 387.0L549.9 388.6L552.6 403.4L548.5 415.0L546.5 427.6L537.1 428.2L523.1 425.6L509.5 419.2L507.3 417.4L504.4 406.5L502.8 403.8L499.2 404.3L494.6 406.9L490.3 408.0L486.0 400.9L484.5 400.4L480.7 401.6Z",524.1,380.0],"CV":["M409.2 212.5L404.0 222.3L402.4 233.1L403.3 238.1L399.0 250.6L397.2 252.1L396.1 252.0L392.8 249.9L391.6 251.1L390.6 254.4L384.0 255.6L380.6 251.0L376.2 248.0L374.1 244.3L370.5 241.2L364.5 238.9L362.3 236.7L359.9 237.9L358.1 237.3L355.9 238.0L355.8 234.8L348.5 228.3L348.1 220.7L349.1 210.9L346.9 209.9L345.1 210.5L342.0 207.7L341.3 205.9L344.5 199.0L351.5 190.9L357.2 186.9L360.7 189.8L364.1 198.0L370.8 203.6L376.9 204.1L393.9 200.4L399.3 197.5L404.3 201.7L404.5 203.1L403.4 204.8L406.3 207.5L407.7 211.2Z",376.7,221.1],"DB":["M379.3 333.6L374.2 340.4L374.4 341.5L376.7 342.3L376.6 343.9L371.4 349.8L351.2 351.0L348.0 352.3L345.6 355.5L337.8 353.4L338.0 355.8L334.7 360.8L332.3 362.5L330.2 361.9L331.5 359.3L331.1 353.9L332.7 349.8L331.9 348.7L328.6 347.5L324.4 341.4L324.5 339.5L326.2 338.1L323.8 334.6L325.3 330.8L326.0 322.1L324.6 313.7L327.3 307.4L326.3 304.4L323.3 300.4L322.6 294.8L324.7 290.6L327.3 293.0L329.7 290.8L331.2 283.6L333.8 277.0L332.2 272.2L336.2 271.2L338.7 266.9L340.1 266.2L342.0 277.5L345.9 281.8L346.4 287.8L353.0 299.2L356.3 303.3L358.5 312.9L360.6 314.2L363.7 313.9L365.6 317.5L365.2 321.6L366.0 324.2L371.9 326.3L376.5 331.9Z",345.4,321.4],"DJ":["M175.5 418.8L173.5 418.3L171.0 415.0L172.6 405.8L173.3 403.7L174.6 402.8L182.3 400.2L183.4 397.3L182.8 394.4L181.3 393.7L186.7 387.9L189.9 387.1L189.4 380.9L192.1 370.8L196.2 367.9L198.4 368.0L198.8 367.3L197.8 366.1L194.5 365.2L195.1 360.6L197.9 359.2L201.1 355.5L199.6 354.6L200.7 353.8L204.8 353.5L208.3 352.2L211.9 352.3L218.9 346.9L228.8 344.3L228.8 335.2L229.3 334.0L230.9 334.3L232.5 338.9L237.9 342.7L239.9 348.2L243.6 353.2L240.2 357.9L240.4 360.0L243.6 362.2L246.6 366.1L248.8 367.0L256.8 378.3L261.6 381.1L263.2 383.4L262.6 388.1L264.5 393.5L260.8 393.6L259.8 398.9L260.8 400.4L265.1 401.6L265.5 404.3L263.0 406.9L264.3 410.1L263.3 413.3L259.7 418.4L256.1 426.3L233.2 420.3L229.5 418.0L222.5 419.0L219.6 418.5L212.5 414.4L202.1 413.9L196.1 414.8L189.4 417.5Z",222.6,388.2],"GJ":["M209.6 280.3L219.2 275.6L227.3 277.4L233.1 277.0L234.8 278.2L235.6 279.9L234.6 285.4L236.0 292.2L234.7 296.7L234.8 301.2L231.8 313.8L232.5 329.6L231.6 335.0L230.1 334.0L229.0 334.4L229.1 343.8L228.2 344.7L225.1 344.9L218.9 346.9L212.9 351.3L211.1 348.0L203.2 341.3L190.3 337.2L187.5 335.5L176.7 323.8L175.1 316.3L175.4 311.4L169.2 305.8L164.8 306.0L162.6 305.1L159.8 301.4L157.2 300.2L157.6 298.2L156.8 296.8L152.9 296.2L152.1 295.0L154.6 290.2L159.1 286.2L173.0 281.1L181.5 284.4L186.7 282.5L192.1 283.5L204.2 278.5Z",202.2,308.1],"GL":["M515.6 205.5L514.5 207.6L514.9 208.9L514.0 213.2L516.8 222.3L516.3 224.4L517.2 226.7L515.8 228.3L516.0 231.0L518.7 237.0L519.6 249.2L515.6 250.0L512.6 252.9L517.8 256.0L519.4 259.0L519.5 262.2L522.7 266.4L520.8 269.8L516.2 268.5L511.9 269.7L510.6 271.6L496.8 270.0L493.2 268.0L489.1 263.9L484.8 264.0L481.0 262.3L479.3 260.4L476.2 250.0L473.0 245.5L469.9 243.5L467.8 240.2L460.0 220.0L459.7 214.3L464.7 208.4L471.1 206.8L474.2 203.8L478.0 203.6L480.2 206.6L482.4 213.4L483.7 214.9L484.7 214.1L485.3 209.6L483.3 203.7L484.4 202.5L495.7 203.9L497.2 204.9L497.8 206.8L499.0 206.5L500.6 203.8L502.3 202.8L512.2 206.1Z",493.1,234.8],"GR":["M399.2 398.0L385.1 403.3L381.0 409.4L373.1 415.4L368.9 422.0L364.7 425.5L363.1 428.5L359.9 429.7L358.8 420.0L356.1 414.2L353.9 398.9L356.0 389.6L359.1 388.1L359.0 379.1L358.4 376.6L354.7 373.2L348.0 372.1L346.5 370.3L344.3 364.8L347.1 358.0L346.9 356.6L345.6 355.5L347.3 353.1L351.2 351.0L371.4 349.8L373.0 353.4L370.2 365.4L371.2 368.4L375.1 370.3L376.2 372.0L379.0 372.6L384.0 377.2L387.1 378.7L390.6 378.1L395.8 372.9L398.8 376.6L406.2 381.8L407.8 388.0L407.2 390.9L404.8 394.9L404.7 397.2Z",372.1,386.3],"HD":["M219.2 275.6L209.6 280.3L204.2 278.5L192.1 283.5L186.7 282.5L181.5 284.4L179.2 282.9L175.6 282.5L173.7 280.9L159.1 286.2L159.3 283.7L161.5 278.5L159.5 273.6L161.0 269.9L159.7 262.4L158.0 259.8L153.0 255.4L150.8 255.1L150.4 252.5L146.9 251.2L144.9 248.5L144.4 246.3L145.5 245.3L146.2 242.0L150.8 236.4L149.9 235.3L147.6 235.5L145.2 230.5L142.2 227.5L140.7 221.7L138.5 219.3L141.5 215.3L142.7 212.2L141.9 207.8L143.7 202.4L143.6 197.9L144.5 195.9L146.9 194.1L153.0 194.9L155.8 194.0L158.7 190.3L160.4 186.2L164.7 183.1L168.5 185.3L175.1 184.8L178.6 193.9L183.6 195.5L185.1 197.2L187.0 201.5L186.8 202.8L185.1 202.8L185.6 204.7L192.0 213.0L195.6 214.6L198.1 221.2L201.5 226.2L205.1 239.4L205.3 243.3L207.3 246.6L206.8 249.4L207.7 252.0L210.0 254.5L213.7 256.5L218.8 261.9L218.8 268.1L220.1 272.8Z",176.4,238.4],"HR":["M376.9 204.1L370.8 203.6L367.8 201.8L363.6 197.3L360.7 189.8L357.2 186.9L351.5 190.9L344.5 199.0L341.7 204.6L339.9 202.6L332.4 198.8L324.2 201.0L315.6 192.8L310.2 192.1L303.4 183.9L303.9 182.8L309.4 180.2L309.8 178.6L307.5 176.0L312.7 173.1L314.2 166.8L318.0 162.8L322.8 160.4L330.3 151.6L330.9 143.0L328.6 135.5L329.6 129.1L329.5 123.4L328.8 120.8L325.7 116.6L325.3 113.0L327.7 114.0L330.4 113.6L332.3 108.6L334.7 107.4L338.6 107.5L345.9 112.5L349.1 115.6L355.9 114.8L359.2 115.9L361.1 117.6L363.8 123.4L368.1 127.5L369.0 130.0L368.7 131.2L366.4 131.1L365.4 132.5L366.5 150.3L370.2 154.7L371.6 155.2L371.4 150.9L372.0 150.4L378.0 151.6L378.2 158.6L382.0 168.6L379.0 171.6L379.1 175.6L380.0 176.5L387.1 178.3L388.4 180.4L388.5 185.7L394.6 183.6L397.0 185.2L393.9 200.4Z",349.4,164.1],"IF":["M371.4 349.8L376.6 343.9L376.7 342.3L374.4 341.5L374.2 340.4L380.2 332.1L389.7 330.8L399.0 332.3L400.0 333.0L401.0 338.6L406.3 342.5L405.8 344.4L402.6 346.8L401.5 349.9L402.3 351.5L405.9 353.8L404.8 354.7L404.4 356.4L407.6 359.0L406.2 361.4L399.9 365.3L396.5 370.4L395.8 372.9L392.3 376.7L389.8 378.5L387.1 378.7L384.0 377.2L379.0 372.6L376.2 372.0L375.1 370.3L371.2 368.4L370.5 367.2L370.8 361.1L373.0 353.4ZM390.3 365.2L391.3 362.2L388.4 359.7L390.0 354.9L384.9 353.6L384.3 347.3L379.9 349.0L376.7 354.6L380.2 356.2L380.2 359.1L375.9 359.6L375.9 362.5L380.2 367.3L383.8 368.2L386.9 372.4L388.7 370.8L386.7 365.6L387.1 364.2Z",405.1,340.8],"IL":["M405.9 353.8L402.3 351.5L401.5 349.9L402.6 346.8L405.8 344.4L406.3 342.5L401.0 338.6L399.6 332.6L395.1 331.5L399.7 328.2L404.4 329.3L407.1 327.0L412.5 326.8L417.0 321.6L421.9 324.7L427.8 324.4L433.2 325.7L437.7 325.3L442.1 327.5L446.5 325.5L450.5 327.8L450.9 331.2L451.6 331.5L456.1 329.9L454.4 327.6L456.2 325.9L462.6 328.3L466.6 327.1L470.1 328.4L488.0 329.0L497.7 326.4L500.2 327.4L502.7 330.1L500.5 333.0L501.9 336.4L503.1 337.7L507.1 339.1L510.6 343.1L510.0 351.1L508.8 352.3L509.9 353.9L514.2 355.6L515.8 361.4L511.7 365.6L510.1 369.7L494.2 363.8L488.2 359.0L473.6 355.4L466.9 356.6L455.2 356.4L449.4 357.2L441.5 354.4L436.4 355.0L432.5 353.3L428.8 353.5L423.8 350.1L419.0 353.4L416.1 353.2L412.2 350.8Z",458.8,342.8],"IS":["M471.3 66.2L474.0 73.9L480.8 76.8L481.2 77.7L479.9 81.0L481.1 81.9L480.5 84.8L482.3 86.2L484.8 91.3L491.1 94.2L494.7 101.0L495.9 106.6L498.7 108.1L498.3 109.4L504.5 114.5L504.6 115.8L509.1 117.8L510.4 117.1L515.3 126.4L514.9 129.4L516.0 130.2L516.6 135.1L512.8 135.8L510.6 137.3L507.3 135.9L505.7 137.5L500.2 135.4L497.6 135.2L496.9 134.0L498.0 129.5L497.2 128.1L495.5 128.6L494.6 131.8L489.5 126.1L484.0 122.7L483.4 124.0L483.7 128.8L486.7 129.3L485.5 131.5L479.7 130.8L477.8 133.4L474.2 134.3L470.2 133.1L464.0 134.0L456.4 133.5L452.4 125.5L453.7 123.7L457.9 122.1L458.7 121.0L455.2 117.0L453.5 113.6L450.2 113.3L445.6 117.3L440.4 116.7L438.9 119.4L437.3 119.8L433.0 118.3L426.6 114.0L420.0 113.0L417.0 105.5L413.6 100.7L409.1 96.3L414.1 95.2L415.3 94.0L411.0 89.6L410.5 87.2L418.5 87.7L420.5 87.0L421.7 82.2L420.6 80.0L423.3 77.5L425.0 74.0L429.2 75.2L440.2 75.3L445.7 79.3L448.1 78.6L449.0 77.4L447.7 73.2L449.1 71.3L458.2 73.9L459.5 72.8L460.1 70.5L463.1 67.7L467.7 67.9Z",461.9,103.1],"MH":["M181.3 393.7L174.6 391.6L160.5 381.6L159.9 374.4L153.4 372.2L151.2 370.3L148.3 365.1L148.3 362.2L146.5 359.4L146.9 356.0L151.2 354.9L153.3 349.8L155.9 349.5L161.1 352.1L165.0 349.9L165.4 348.2L161.1 343.7L155.9 343.1L153.7 341.9L146.9 334.9L143.1 334.0L140.2 337.1L135.2 339.3L126.5 355.5L124.9 355.9L122.0 355.1L120.2 351.2L117.8 348.8L117.4 347.0L121.0 346.3L124.3 346.9L126.3 345.8L125.8 338.1L130.2 326.7L131.8 326.6L135.6 329.8L139.0 330.0L141.1 332.4L143.5 331.7L147.4 319.8L150.2 315.1L152.4 306.6L157.2 300.2L159.8 301.4L163.8 305.8L170.0 306.2L175.4 311.4L175.1 316.3L176.7 323.8L187.5 335.5L190.3 337.2L203.2 341.3L211.1 348.0L212.9 351.3L211.9 352.3L208.3 352.2L199.8 354.3L201.1 355.5L197.9 359.2L195.1 360.6L194.3 363.9L195.0 365.6L198.3 366.3L198.7 367.9L196.2 367.9L192.1 370.8L189.4 380.9L189.9 387.1L186.7 387.9Z",169.0,348.2],"MM":["M217.7 25.4L227.3 27.3L231.9 27.1L236.4 30.7L236.8 32.1L244.8 29.5L246.9 29.6L252.5 31.8L254.9 34.0L260.0 35.6L265.9 33.5L269.1 33.4L273.2 30.4L283.1 31.5L288.9 35.8L289.7 39.7L290.9 41.0L299.3 45.2L303.9 52.4L305.1 53.3L308.1 52.7L308.9 55.3L314.0 62.5L312.9 64.0L309.0 65.3L303.4 65.3L301.2 66.0L296.1 69.6L283.8 70.0L270.3 67.5L264.8 70.3L262.4 74.8L254.6 77.2L253.4 81.5L246.8 89.6L235.9 88.8L230.7 91.5L225.8 88.6L223.8 85.9L210.7 85.8L196.8 81.0L190.0 80.9L186.7 82.1L180.7 81.0L178.6 79.6L178.7 78.3L182.8 75.0L184.6 70.6L188.4 65.9L189.6 65.5L195.0 69.7L197.1 70.2L202.0 65.0L204.3 59.6L204.4 57.2L202.2 55.2L197.0 53.6L196.5 52.1L197.5 50.0L203.2 49.6L207.9 51.1L210.6 50.9L221.5 43.3L222.1 41.2L221.4 40.0L216.8 36.4L213.7 32.1L212.6 28.4L214.5 26.0Z",245.8,58.3],"MS":["M246.0 172.1L244.5 170.7L244.5 168.5L248.5 164.1L247.8 160.7L249.3 156.3L254.2 153.8L254.6 151.2L253.2 148.0L257.2 140.8L259.2 140.6L269.0 144.3L278.0 142.2L284.5 130.2L288.1 128.3L292.6 130.4L294.6 130.2L295.9 125.5L299.3 118.9L305.3 113.9L316.4 110.5L322.3 111.6L325.3 113.0L325.7 116.6L328.8 120.8L329.5 123.4L329.6 129.1L328.6 135.5L330.9 143.0L330.3 151.6L322.8 160.4L318.0 162.8L314.2 166.8L312.7 173.1L307.5 176.0L309.8 178.6L309.4 180.2L303.9 182.8L303.4 183.9L310.2 192.1L315.6 192.8L324.2 201.0L314.0 202.3L311.0 204.8L310.7 208.6L305.8 205.4L303.5 204.9L293.6 207.0L291.6 205.1L290.9 203.0L289.7 192.6L290.5 189.5L287.7 190.3L283.9 189.7L281.3 191.7L275.4 191.5L271.0 192.6L266.2 191.0L258.9 191.5L256.9 189.4L255.7 185.0L250.1 182.0L248.1 179.7L248.1 177.9L249.9 175.7L250.1 174.3L248.1 172.3Z",292.0,159.4],"NT":["M368.3 131.2L369.0 130.8L368.7 128.5L363.8 123.4L361.1 117.6L359.2 115.9L355.9 114.8L357.5 108.6L365.6 100.7L365.6 99.1L362.7 95.6L362.7 94.4L364.8 94.3L370.3 98.4L376.3 96.0L381.3 97.1L384.7 96.3L392.1 96.3L400.6 92.6L403.4 92.2L406.8 93.7L413.6 100.7L417.0 105.5L420.0 113.0L420.8 113.5L426.6 114.0L433.0 118.3L437.3 119.8L438.9 119.4L440.4 116.7L445.6 117.3L450.2 113.3L453.5 113.6L455.2 117.0L458.7 121.0L457.9 122.1L453.7 123.7L452.4 125.5L456.1 132.2L458.5 143.0L457.8 144.5L455.2 145.8L447.3 143.7L441.1 144.4L438.9 142.5L438.1 138.8L436.1 137.8L435.7 140.3L433.6 142.4L433.3 145.3L432.2 146.7L430.1 147.1L427.3 145.3L424.3 144.8L422.4 147.2L418.4 148.9L415.6 151.6L407.2 151.7L404.2 154.7L397.9 154.8L396.9 154.3L397.0 151.8L395.5 149.0L394.1 148.1L385.6 152.5L381.3 150.8L378.0 151.6L372.7 150.2L371.4 150.9L371.9 154.6L371.0 155.1L367.0 151.3L366.2 149.1L365.4 132.5L366.4 131.1Z",402.9,125.3],"OT":["M256.8 426.5L256.1 426.3L259.7 418.4L263.3 413.3L264.3 410.1L263.0 406.9L265.5 404.3L265.1 401.6L260.8 400.4L259.8 398.9L260.8 393.6L264.5 393.5L262.6 388.1L263.2 383.4L261.6 381.1L256.8 378.3L249.7 368.0L246.6 366.1L243.6 362.2L240.4 360.0L240.1 358.6L243.6 353.2L246.1 351.6L249.1 351.7L251.8 354.4L256.1 349.8L259.9 350.1L262.5 348.8L264.6 344.7L265.6 344.9L266.6 348.7L268.2 348.2L266.0 341.4L265.1 332.8L268.0 328.6L269.5 322.0L271.8 318.0L273.6 317.0L275.2 318.6L275.0 323.0L276.2 325.7L277.4 325.6L280.0 323.3L282.1 319.4L283.3 319.1L283.7 323.2L287.8 331.8L289.2 333.1L293.4 333.2L294.2 334.1L291.6 336.7L293.9 341.8L294.9 347.4L295.1 355.2L296.5 363.9L297.6 365.2L300.7 365.4L302.1 366.4L301.2 369.5L301.9 379.7L301.0 385.0L301.5 392.3L300.2 393.7L297.2 394.4L293.8 397.6L289.4 399.0L288.1 400.8L287.7 404.0L295.3 420.7L289.7 426.2L276.9 421.8L269.8 425.8Z",276.4,374.3],"PH":["M391.4 331.5L388.2 330.7L384.2 332.1L380.2 332.1L379.3 333.6L378.6 333.4L376.5 331.9L371.9 326.3L366.0 324.2L365.2 316.2L363.7 313.9L360.6 314.2L358.5 312.9L356.3 303.3L353.0 299.2L346.4 287.8L345.9 281.8L342.0 277.5L340.1 266.2L342.0 265.1L354.6 263.1L361.1 264.9L363.7 264.2L367.3 267.5L369.7 266.1L371.6 260.9L373.9 260.7L377.4 262.8L380.5 263.4L388.0 271.1L391.1 277.4L391.1 282.1L393.7 285.1L394.6 288.3L400.1 289.0L402.3 291.5L404.7 290.2L404.7 293.6L408.2 297.8L409.5 306.5L413.0 308.0L415.3 311.0L413.1 315.8L417.0 321.6L412.5 326.8L407.1 327.0L404.4 329.3L399.7 328.2L395.1 331.5Z",378.2,297.4],"SB":["M292.8 252.4L280.9 255.9L267.4 255.8L257.4 258.2L250.8 262.1L243.7 260.6L232.8 261.0L224.0 266.1L221.8 266.2L223.6 263.5L221.0 256.5L222.2 250.6L220.9 241.8L223.2 235.4L224.7 234.2L227.3 234.0L230.9 227.5L227.4 225.8L226.7 222.1L228.2 221.3L231.2 222.6L235.6 221.6L237.4 219.6L236.7 214.3L237.9 212.8L243.2 211.9L246.1 214.2L247.2 214.1L249.0 209.3L258.9 199.5L258.9 191.5L266.2 191.0L271.0 192.6L275.4 191.5L281.3 191.7L283.9 189.7L287.7 190.3L290.5 189.5L289.7 192.6L290.5 200.6L291.6 205.1L292.7 206.5L296.7 206.7L303.5 204.9L305.8 205.4L310.7 208.6L305.4 213.7L301.3 216.1L301.5 219.6L298.7 219.5L293.2 223.3L294.6 226.4L294.6 228.8L295.9 229.9L295.8 231.5L290.2 234.0L288.9 235.6L291.7 243.2Z",262.7,229.0],"SJ":["M234.1 90.4L235.1 92.5L233.5 99.6L226.4 101.1L224.2 102.3L221.5 106.2L219.5 105.9L214.2 108.3L212.7 112.9L210.6 114.0L212.5 119.1L212.4 120.7L207.6 121.7L205.9 124.1L203.2 124.1L203.1 125.6L204.7 127.8L204.1 130.0L202.9 130.5L201.1 128.8L198.4 129.2L197.2 126.6L195.9 126.3L193.6 132.1L190.6 131.5L187.3 132.3L182.0 132.0L180.4 130.3L176.5 129.5L173.5 123.8L172.1 122.8L162.4 122.2L158.7 117.8L153.9 114.7L147.6 103.2L147.6 101.9L150.8 97.6L153.3 89.9L156.1 87.7L166.5 83.2L175.0 85.1L183.7 90.6L188.0 86.1L186.7 82.1L190.0 80.9L198.6 81.3L212.2 86.0L223.8 85.9L225.8 88.6L229.9 91.3Z",188.1,104.2],"SM":["M152.1 48.8L157.0 47.5L161.4 43.2L164.5 42.2L165.3 37.7L168.9 36.1L172.7 30.9L175.2 29.8L175.8 25.5L181.1 27.5L184.9 25.2L187.3 19.2L189.9 16.7L195.9 18.4L204.4 26.6L206.6 26.5L211.0 28.6L212.6 28.4L213.7 32.1L216.8 36.4L222.1 41.2L221.5 43.3L210.6 50.9L207.9 51.1L203.2 49.6L198.6 49.6L196.8 50.8L197.0 53.6L203.9 56.5L204.3 59.6L202.0 65.0L198.3 69.5L197.1 70.2L195.0 69.7L189.1 65.5L184.6 70.6L182.8 75.0L178.7 78.3L178.6 79.6L180.7 81.0L186.7 82.1L188.0 84.7L187.7 86.7L183.7 90.6L175.0 85.1L167.8 83.2L164.7 83.6L156.1 87.7L153.3 89.9L151.6 84.8L146.9 81.5L143.3 82.5L138.3 82.0L133.6 73.4L129.2 69.4L126.2 64.1L128.8 56.7L134.3 51.3L141.2 50.8L143.0 46.4L145.0 46.0Z",173.8,55.3],"SV":["M375.2 29.2L379.4 28.0L384.2 28.0L385.8 34.8L396.0 42.3L412.0 62.3L414.3 70.4L414.7 76.1L417.2 79.1L420.6 80.0L421.6 81.3L420.5 87.0L418.5 87.7L410.5 87.2L411.0 89.6L415.3 94.0L414.1 95.2L409.1 96.3L405.8 93.0L402.1 92.2L392.1 96.3L384.7 96.3L381.3 97.1L376.3 96.0L370.3 98.4L363.3 94.1L362.7 95.6L365.6 99.1L365.6 100.7L357.5 108.6L355.9 114.8L349.1 115.6L345.9 112.5L337.4 107.1L332.3 108.6L331.0 113.0L329.6 114.0L316.4 110.5L316.0 103.9L316.9 98.7L313.7 96.9L315.6 90.5L312.1 83.8L315.1 82.5L314.5 79.2L317.4 77.1L317.7 74.7L314.9 70.3L309.0 65.3L312.9 64.0L314.0 62.5L308.9 55.3L308.1 52.7L317.1 50.2L319.9 47.6L326.2 37.4L329.0 35.5L361.2 32.1L371.0 29.1Z",360.1,70.5],"TL":["M524.2 266.2L527.4 269.1L527.0 271.0L530.2 278.4L546.4 285.5L555.1 287.5L559.6 287.1L561.2 285.8L558.9 284.6L558.4 283.0L560.4 281.3L560.4 278.6L563.1 278.5L569.5 282.5L571.0 282.0L572.4 278.3L574.4 278.1L578.7 274.8L585.6 272.2L589.1 268.9L592.6 269.0L595.3 267.0L602.4 268.3L611.5 271.6L616.8 276.2L617.9 279.5L617.8 287.1L617.3 288.5L615.0 288.4L615.0 289.0L617.9 293.4L620.0 293.6L617.7 297.8L617.2 306.1L615.0 315.6L615.5 317.6L613.8 320.2L614.6 321.9L614.2 323.1L611.0 325.8L609.7 325.1L584.4 329.2L577.8 333.8L574.2 338.2L572.5 332.9L580.6 330.1L583.2 327.4L583.6 325.2L580.5 320.7L580.9 323.9L578.1 324.7L577.3 323.3L576.9 315.9L577.6 314.1L580.6 312.9L581.4 311.7L580.8 310.7L577.1 308.4L573.0 307.7L571.5 310.0L568.7 310.8L566.3 313.1L565.2 316.2L566.0 317.8L565.2 319.1L565.8 320.7L571.0 325.2L569.2 326.5L570.1 327.1L569.2 329.3L570.6 331.0L566.2 331.8L561.6 334.6L560.2 337.8L560.6 338.3L561.6 337.5L561.3 338.7L556.3 338.2L552.6 336.2L548.3 337.5L543.1 337.5L538.4 335.5L535.1 331.4L531.3 331.4L529.9 335.5L527.1 336.2L521.4 330.7L518.1 329.4L512.2 329.9L513.8 323.9L516.9 318.7L516.7 314.1L517.8 312.7L517.1 307.1L518.0 304.8L517.2 300.5L519.2 298.7L520.2 296.2L518.6 293.7L515.0 291.5L517.1 286.4L516.6 285.3L515.8 284.5L513.5 285.5L511.3 284.5L507.7 281.3L509.9 276.4L510.3 272.4L511.4 270.1L516.2 268.5L520.5 269.9L522.7 266.4Z",565.0,302.4],"TM":["M23.9 202.3L27.6 201.6L30.3 198.7L31.2 199.0L40.5 205.5L45.2 211.6L54.2 212.7L56.0 216.4L57.8 217.1L59.2 216.3L59.8 213.6L62.0 212.6L63.2 215.2L66.1 217.5L70.2 215.7L73.4 217.3L77.4 213.8L77.9 211.3L81.9 211.1L83.5 212.0L84.1 214.8L87.3 214.9L90.7 217.9L91.6 219.4L91.2 221.3L93.6 223.8L97.0 219.3L100.8 220.8L103.1 223.5L103.9 219.6L105.9 220.7L107.9 220.6L109.4 216.7L110.7 216.2L113.2 216.5L115.3 218.5L119.7 219.4L120.5 221.0L123.8 223.5L127.1 223.6L129.6 224.6L132.1 223.1L136.0 222.3L137.0 220.1L138.5 219.3L140.7 221.7L142.2 227.5L145.2 230.5L147.6 235.5L149.9 235.3L150.7 237.1L146.7 241.0L144.9 246.1L137.2 247.7L134.8 249.5L132.5 253.6L129.4 253.4L126.8 251.6L122.8 254.5L117.6 255.3L117.6 258.3L119.1 259.0L115.7 261.3L112.9 261.0L110.4 256.9L108.8 256.0L101.2 259.5L93.5 255.7L91.5 255.7L88.4 257.1L86.9 262.0L81.5 266.5L80.7 273.6L85.2 278.4L86.0 282.5L84.2 286.0L84.2 291.4L81.4 294.5L76.2 290.0L65.3 287.2L58.8 280.2L55.6 281.7L53.8 280.0L48.4 277.5L37.6 265.2L34.4 263.7L34.0 262.3L36.4 260.2L36.5 258.8L33.5 251.8L35.0 246.9L35.6 237.9L34.2 236.6L31.7 239.4L29.2 238.8L26.4 234.5L25.8 230.9L23.8 229.1L21.6 225.1L19.4 223.6L15.7 222.8L12.2 219.6L7.3 216.8L4.1 209.5L0.0 204.4L2.6 201.0L13.2 200.7L14.8 198.1L20.1 199.8Z",73.0,240.0],"TR":["M359.9 429.7L355.9 429.8L352.3 432.6L348.4 434.3L342.5 434.5L338.3 436.2L335.5 435.8L328.4 431.0L317.2 429.7L309.5 426.8L295.7 427.8L289.7 426.2L295.3 420.7L289.8 409.4L287.7 402.3L289.4 399.0L293.8 397.6L297.2 394.4L300.2 393.7L301.5 392.3L301.0 385.0L301.9 379.7L301.2 369.5L302.1 366.4L305.0 365.7L308.5 366.6L310.7 366.3L313.3 363.9L317.7 363.7L321.4 361.0L324.4 360.4L327.0 360.6L331.6 362.6L333.4 362.1L338.0 355.8L337.8 353.4L340.2 353.5L346.9 356.6L347.1 358.0L344.3 364.8L346.5 370.3L348.0 372.1L354.7 373.2L358.4 376.6L359.0 379.1L359.1 388.1L356.0 389.6L353.9 398.9L356.1 414.2L358.8 420.0Z",326.8,398.4],"VL":["M219.2 275.6L220.1 272.8L219.1 266.7L224.0 266.1L232.8 261.0L243.7 260.6L250.8 262.1L257.4 258.2L267.4 255.8L280.9 255.9L281.7 258.9L278.7 267.8L280.2 275.9L278.4 279.8L279.1 283.1L278.8 288.5L281.0 292.4L281.6 296.0L278.3 312.6L279.9 317.0L275.0 323.0L275.2 318.6L274.3 317.2L272.4 317.4L269.5 322.0L268.0 328.6L265.1 332.8L266.0 341.4L268.0 346.4L268.2 348.2L267.2 349.1L265.8 347.5L265.6 344.9L264.6 344.7L262.5 348.8L259.9 350.1L256.1 349.8L251.8 354.4L247.6 351.2L243.6 353.2L239.9 348.2L237.9 342.7L232.5 338.9L231.6 335.0L232.8 324.6L231.8 313.8L234.8 301.2L234.7 296.7L236.0 292.2L234.6 285.4L235.6 279.9L234.8 278.2L233.1 277.0L227.3 277.4Z",254.2,299.8],"VN":["M402.4 233.1L404.0 222.3L409.2 212.5L416.8 213.7L418.8 212.7L419.2 209.1L421.4 207.3L437.7 207.6L441.2 208.8L444.2 205.8L450.4 206.9L456.7 200.1L463.1 198.2L466.1 198.4L470.1 200.2L472.8 198.3L477.1 199.2L478.0 203.6L474.2 203.8L471.1 206.8L464.7 208.4L460.1 213.4L459.4 217.4L468.2 241.1L470.6 244.1L473.0 245.5L476.2 250.0L478.6 259.3L481.0 262.3L474.7 265.7L470.8 272.4L463.2 271.5L461.1 267.9L457.2 266.5L455.5 266.5L452.7 268.3L452.0 264.7L447.2 266.4L443.4 263.4L443.0 260.3L441.4 258.6L436.9 257.4L436.1 259.9L432.7 259.4L426.9 255.7L421.3 250.3L419.8 249.7L414.8 249.9L412.3 247.5L405.3 235.9Z",442.5,234.8],"VS":["M516.6 135.1L524.6 154.6L522.9 167.0L524.7 169.7L524.8 173.4L523.4 175.4L523.9 176.7L522.5 177.9L522.2 180.8L521.1 181.4L521.2 185.2L520.2 187.5L517.4 189.2L517.2 191.9L515.7 192.5L518.1 197.3L515.6 205.5L512.2 206.1L502.3 202.8L500.6 203.8L499.0 206.5L497.8 206.8L497.2 204.9L495.7 203.9L484.4 202.5L483.3 203.7L485.3 209.6L484.7 214.1L483.7 214.9L482.4 213.4L480.2 206.6L478.0 203.6L476.6 187.3L474.4 177.1L465.2 159.4L465.0 152.8L464.2 151.1L457.8 144.5L458.5 141.9L456.4 133.5L464.0 134.0L470.2 133.1L474.2 134.3L477.8 133.4L479.7 130.8L485.5 131.5L486.7 129.3L483.7 128.8L483.4 124.0L484.0 122.7L489.5 126.1L494.6 131.8L495.5 128.6L497.2 128.1L498.0 129.5L496.9 134.0L497.6 135.2L500.2 135.4L505.7 137.5L507.3 135.9L510.6 137.3L512.8 135.8Z",494.2,165.7]}};
+const INDIC = {
+  1: {scurt: 'Insolvențe noi', firme: 'firme cu insolvență nouă', ce: 'cerere de insolvență (a firmei sau a creditorilor), deschiderea procedurii sau faliment'},
+  2: {scurt: 'Semnale critice', firme: 'firme cu semnale critice', ce: 'insolvență, faliment, radiere, dizolvare judiciară, bancrută sau 10+ creditori'},
+  4: {scurt: 'Risc ridicat', firme: 'firme cu risc ridicat sau critic', ce: 'pe lângă cele critice: executare silită, poprire, sechestru, ordonanță de plată, bancă / leasing / fisc în instanță, 3+ creditori'}
+};
+const nf = n => Number(n || 0).toLocaleString('ro-RO');
+const rf = r => r == null ? '—' : r >= 100 ? nf(Math.round(r)) : r.toLocaleString('ro-RO', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+const rata = (n, a) => a ? n / a * 1e4 : null;
+const pvZi = d => { const t = new Date(PANOU.zi0 + 'T12:00:00Z'); t.setUTCDate(t.getUTCDate() + d); return t; };
+const pvFz = (d, an) => { const t = pvZi(d); return String(t.getUTCDate()).padStart(2, '0') + '.' + String(t.getUTCMonth() + 1).padStart(2, '0') + (an ? '.' + t.getUTCFullYear() : ''); };
+const pvNice = v => { v = Math.max(2, v); const p = Math.pow(10, Math.floor(Math.log10(v))); for (const c of [2, 4, 6, 8, 10]) if (c * p >= v) return c * p; return v; };
+const pvZile = n => n + (n % 100 >= 20 || n % 100 === 0 ? ' de zile' : ' zile');
+// Sub atâtea firme, rata e doar orientativă (un caz în plus o schimbă mult): o arătăm, dar o punem la coadă.
+const PV_MIN = 10;
+const PV_SURSA = {dom: () => PANOU.domenii, jud: () => PANOU.judete, varsta: () => PANOU.varste};
+const PV_ETICHETA = {dom: 'Sector', jud: 'Județ', varsta: 'Vârstă'};
+
+function pvPregateste(P) {
+  const azi = pvZi(P.zi_azi), lunaAzi = azi.getUTCFullYear() * 12 + azi.getUTCMonth();
+  const vIdx = luna => {
+    if (!luna) return -1;
+    const m = lunaAzi - (Math.floor(luna / 100) * 12 + luna % 100 - 1);
+    return m < 0 ? 0 : VARSTE.findIndex(v => m >= v[1] && m < v[2]);
+  };
+  PVF = P.firme.map(r => ({id: r[0], nume: r[1], dom: r[2], jud: r[3], luna: r[4], varsta: vIdx(r[4]), client: r[5], nivel: r[6], caen: r[7], ev: r[8]}));
+  PVP = (P.prognoza || []).map(r => ({id: r[0], nume: r[1], dom: r[2], jud: r[3], luna: r[4], varsta: vIdx(r[4]), client: r[5], p: r[6] / 1000, nivel: r[7], factori: r[8] || [], bil: r[9]}));
+  const areLuni = (P.pe_luna || []).length > 0;
+  P.varste = VARSTE.map(v => ({nume: v[0], activ: areLuni ? 0 : null}));
+  if (areLuni) P.pe_luna.forEach(([luna, n]) => { const i = vIdx(luna); if (i >= 0) P.varste[i].activ += n; });
+  ['dom', 'jud', 'varsta'].forEach(d => { PV.sel[d] = new Set(PV_SURSA[d]().map((_, i) => i).filter(i => PV_SALVAT[d].includes(pvCod(d, i)))); });
+}
+
+// Numără firmele (o dată pe firmă) cu cel puțin un eveniment de tipul ales în perioadă. Fiecare grafic aplică
+// filtrele celorlalte grafice, dar nu pe al lui (ca să vezi în continuare toate sectoarele când ai ales unul).
+function pvCalcul() {
+  const bit = PV.ind, sf = PANOU.zi_azi;
+  const st = PV.per === 'tot' ? 0 : Math.max(0, sf - PV.per + 1);
+  const pst = PV.per === 'tot' ? -1 : st - PV.per;
+  const nS = Math.floor(sf / 7) + 1;
+  const R = {st, sf, dom: PANOU.domenii.map(() => 0), jud: PANOU.judete.map(() => 0), varsta: VARSTE.map(() => 0),
+    nec: {dom: 0, jud: 0, varsta: 0}, lista: [], prev: 0, prevOk: pst >= 0, sapt: new Array(nS).fill(0), clienti: 0};
+  const ok = (f, fara) => (fara === 'dom' || !PV.sel.dom.size || PV.sel.dom.has(f.dom)) &&
+    (fara === 'jud' || !PV.sel.jud.size || PV.sel.jud.has(f.jud)) && (fara === 'varsta' || !PV.sel.varsta.size || PV.sel.varsta.has(f.varsta));
+  for (const f of PVF) {
+    if (PV.cl && !f.client) continue;
+    const toate = ok(f, null), ev = f.ev;
+    let lovit = false, ultima = -1, masca = 0, anterior = false, ultSapt = -1;
+    for (let i = 0; i < ev.length; i += 2) {
+      const z = ev[i], m = ev[i + 1];
+      if (!(m & bit)) continue;
+      if (z >= st && z <= sf) { lovit = true; ultima = z; masca |= m; }
+      if (R.prevOk && z >= pst && z < st) anterior = true;
+      if (toate && z <= sf) { const w = Math.floor(z / 7); if (w !== ultSapt) { R.sapt[w]++; ultSapt = w; } }
+    }
+    if (anterior && toate) R.prev++;
+    if (!lovit) continue;
+    if (ok(f, 'dom')) f.dom >= 0 ? R.dom[f.dom]++ : R.nec.dom++;
+    if (ok(f, 'jud')) f.jud >= 0 ? R.jud[f.jud]++ : R.nec.jud++;
+    if (ok(f, 'varsta')) f.varsta >= 0 ? R.varsta[f.varsta]++ : R.nec.varsta++;
+    if (toate) { R.lista.push({f, ultima, masca}); if (f.client) R.clienti++; }
+  }
+  R.lista.sort((a, b) => b.f.client - a.f.client || b.ultima - a.ultima || b.f.nivel - a.f.nivel);
+  return R;
+}
+const pvItemi = (R, dim) => PV_SURSA[dim]().map((d, i) => ({i, cod: d.cod, nume: d.nume, activ: d.activ, n: R[dim][i],
+  r: PV.cl ? null : rata(R[dim][i], d.activ)}));
+const pvCheie = dim => PV.mas === 'rata' && !PV.cl && PV_SURSA[dim]().some(d => d.activ) ? 'r' : 'n';
+const pvVal = (x, k) => k === 'r' ? rf(x.r) : nf(x.n);
+const pvSel = (dim, i) => PV.sel[dim].has(i);
+const pvAre = dim => PV.sel[dim].size > 0;
+const aprox = a => a >= 1000 ? '≈ ' + nf(Math.round(a / 100) * 100) : '≈ ' + nf(a);
+const pvTipItem = (x, dim) => `<b>${esc(x.nume)}</b><br>${nf(x.n)} ${esc(INDIC[PV.ind].firme)}` +
+  (x.r != null ? `<br>${rf(x.r)} la 10.000 de firme active<br><span class="m">${dim === 'dom' ? '≈ ' : ''}${nf(x.activ)} firme active${dim === 'dom' ? ' (estimat)' : ''}</span>` : '');
+const pvAcoperire = (R, dim, ce) => { const tot = R[dim].reduce((s, v) => s + v, 0) + R.nec[dim];
+  return tot ? `<p class="pv-foot">${ce} e cunoscut pentru ${Math.round((tot - R.nec[dim]) / tot * 100)}% din firmele selectate.</p>` : ''; };
+function pvTabel(its, dim, titlu) {
+  return `<div class="tw"><table class="pv-tbl"><thead><tr><th>${titlu}</th><th class="n">Firme</th><th class="n">Firme active${dim === 'dom' ? ' (estimat)' : ''}</th><th class="n">La 10.000</th></tr></thead><tbody>${
+    its.map(x => `<tr class="${pvSel(dim, x.i) ? 'sel' : ''}"><td>${esc(x.nume)}</td><td class="n">${nf(x.n)}</td><td class="n">${x.activ ? nf(x.activ) : '—'}</td><td class="n">${rf(x.r)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+const pvSubtitlu = (k, unde) => k === 'r' ? `${INDIC[PV.ind].firme} la 10.000 de firme active ${unde}` : `număr de ${INDIC[PV.ind].firme}`;
+
+function pvHero(R) {
+  const I = INDIC[PV.ind], n = R.lista.length;
+  const per = PV.per === 'tot' ? `de la ${pvFz(0, true)}` : `ultimele ${pvZile(PV.per)}`;
+  const filtre = ['dom', 'jud', 'varsta'].filter(pvAre);
+  const nume = d => { const a = [...PV.sel[d]].map(i => PV_SURSA[d]()[i].nume);
+    return a.length <= 2 ? a.join(', ') : `${a.length} ${{dom: 'domenii', jud: 'județe', varsta: 'grupe de vârstă'}[d]}`; };
+  const ctx = filtre.map(nume).join(' · ');
+  let numitor = null;
+  if (!PV.cl && !filtre.length) numitor = PANOU.active;
+  else if (!PV.cl && filtre.length === 1) {
+    const v = [...PV.sel[filtre[0]]].map(i => PV_SURSA[filtre[0]]()[i].activ);
+    numitor = v.every(x => x) ? v.reduce((a, b) => a + b, 0) : null;
+  }
+  const r = rata(n, numitor), p = R.prev;
+  const delta = !R.prevOk ? '' : p >= 10 ? `<span>${n >= p ? '▲' : '▼'} <b>${Math.abs(Math.round((n - p) / p * 100))}%</b> față de cele ${pvZile(PV.per)} dinainte (${nf(p)})</span>`
+    : `<span>în cele ${pvZile(PV.per)} dinainte: <b>${nf(p)}</b></span>`;
+  $('#pvHero').innerHTML = `<div class="pv-eb">${esc(I.scurt)} · ${esc(per)}</div>
+    <div class="pv-big">${nf(n)}</div>
+    <div class="pv-hl">${esc(I.firme)}${ctx ? ' · ' + esc(ctx) : ''}${PV.cl ? ' · doar clienții tăi' : ''}</div>
+    <div class="pv-hs">${r != null ? `<span><b>${rf(r)}</b> la 10.000 de firme active${filtre.length ? ` (din ${aprox(numitor)})` : ' din România'}</span>` : ''}${delta}</div>`;
+}
+function pvKpis(R) {
+  const top = dim => {
+    const k = pvCheie(dim), min = {dom: 5000, jud: 3000, varsta: 0}[dim];
+    return pvItemi(R, dim).filter(x => x.n >= PV_MIN && (k === 'n' || (x.activ || 0) >= min))
+      .sort((a, b) => (b[k] ?? -1) - (a[k] ?? -1) || b.n - a.n)[0];
+  };
+  const tile = (dim, eticheta) => {
+    const x = top(dim), k = pvCheie(dim);
+    return x ? `<button class="pv-card pv-kpi" data-f="${dim}:${x.i}" data-tip="${esc(pvTipItem(x, dim))}"><span class="pv-eb">${eticheta}</span><span class="v">${esc(x.nume)}</span>
+      <span class="d">${k === 'r' ? `${rf(x.r)} la 10.000 · ` : ''}${nf(x.n)} firme${x.activ ? ` din ${aprox(x.activ)} active` : ''}${pvSel(dim, x.i) ? ' · ales' : ''}</span></button>`
+      : `<div class="pv-card pv-kpi"><span class="pv-eb">${eticheta}</span><span class="v">—</span><span class="d">Prea puține date în selecție</span></div>`;
+  };
+  const nCl = STARE ? STARE.clienti : 0;
+  const cl = nCl ? `<button class="pv-card pv-kpi" data-cl><span class="pv-eb">Clienții tăi</span><span class="v">${nf(R.clienti)} în selecție</span>
+      <span class="d">din ${nf(nCl)} clienți · ${PV.cl ? 'arată toate firmele' : 'atinge ca să vezi doar clienții'}</span></button>`
+    : `<a class="pv-card pv-kpi" href="#clienti"><span class="pv-eb">Clienții tăi</span><span class="v">Încarcă lista</span><span class="d">ca să vezi care dintre ei sunt expuși</span></a>`;
+  $('#pvKpis').innerHTML = tile('dom', 'Sectorul cel mai expus') + tile('jud', 'Județul cel mai expus') + tile('varsta', 'Vârsta cea mai expusă') + cl;
+}
+function pvChips() {
+  const c = [];
+  ['dom', 'jud', 'varsta'].filter(pvAre).forEach(d => {
+    const a = [...PV.sel[d]];
+    if (a.length > 4) c.push(`<button class="pv-chip" data-sterge="${d}" aria-label="Scoate filtrul ${PV_ETICHETA[d]}">${PV_ETICHETA[d]}: <b>${a.length} alese</b><span aria-hidden="true">✕</span></button>`);
+    else a.forEach(i => c.push(`<button class="pv-chip" data-scoate="${d}:${i}" aria-label="Scoate ${esc(PV_SURSA[d]()[i].nume)}">${PV_ETICHETA[d]}: <b>${esc(PV_SURSA[d]()[i].nume)}</b><span aria-hidden="true">✕</span></button>`));
+  });
+  if (c.length > 1) c.push('<button class="pv-chip reset" data-sterge="tot">Șterge toate filtrele</button>');
+  $('#pvChips').innerHTML = c.join('');
+}
+function pvSectoare(R) {
+  const k = pvCheie('dom'), el = $('#pvSect');
+  const ord = x => k === 'r' && x.n < PV_MIN ? -1 : (x[k] ?? -1);
+  const its = pvItemi(R, 'dom').filter(x => x.n > 0 || pvSel('dom', x.i)).sort((a, b) => ord(b) - ord(a) || b.n - a.n);
+  $('#pvSectSub').textContent = pvSubtitlu(k, 'din domeniu');
+  const foot = pvAcoperire(R, 'dom', 'Domeniul (din codul CAEN declarat la ANAF)') +
+    (k === 'r' && its.some(x => x.n < PV_MIN) ? `<p class="pv-foot">Domeniile cu mai puțin de ${PV_MIN} firme sunt la final, cu bară estompată: acolo rata e doar orientativă.</p>` : '');
+  if (PV.tabel.sect) { el.innerHTML = pvTabel(its, 'dom', 'Domeniu') + foot; return; }
+  if (!its.length) { el.innerHTML = '<div class="pv-gol">Nicio firmă în selecție.</div>'; return; }
+  const max = Math.max(...its.map(x => x[k] || 0)) || 1;
+  const vizibile = PV.toateSect ? its : its.slice(0, 10);
+  el.innerHTML = `<div class="pv-rows ${pvAre('dom') ? 'dim' : ''}">${vizibile.map((x, j) => `<button class="pv-row ${pvSel('dom', x.i) ? 'sel' : ''} ${k === 'r' && x.n < PV_MIN ? 'slab' : ''}" data-f="dom:${x.i}" aria-pressed="${pvSel('dom', x.i)}" data-tip="${esc(pvTipItem(x, 'dom'))}">
+      <span class="pv-rl">${esc(x.nume)}</span><span class="pv-rv">${pvVal(x, k)}</span>
+      <span class="pv-rs">${k === 'r' ? `${nf(x.n)} afectate` : rf(x.r) + ' la 10.000'}${x.activ ? ` · ${aprox(x.activ)} firme active în domeniu` : ''}</span>
+      <span class="pv-tr"><span class="pv-b" style="--w:${Math.max(1, (x[k] || 0) / max * 100)}%;animation-delay:${j * 35}ms"></span></span></button>`).join('')}</div>
+    ${its.length > 10 ? `<button class="pv-more" data-toate-sect>${PV.toateSect ? 'Arată doar primele 10' : `Arată toate cele ${its.length} domenii`}</button>` : ''}${foot}`;
+}
+function pvHarta(R) {
+  const k = pvCheie('jud'), el = $('#pvJud'), its = pvItemi(R, 'jud');
+  $('#pvJudSub').textContent = pvSubtitlu(k, 'din județ');
+  const foot = pvAcoperire(R, 'jud', 'Județul (sediul din Registrul Comerțului)');
+  if (PV.tabel.jud) { el.innerHTML = pvTabel([...its].sort((a, b) => (b[k] ?? -1) - (a[k] ?? -1) || b.n - a.n), 'jud', 'Județ') + foot; return; }
+  const vals = its.map(x => x[k]).filter(v => v > 0).sort((a, b) => a - b);
+  const brk = [...new Set([.2, .4, .6, .8].map(q => vals[Math.min(vals.length - 1, Math.floor(q * vals.length))]))].filter(v => v != null && v < vals[vals.length - 1]);
+  const treapta = c => 1 + Math.round(c * (brk.length ? 4 / brk.length : 0));
+  const fmt = v => k === 'r' ? rf(v) : nf(Math.round(v));
+  const cls = x => x[k] > 0 ? 'q' + treapta(brk.filter(b => x[k] > b).length) : '';
+  // Bucureștiul (în interiorul Ilfovului) și județele alese se desenează ultimele, ca să le vezi conturul întreg.
+  const ord = [...its].filter(x => HARTA_RO.j[x.cod]).sort((a, b) => (a.cod === 'B') - (b.cod === 'B') || pvSel('jud', a.i) - pvSel('jud', b.i));
+  const zone = ord.map(x => `<path class="pv-jd ${cls(x)} ${pvSel('jud', x.i) ? 'sel' : ''}" d="${HARTA_RO.j[x.cod][0]}" fill-rule="evenodd" data-f="jud:${x.i}" tabindex="0" role="button"
+      aria-pressed="${pvSel('jud', x.i)}" aria-label="${esc(x.nume)}: ${x[k] == null ? 'fără date' : pvVal(x, k)}" data-tip="${esc(pvTipItem(x, 'jud'))}" data-info="${esc(pvInfoJud(x, k))}"/>`).join('');
+  const etichete = ord.map(x => { const g = HARTA_RO.j[x.cod]; return `<text class="pv-jl ${cls(x)} ${x.cod === 'B' ? 'mic' : ''}" x="${g[1]}" y="${g[2]}" dy=".35em">${x.cod}</text>`; }).join('');
+  const leg = ['<span><i style="background:var(--pv-nodata)"></i>0</span>'];
+  if (vals.length) for (let c = 0; c <= brk.length; c++)
+    leg.push(`<span><i style="background:var(--q${treapta(c)})"></i>${!brk.length ? 'peste 0' : c === 0 ? `până la ${fmt(brk[0])}` : c === brk.length ? `peste ${fmt(brk[c - 1])}` : `${fmt(brk[c - 1])}–${fmt(brk[c])}`}</span>`);
+  const ales = [...PV.sel.jud].map(i => its[i]);
+  el.innerHTML = `<svg class="pv-map ${pvAre('jud') ? 'dim' : ''}" viewBox="-4 -4 ${HARTA_RO.w + 8} ${HARTA_RO.h + 8}" role="group" aria-label="Harta României pe județe">
+      <g class="zone">${zone}</g><g>${etichete}</g></svg>
+    <div class="pv-leg">${leg.join('')}</div>
+    <div class="pv-jinfo" id="pvJInfo">${ales.length === 1 ? pvInfoJud(ales[0], k) : 'Atinge sau treci cu mouse-ul peste un județ ca să vezi cifrele; atinge-l ca să-l alegi.'}</div>${foot}`;
+  const svg = el.querySelector('svg'), g = svg.querySelector('.zone');
+  const info = t => { const p = t && t.closest('.pv-jd'); if (p) $('#pvJInfo').innerHTML = p.dataset.info; };
+  svg.addEventListener('pointerover', e => { const p = e.target.closest('.pv-jd'); if (p && p !== g.lastElementChild && !p.classList.contains('sel') && !g.lastElementChild.classList.contains('sel')) g.appendChild(p); info(e.target); });
+  svg.addEventListener('focusin', e => info(e.target));
+}
+const pvInfoJud = (x, k) => `<b>${esc(x.nume)}</b> · ${nf(x.n)} ${esc(INDIC[PV.ind].firme)}${x.r != null ? ` · <b>${rf(x.r)}</b> la 10.000` : ''}${x.activ ? ` · ${nf(x.activ)} firme active` : ''}`;
+function pvVarste(R) {
+  const k = pvCheie('varsta'), el = $('#pvVar'), its = pvItemi(R, 'varsta');
+  $('#pvVarSub').textContent = pvSubtitlu(k, 'de aceeași vârstă');
+  const foot = pvAcoperire(R, 'varsta', 'Data înființării');
+  if (PV.tabel.varsta) { el.innerHTML = pvTabel(its, 'varsta', 'Vârsta firmei') + foot; return; }
+  const max = Math.max(...its.map(x => x[k] || 0)) || 1;
+  el.innerHTML = `<div class="pv-cols ${pvAre('varsta') ? 'dim' : ''}">${its.map((x, j) => `<button class="pv-col ${pvSel('varsta', x.i) ? 'sel' : ''}" data-f="varsta:${x.i}" aria-pressed="${pvSel('varsta', x.i)}" data-tip="${esc(pvTipItem(x, 'varsta'))}">
+      <span class="pv-cv">${pvVal(x, k)}</span><span class="pv-ct"><span class="pv-cb" style="--h:${(x[k] || 0) / max * 100}%;animation-delay:${j * 60}ms"></span></span><span class="pv-cl">${esc(x.nume)}</span></button>`).join('')}</div>${foot}`;
+}
+function pvTrend(R) {
+  const d = R.sapt, n = d.length, el = $('#pvTrend');
+  const sfS = i => Math.min(i * 7 + 6, R.sf), inCurs = i => i === n - 1 && i * 7 + 6 > R.sf;
+  $('#pvTrSub').textContent = `${INDIC[PV.ind].firme}, pe săptămâni de la ${pvFz(0, true)}` + (PV.per === 'tot' ? '' : ' · zona evidențiată = perioada aleasă');
+  if (PV.tabel.trend) {
+    el.innerHTML = `<div class="tw"><table class="pv-tbl"><thead><tr><th>Săptămâna</th><th class="n">Firme</th></tr></thead><tbody>${
+      d.map((v, i) => `<tr><td>${pvFz(i * 7)} – ${pvFz(sfS(i))}${inCurs(i) ? ' (în curs)' : ''}</td><td class="n">${nf(v)}</td></tr>`).reverse().join('')}</tbody></table></div>`;
+    return;
+  }
+  const W = Math.max(280, Math.round(el.clientWidth || 600)), H = 200, ml = 36, mr = 14, mt = 12, mb = 28;
+  const max = pvNice(Math.max(...d));
+  const pas = n > 1 ? (W - ml - mr) / (n - 1) : 0;
+  const x = i => n > 1 ? ml + i * pas : (ml + W - mr) / 2, y = v => mt + (H - mt - mb) * (1 - v / max);
+  const pts = d.map((v, i) => [x(i), y(v)]);
+  const partial = n > 1 && inCurs(n - 1);
+  const linie = p => p.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1)).join('');
+  const arie = linie(pts) + `L${x(n - 1).toFixed(1)} ${y(0)}L${x(0).toFixed(1)} ${y(0)}Z`;
+  const grid = [0, max / 2, max].map(v => `<line class="gl" x1="${ml}" x2="${W - mr}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${ml - 6}" y="${y(v) + 4}" text-anchor="end">${nf(v)}</text>`).join('');
+  const salt = Math.max(1, Math.ceil(n / Math.max(2, Math.floor((W - ml - mr) / 64))));
+  const xl = d.map((_, i) => i % salt === 0 ? `<text class="ax" x="${x(i)}" y="${H - 8}" text-anchor="middle">${pvFz(i * 7)}</text>` : '').join('');
+  const jum = n > 1 ? pas / 2 : 20, b0 = Math.max(ml, x(Math.floor(R.st / 7)) - jum), b1 = Math.min(W - mr, x(Math.floor(R.sf / 7)) + jum);
+  const ultim = pts[n - 1];
+  el.innerHTML = `<svg class="pv-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" tabindex="0" role="img"
+      aria-label="Evoluție săptămânală: ultima săptămână ${nf(d[n - 1])} firme. Folosește săgețile stânga / dreapta pentru fiecare săptămână.">
+    ${PV.per === 'tot' ? '' : `<rect class="band" x="${b0}" y="${mt}" width="${Math.max(0, b1 - b0)}" height="${H - mt - mb}" rx="6"/>`}${grid}
+    <path class="ar" d="${arie}"/><path class="ln" d="${linie(partial ? pts.slice(0, -1) : pts)}"/>${partial ? `<path class="ln part" d="${linie(pts.slice(-2))}"/>` : ''}
+    <circle class="last" cx="${ultim[0]}" cy="${ultim[1]}" r="4"/>${xl}
+    <g class="xg" visibility="hidden"><line class="xh" y1="${mt}" y2="${H - mb}"/><circle class="dot" r="5"/></g>
+    <rect class="pv-ov" x="${ml - jum}" y="0" width="${W - ml - mr + 2 * jum}" height="${H}" fill="transparent"/></svg>`;
+  const svg = el.querySelector('svg'), xg = svg.querySelector('.xg'), xh = xg.querySelector('line'), dot = xg.querySelector('circle');
+  let cur = n - 1;
+  const arata = (i, cx, cy) => {
+    cur = Math.max(0, Math.min(n - 1, i));
+    xg.setAttribute('visibility', 'visible');
+    xh.setAttribute('x1', x(cur)); xh.setAttribute('x2', x(cur)); dot.setAttribute('cx', x(cur)); dot.setAttribute('cy', y(d[cur]));
+    if (cx == null) { const r = svg.getBoundingClientRect(); cx = r.left + x(cur) * r.width / W; cy = r.top + y(d[cur]) * r.height / H; }
+    pvTip(`<b>${pvFz(cur * 7)} – ${pvFz(sfS(cur), true)}</b>${inCurs(cur) ? ' <span class="m">(în curs)</span>' : ''}<br>${nf(d[cur])} ${esc(INDIC[PV.ind].firme)}`, cx, cy);
+  };
+  const ascunde = () => { xg.setAttribute('visibility', 'hidden'); pvTipAscunde(); };
+  const ov = svg.querySelector('.pv-ov');
+  ov.addEventListener('pointermove', e => { const r = svg.getBoundingClientRect(); const px = (e.clientX - r.left) * W / r.width; arata(n > 1 ? Math.round((px - ml) / pas) : 0, e.clientX, e.clientY); });
+  ov.addEventListener('pointerdown', e => { const r = svg.getBoundingClientRect(); const px = (e.clientX - r.left) * W / r.width; arata(n > 1 ? Math.round((px - ml) / pas) : 0, e.clientX, e.clientY); });
+  ov.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') ascunde(); });
+  svg.addEventListener('keydown', e => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); arata(cur + (e.key === 'ArrowRight' ? 1 : -1)); } });
+  svg.addEventListener('focus', () => { if (svg.matches(':focus-visible')) arata(cur); });
+  svg.addEventListener('blur', ascunde);
+}
+function pvLista(R) {
+  const I = INDIC[PV.ind], el = $('#pvLista');
+  $('#pvListaT').textContent = `${nf(R.lista.length)} ${I.firme}`;
+  if (!R.lista.length) { el.innerHTML = '<div class="pv-gol">Nicio firmă în selecție.</div>'; return; }
+  el.innerHTML = R.lista.slice(0, PV.nLista).map(({f, ultima, masca}) => {
+    const loc = [f.dom >= 0 ? PANOU.domenii[f.dom].nume : '', f.jud >= 0 ? PANOU.judete[f.jud].nume : '',
+      f.luna ? `înființată în ${String(f.luna).slice(4)}.${String(f.luna).slice(0, 4)}` : ''].filter(Boolean).join(' · ');
+    const tag = masca & 1 ? 'insolvență nouă' : masca & 2 ? 'semnal critic' : 'risc ridicat';
+    return `<div class="pv-li" data-firma="${f.id}" role="button" tabindex="0">${sev(f.nivel)}<b>${esc(f.nume)}${f.client ? '<span class="cl">CLIENT</span>' : ''}<span class="pv-tag">${tag}</span></b>
+      <span class="dt">${pvFz(ultima, true)}</span><small>${esc(loc) || 'fără date de registru'}</small></div>`;
+  }).join('') + (R.lista.length > PV.nLista ? `<div class="more"><button class="btn" data-mai-mult>Arată mai multe (încă ${nf(R.lista.length - PV.nLista)})</button></div>` : '');
+}
+function pvMetoda() {
+  const P = PANOU;
+  $('#pvMetoda').innerHTML = `<p><b>Semnalele</b> vin din dosarele de pe portal.just.ro (de la ${pvFz(0, true)}). <i>Insolvențe noi</i>: ${INDIC[1].ce}. <i>Critic</i>: ${INDIC[2].ce}. <i>Risc ridicat</i>: ${INDIC[4].ce}. O firmă se numără o singură dată în perioadă, oricâte dosare ar avea.</p>
+    <p><b>Județul, data înființării și starea firmei</b> vin din datele deschise ale Registrului Comerțului (ONRC${P.set_onrc ? ', setul ' + esc(P.set_onrc) : ''}), potrivite după nume. <b>Domeniul de activitate</b> vine din codul CAEN principal declarat la ANAF.</p>
+    <p><b>Harta</b> folosește contururile județelor din Natural Earth (date publice).</p>
+    <p><b>Rata la 10.000 de firme active</b> împarte firmele afectate la firmele active din registru din același județ, sector sau grupă de vârstă (${nf(P.active)} firme active în total), ca un județ mare să nu pară riscant doar pentru că are multe firme. Firmele active pe sector sunt estimate dintr-un eșantion aleator de ${nf(P.esantion_cu_caen)} firme active verificate la ANAF.</p>
+    <p>Firmele care nu au putut fi identificate sigur în registru intră în total și în listă, dar nu și pe hartă, pe sectoare sau pe vârste.</p>
+    ${P.model ? `<p><b>Prognoza la 90 de zile</b> vine dintr-un model statistic (regresie logistică) care a învățat din ${nf(P.model.cazuri)} firme intrate efectiv în insolvență după ${fd(P.model.referinta)} și din ${nf(P.model.martori)} firme active alese aleator din registru, comparând ce se știa despre ele înainte: semnalele din instanțe din ultimele 90 de zile, bilanțul ANAF pe ${P.model.an_bilant} (pierderi, capitaluri proprii negative, datorii, numerar, scăderea cifrei de afaceri, bilanț nedepus), starea fiscală (inactiv, TVA anulat), vârsta, stările de la registru și domeniul. Probabilitatea e ajustată la rata reală de insolvență din România (în medie ${pct(P.model.rata_90)} în 90 de zile). Pe date ținute deoparte, modelul a ordonat corect o firmă care a intrat în insolvență înaintea uneia care nu a intrat în ${P.model.auc ? Math.round(P.model.auc * 100) : '—'}% din cazuri, iar primele 10% firme după scor au cuprins ${P.model.concentrare && P.model.concentrare['0.1'] != null ? Math.round(P.model.concentrare['0.1'] * 100) : '—'}% din insolvențe. ${P.model.orizont_invatat < 90 ? `Deocamdată avem ${P.model.orizont_invatat} de zile de urmărire, așa că cele 90 de zile sunt extrapolate; modelul se reantrenează săptămânal și devine tot mai precis.` : ''} E o estimare statistică, nu o certitudine.</p>` : ''}`;
+}
+function pvRandeaza() {
+  if (!PANOU) return;
+  [['per', '#pvPer'], ['ind', '#pvInd'], ['mas', '#pvMas']].forEach(([k, sel]) =>
+    $(sel).querySelectorAll('button').forEach(b => b.setAttribute('aria-checked', String(b.dataset[k] === String(PV[k])))));
+  $('#pvMas').classList.toggle('off', PV.cl);
+  $('#pvCl').checked = PV.cl;
+  document.querySelectorAll('#t-panou [data-tabel]').forEach(b => b.setAttribute('aria-pressed', String(!!PV.tabel[b.dataset.tabel])));
+  const R = PVR = pvCalcul();
+  pvChips(); pvHero(R); pvKpis(R); pvPrognoza(); pvSectoare(R); pvHarta(R); pvVarste(R); pvTrend(R); pvLista(R);
+}
+loaders.panou = async () => {
+  if (!PANOU) {
+    let P = null;
+    try { P = await api('/api/panou'); } catch { P = null; }
+    if (!P || !P.firme) { $('#pvCorp').innerHTML = '<div class="pv-card pv-gol">Radarul apare după următoarea actualizare a datelor.</div>'; return; }
+    PANOU = P; pvPregateste(P); pvMetoda();
+    if (!P.set_onrc) $('#pvSub').insertAdjacentHTML('beforeend', ' <b>Județul, vârsta și domeniul apar după prima sincronizare cu Registrul Comerțului și ANAF.</b>');
+    const s = $('#t-panou'); s.classList.add('pv-intro'); setTimeout(() => s.classList.remove('pv-intro'), 1500);
+  }
+  pvRandeaza();
+};
+const pvTipEl = $('#pvTip'), pvSec = $('#t-panou');
+function pvTip(html, x, y) {
+  pvTipEl.innerHTML = html; pvTipEl.hidden = false;
+  const r = pvTipEl.getBoundingClientRect();
+  let L = x + 14, T = y + 14;
+  if (L + r.width > innerWidth - 8) L = x - r.width - 14;
+  if (T + r.height > innerHeight - 8) T = y - r.height - 14;
+  pvTipEl.style.left = Math.max(8, L) + 'px'; pvTipEl.style.top = Math.max(8, T) + 'px';
+}
+function pvTipAscunde() { pvTipEl.hidden = true; }
+pvSec.addEventListener('pointermove', e => {
+  if (e.pointerType !== 'mouse' || e.target.closest('.pv-svg')) return;
+  const t = e.target.closest('[data-tip]'); t ? pvTip(t.dataset.tip, e.clientX, e.clientY) : pvTipAscunde();
+});
+pvSec.addEventListener('pointerleave', pvTipAscunde);
+pvSec.addEventListener('focusin', e => { const t = e.target.closest('[data-tip]'); if (t && t.matches(':focus-visible')) { const r = t.getBoundingClientRect(); pvTip(t.dataset.tip, r.left + r.width / 2, r.bottom); } });
+pvSec.addEventListener('focusout', e => { if (!e.target.closest('.pv-svg')) pvTipAscunde(); });
+document.addEventListener('scroll', pvTipAscunde, {passive: true});
+pvSec.addEventListener('click', e => {
+  const t = e.target.closest('[data-f],[data-per],[data-ind],[data-mas],[data-tabel],[data-sterge],[data-scoate],[data-cl],[data-toate-sect],[data-mai-mult],[data-mai-mult-prog],[data-alege]');
+  if (!t || !PANOU) return;
+  e.preventDefault();
+  const ds = t.dataset;
+  if ('alege' in ds) { pvAlege(); return; }
+  if (ds.f || ds.scoate) { const [d, i] = (ds.f || ds.scoate).split(':'); PV.sel[d].has(+i) ? PV.sel[d].delete(+i) : PV.sel[d].add(+i); PV.nLista = 25; PV.nProg = 10; }
+  else if (ds.per) PV.per = ds.per === 'tot' ? 'tot' : +ds.per;
+  else if (ds.ind) PV.ind = +ds.ind;
+  else if (ds.mas) PV.mas = ds.mas;
+  else if (ds.tabel) PV.tabel[ds.tabel] = !PV.tabel[ds.tabel];
+  else if (ds.sterge) (ds.sterge === 'tot' ? ['dom', 'jud', 'varsta'] : [ds.sterge]).forEach(d => PV.sel[d].clear());
+  else if ('cl' in ds) PV.cl = !PV.cl;
+  else if ('toateSect' in ds) PV.toateSect = !PV.toateSect;
+  else if ('maiMult' in ds) { PV.nLista += 50; pvLista(PVR); return; }
+  else if ('maiMultProg' in ds) { PV.nProg += 30; pvPrognoza(); return; }
+  pvSalveaza(); pvTipAscunde();
+  const cheie = ds.f ? `[data-f="${ds.f}"]` : ['per', 'ind', 'mas', 'tabel'].map(k => ds[k] ? `[data-${k}="${ds[k]}"]` : '').find(Boolean);
+  pvRandeaza();
+  if (e.detail === 0 && cheie) { const nb = pvSec.querySelector(cheie); if (nb) nb.focus(); }
+});
+pvSec.addEventListener('keydown', e => {
+  const g = e.target.closest('.pv-jd,.pv-li,.pg-li');
+  if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); g.dispatchEvent(new MouseEvent('click', {bubbles: true})); }
+});
+$('#pvCl').onchange = () => { PV.cl = $('#pvCl').checked; pvRandeaza(); };
+window.addEventListener('resize', deb(() => { if (PVR && pvSec.classList.contains('on') && !PV.tabel.trend) pvTrend(PVR); }, 150));
+
+// Panoul „Alege ce urmărești”: domenii, județe și vârste bifate, păstrate pe acest dispozitiv.
+function pvAlege() {
+  if (!PANOU) return;
+  const grup = (d, titlu, ord) => `<h3>${titlu} <button class="btn mic" data-pv-gol="${d}" type="button">Golește</button></h3>
+    <div class="pv-checks ${d}">${ord.map(i => { const x = PV_SURSA[d]()[i];
+      return `<label><input type="checkbox" data-pv-bifa="${d}:${i}" ${pvSel(d, i) ? 'checked' : ''}><span>${esc(x.nume)}${x.activ ? `<small>${aprox(x.activ)} firme active${d === 'dom' ? ' (estimat)' : ''}</small>` : ''}</span></label>`; }).join('')}</div>`;
+  const idx = d => PV_SURSA[d]().map((_, i) => i);
+  stiva.length = 0;
+  deschide(`<h2>Ce urmărești</h2>
+    <p class="muted">Bifează doar domeniile, județele și vârstele care te interesează; tot radarul (cifre, hartă, listă) se recalculează pe loc.
+    Dacă nu bifezi nimic într-un grup, vezi tot. Alegerea rămâne salvată pe acest dispozitiv.</p>
+    ${grup('dom', 'Domenii de activitate', idx('dom').sort((a, b) => (PANOU.domenii[b].activ || 0) - (PANOU.domenii[a].activ || 0)))}
+    ${grup('jud', 'Județe', idx('jud').sort((a, b) => PANOU.judete[a].nume.localeCompare(PANOU.judete[b].nume, 'ro')))}
+    ${grup('varsta', 'Vârsta firmei', idx('varsta'))}
+    <div style="margin-top:18px"><button class="btn pri" id="pvGata" type="button">Gata</button></div>`);
+  $('#pvGata').onclick = inchide;
+}
+$('#dBodyDrawer').addEventListener('change', e => {
+  const c = e.target.closest('[data-pv-bifa]'); if (!c) return;
+  const [d, i] = c.dataset.pvBifa.split(':');
+  c.checked ? PV.sel[d].add(+i) : PV.sel[d].delete(+i);
+  pvSalveaza(); pvRandeaza();
+});
+$('#dBodyDrawer').addEventListener('click', e => {
+  const b = e.target.closest('[data-pv-gol]'); if (!b) return;
+  PV.sel[b.dataset.pvGol].clear();
+  $('#dBodyDrawer').querySelectorAll(`[data-pv-bifa^="${b.dataset.pvGol}:"]`).forEach(c => { c.checked = false; });
+  pvSalveaza(); pvRandeaza();
+});
+
+
+// ---------- prognoza: probabilitatea de insolvență în 90 de zile ----------
+const pct = p => { const v = p * 100; return (v >= 10 ? nf(Math.round(v)) : v.toLocaleString('ro-RO', {maximumFractionDigits: v < 1 ? 2 : 1})) + '%'; };
+const NIVELE_P = [[.20, 's4', 'foarte ridicată'], [.05, 's3', 'ridicată'], [.01, 's2', 'moderată'], [0, 's1', 'scăzută']];
+const nivelP = p => NIVELE_P.find(n => p >= n[0]);
+const lei = v => { const a = Math.abs(v || 0);
+  const t = a >= 1e9 ? (a / 1e9).toLocaleString('ro-RO', {maximumFractionDigits: 1}) + ' mld.' : a >= 1e6 ? (a / 1e6).toLocaleString('ro-RO', {maximumFractionDigits: 1}) + ' mil.'
+    : a >= 1e3 ? nf(Math.round(a / 1e3)) + ' mii' : nf(Math.round(a));
+  return (v < 0 ? '−' : '') + t + ' lei'; };
+const factorNume = c => esc(((META && META.factori) || {})[c] || c);
+const oriMedia = p => { const m = META && META.model; if (!m || !m.rata_90) return '';
+  const o = p / m.rata_90;
+  return o >= 1.5 ? `de ${o >= 10 ? nf(Math.round(o)) : o.toLocaleString('ro-RO', {maximumFractionDigits: 1})} ori media firmelor active (${pct(m.rata_90)})`
+    : o >= .7 ? `aproape de media firmelor active (${pct(m.rata_90)})` : `sub media firmelor active (${pct(m.rata_90)})`; };
+function prognozaHtml(f) {
+  if (f.p90 == null) return '';
+  if (f.deja_insolventa) return `<div class="pg"><div class="pg-eb">Prognoză</div><div class="pg-v"><span class="sev s4">⚠ deja în insolvență</span></div>
+    <div class="pg-s">Firma are deja o procedură de insolvență, după datele din instanțe sau de la Registrul Comerțului.</div></div>`;
+  const [, cls, et] = nivelP(f.p90);
+  return `<div class="pg"><div class="pg-eb">Probabilitate de insolvență în 90 de zile</div>
+    <div class="pg-v"><b>${pct(f.p90)}</b><span class="sev ${cls}">${et}</span></div>
+    <div class="pg-scala" role="img" aria-label="Nivel: ${et}">${[...NIVELE_P].reverse().map(n => `<span class="${n[1] === cls ? 'on' : ''}"><i></i>${n[2]}</span>`).join('')}</div>
+    <div class="pg-s">${oriMedia(f.p90)}${f.cu_bilant ? '' : ' · bilanțul ANAF nu e descărcat încă'}</div>
+    ${(f.p_factori || []).length ? `<div class="pg-fs"><small>De ce:</small> ${f.p_factori.map(c => `<span class="pg-f">${factorNume(c)}</span>`).join('')}</div>` : ''}</div>`;
+}
+function finHtml(fin) {
+  const ani = Object.keys(fin || {}).sort().reverse().slice(0, 2);
+  if (!ani.length) return '';
+  const cel = (a, k, fmt = lei) => { const x = fin[a]; return !x.depus ? (k === 'cifra_afaceri' ? '<span class="muted">nedepus</span>' : '') : x[k] != null ? fmt(x[k]) : '—'; };
+  const rand = (et, k, fmt) => `<tr><td>${et}</td>${ani.map(a => `<td class="n">${cel(a, k, fmt)}</td>`).join('')}</tr>`;
+  const rez = a => { const x = fin[a]; return !x.depus ? '' : x.pierdere_neta > 0 ? lei(-x.pierdere_neta) : lei(x.profit_net || 0); };
+  return `<h3>Bilanț depus la ANAF</h3><div class="card"><table class="fin"><tr><th></th>${ani.map(a => `<th class="n">${a}</th>`).join('')}</tr>
+    ${rand('Cifra de afaceri', 'cifra_afaceri')}<tr><td>Profit / pierdere netă</td>${ani.map(a => `<td class="n">${rez(a)}</td>`).join('')}</tr>
+    ${rand('Capitaluri proprii', 'capitaluri')}${rand('Datorii', 'datorii')}${rand('Numerar (casă și bănci)', 'casa')}
+    ${rand('Salariați', 'salariati', v => nf(v))}</table></div>`;
+}
+function pvPrognoza() {
+  const el = $('#pvProg'), m = PANOU.model;
+  if (!m || !PVP.length) {
+    $('#pvProgSub').textContent = '';
+    el.innerHTML = `<div class="pv-gol">Prognoza apare după ce se strâng bilanțurile ANAF și se antrenează modelul (de obicei în primele zile).</div>`;
+    return;
+  }
+  const ok = f => (!PV.cl || f.client) && ['dom', 'jud', 'varsta'].every(d => !PV.sel[d].size || PV.sel[d].has(f[d]));
+  const lista = PVP.filter(ok);
+  const peste = t => lista.filter(f => f.p >= t).length;
+  $('#pvProgSub').innerHTML = `Model învățat din ${nf(m.cazuri)} insolvențe reale și ${nf(m.martori)} firme active · media firmelor active: ${pct(m.rata_90)}` +
+    ` · în selecție: <b>${nf(peste(.20))}</b> firme peste 20%, <b>${nf(peste(.05))}</b> peste 5%`;
+  if (!lista.length) { el.innerHTML = '<div class="pv-gol">Nicio firmă cu probabilitate de peste 1% în selecție.</div>'; return; }
+  const loc = f => [f.dom >= 0 ? PANOU.domenii[f.dom].nume : '', f.jud >= 0 ? PANOU.judete[f.jud].nume : ''].filter(Boolean).join(' · ');
+  if (PV.tabel.prog) {
+    el.innerHTML = `<div class="tw"><table class="pv-tbl"><thead><tr><th>Firmă</th><th>Sector · județ</th><th class="n">Probabilitate 90 zile</th><th>De ce</th></tr></thead><tbody>${
+      lista.slice(0, PV.nProg).map(f => `<tr class="click" data-firma="${f.id}"><td>${esc(f.nume)}${f.client ? ' <span class="cl">CLIENT</span>' : ''}</td><td>${esc(loc(f))}</td><td class="n">${pct(f.p)}</td><td>${f.factori.map(factorNume).join(', ')}</td></tr>`).join('')}</tbody></table></div>`;
+  } else {
+    const max = lista[0].p;
+    el.innerHTML = `<div class="pg-list">${lista.slice(0, PV.nProg).map((f, j) => { const [, cls, et] = nivelP(f.p);
+      return `<div class="pg-li" data-firma="${f.id}" role="button" tabindex="0">
+        <div class="pg-n"><b>${esc(f.nume)}</b>${f.client ? '<span class="cl">CLIENT</span>' : ''}<small>${esc(loc(f))}${f.factori.filter(c => !c.startsWith('sector_')).length ? ' · ' + f.factori.filter(c => !c.startsWith('sector_')).slice(0, 3).map(factorNume).join(' · ') : ''}</small></div>
+        <div class="pg-p"><b>${pct(f.p)}</b><span class="sev ${cls}">${et}</span></div>
+        <div class="pv-tr"><span class="pv-b" style="--w:${Math.max(1, f.p / max * 100)}%;animation-delay:${j * 30}ms"></span></div></div>`; }).join('')}</div>`;
+  }
+  if (lista.length > PV.nProg) el.insertAdjacentHTML('beforeend', `<div class="more"><button class="btn" data-mai-mult-prog>Arată mai multe (încă ${nf(lista.length - PV.nProg)})</button></div>`);
+}
+
+// Date de registru (ONRC + ANAF) în fișa firmei.
+function regInfo(f) {
+  if (!f.reg_cui && !f.reg_judet && !f.reg_caen) return '';
+  const caen = f.reg_caen || '', dom = META.domenii && META.domenii_div ? META.domenii[META.domenii_div[caen.slice(0, 2)]] : '';
+  const ani = f.reg_data ? Math.floor((Date.now() - new Date(f.reg_data + 'T00:00:00')) / 31557600000) : null;
+  const stari = String(f.reg_stari || '').split(',').filter(c => META.stari_onrc && META.stari_onrc[c]);
+  const grave = new Set(['1139', '1083', '1107', '1057', '1070', '1052', '1113', '2078', '1084']);
+  const vechime = ani == null ? '' : ani < 1 ? 'sub 1 an' : ani === 1 ? '1 an' : ani < 20 ? ani + ' ani' : ani + ' de ani';
+  return `${f.reg_cui ? `<dt>CUI</dt><dd>${esc(f.reg_cui)}${f.reg_forma ? ' · ' + esc(f.reg_forma) : ''}</dd>` : ''}
+    ${f.reg_judet ? `<dt>Sediu</dt><dd>${esc(f.reg_localitate || '')}${f.reg_localitate ? ', ' : ''}${esc((META.judete || {})[f.reg_judet] || f.reg_judet)}</dd>` : ''}
+    ${f.reg_data ? `<dt>Înființată</dt><dd>${fd(f.reg_data)}${vechime ? ' · ' + vechime : ''}</dd>` : ''}
+    ${caen ? `<dt>Activitate (CAEN)</dt><dd>${esc(caen)}${META.caen && META.caen[caen] ? ' — ' + esc(META.caen[caen]) : ''}${dom ? `<br><small>${esc(dom)}</small>` : ''}</dd>` : ''}
+    ${f.anaf_stare_f != null || f.anaf_inactiv_f ? `<dt>Stare fiscală (ANAF)</dt><dd>${[
+      f.anaf_radiat_f ? '<span class="sev s4">⚠ radiată la ANAF</span>' : '',
+      f.anaf_inactiv_f ? `<span class="sev s4">⚠ contribuabil inactiv${f.anaf_inactivare_f ? ' din ' + fd(f.anaf_inactivare_f) : ''}</span>` : '',
+      f.anaf_tva_anulat_f ? '<span class="sev s3">⚠ înregistrare TVA anulată</span>' : '',
+      !f.anaf_radiat_f && !f.anaf_inactiv_f && !f.anaf_tva_anulat_f ? `<span class="grp">activă${f.anaf_platitor_f ? ' · plătitoare de TVA' : ''}</span>` : ''
+    ].filter(Boolean).join(' ')}</dd>` : ''}
+    ${stari.length ? `<dt>Stare la registru</dt><dd>${stari.map(c => grave.has(c) ? `<span class="sev s4">⚠ ${esc(META.stari_onrc[c])}</span>` : `<span class="grp">${esc(META.stari_onrc[c])}</span>`).join(' ')}</dd>` : ''}`;
+}
+
+// ---------- temă luminoasă / întunecată (implicit întunecată) ----------
+$('#btnTema').onclick = () => {
+  const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = t;
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m => { m.content = t === 'dark' ? '#0a0e15' : '#f3f6fb'; });
+  try { localStorage.setItem('mpj_tema', t); } catch { /* doar pentru sesiunea curentă */ }
+};
+
+// ---------- pornire ----------
+async function porneste() {
+  META = await api('/api/meta');
+  const optG = Object.entries(META.grupuri).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('');
+  $('#aGrup').insertAdjacentHTML('beforeend', optG); $('#fGrup').insertAdjacentHTML('beforeend', optG);
+  $('#fTip').insertAdjacentHTML('beforeend', ['societate','pfa','asociatie'].map(k => `<option value="${k}">${esc(META.tipuri[k])}</option>`).join(''));
+  $('#dCat').insertAdjacentHTML('beforeend', META.categorii.map(c => `<option value="${esc(c.categorie)}">${esc(c.nume)} (${c.n.toLocaleString('ro')})</option>`).join(''));
+  $('#dInst').insertAdjacentHTML('beforeend', META.institutii.map(i => `<option value="${esc(i.cod)}">${esc(i.nume)} (${i.n})</option>`).join(''));
+  const s = await incarcaStare();
+  if (s.rulare_in_curs && !STATIC) poll();
+  if (STATIC) adaptareOnline(); else $('#cModW').hidden = true;
+  arata(location.hash.slice(1) || 'panou');
+}
+if (STATIC) intraOnline(); else porneste();
+</script>
+</body>
+</html>
